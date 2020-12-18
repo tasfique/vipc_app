@@ -4,6 +4,7 @@ import 'package:passwordfield/passwordfield.dart';
 import 'main_page.dart';
 import 'signUp_page.dart';
 
+//the login page is completed with password field dependency added.
 class LoginScreen extends StatefulWidget {
   @override
   LoginScreenState createState() => LoginScreenState();

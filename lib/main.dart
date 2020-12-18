@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 
+//this login page is empty, needs adding of the design
 void main() {
   runApp(MyApp());
 }
