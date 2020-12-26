@@ -1,19 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/controller/login/login_controller.dart';
 import 'package:passwordfield/passwordfield.dart';
-import 'main_page.dart';
-import 'signUp_page.dart';
+import 'package:vipc_app/view/home/home_view.dart';
+import 'package:vipc_app/view/signup/signup_view.dart';
 
-//the login page is completed with password field dependency added.
-class LoginScreen extends StatefulWidget {
+class LoginView extends StatefulWidget {
+  LoginView({key}) : super(key: key);
+
   @override
-  LoginScreenState createState() => LoginScreenState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class _LoginViewState extends StateMVC {
+  _LoginViewState() : super(LoginController()) {
+    _con = LoginController.con;
+  }
+  LoginController _con;
 
   final _usernameController = TextEditingController();
   final _userPwdController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black,
+                    Colors.black87,
+                    Colors.brown,
+                    Colors.orangeAccent,
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset('assets/images/logo.png'),
+                    SizedBox(height: 50),
+                    _buildUsernameTextField(),
+                    SizedBox(height: 30),
+                    _buildUserPwdTextField(),
+                    SizedBox(height: 30),
+                    _buildLoginBtn(),
+                    SizedBox(height: 10),
+                    _buildAccountText(),
+                    SizedBox(height: 10),
+                    _buildSignupBtn(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildUsernameTextField() {
     return Column(
@@ -24,7 +82,6 @@ class LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
           ),
         ),
         SizedBox(height: 10.0),
@@ -47,15 +104,13 @@ class LoginScreenState extends State<LoginScreen> {
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.fromLTRB(15.0, 7.0, 0.0, 7.0),
+              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
               hintText: 'Enter your username.',
               hintStyle: TextStyle(
                 color: Colors.white70,
-                fontFamily: 'OpenSans',
               ),
             ),
           ),
@@ -73,7 +128,6 @@ class LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
           ),
         ),
         SizedBox(height: 10.0),
@@ -92,23 +146,19 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           height: 60.0,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(15.0, 7.0, 0.0, 7.0),
+            padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
             child: PasswordField(
               controller: _userPwdController,
               inputStyle: TextStyle(
                 color: Colors.white70,
-                fontFamily: 'OpenSans',
               ),
               border: InputBorder.none,
-
               hintText: 'Enter your password.',
               hintStyle: TextStyle(
                 color: Colors.white70,
-                fontFamily: 'OpenSans',
               ),
             ),
           ),
-
         ),
       ],
     );
@@ -120,7 +170,11 @@ class LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => MainPageScreen1(),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return HomeView();
+          }));
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -133,7 +187,6 @@ class LoginScreenState extends State<LoginScreen> {
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
           ),
         ),
       ),
@@ -146,7 +199,7 @@ class LoginScreenState extends State<LoginScreen> {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Don\'t have an Account? ',
+              text: 'Don\'t have an Account?',
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 18.0,
@@ -163,7 +216,7 @@ class LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SignUpScreen();
+          return SignupView();
         }));
       },
       child: RichText(
@@ -173,68 +226,13 @@ class LoginScreenState extends State<LoginScreen> {
               text: 'Sign Up',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black,
-                        Colors.black87,
-                        Colors.brown,
-                        Colors.orangeAccent,
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                    height: double.infinity,
-                    child: SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 120.0),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Image.asset('assets/images/logo.png'),
-                              SizedBox(height: 50.0),
-                              _buildUsernameTextField(),
-                              SizedBox(height: 30.0),
-                              _buildUserPwdTextField(),
-                              SizedBox(height: 30.0),
-                              _buildLoginBtn(),
-                              SizedBox(height: 10.0),
-                              _buildAccountText(),
-                              SizedBox(height: 10.0),
-                              _buildSignupBtn(),
-                            ]
-                        )
-                    )
-                )
-              ],
-            ),
-          ),
-        )
     );
   }
 }
