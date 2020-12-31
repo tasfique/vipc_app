@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/login/login_controller.dart';
+import 'package:vipc_app/controller/forgotPwd/forgotPwd_controller.dart';
 import 'package:passwordfield/passwordfield.dart';
 import 'package:vipc_app/view/home/home_view.dart';
-import 'package:vipc_app/view/signup/signup_view.dart';
-import 'package:vipc_app/view/forgotPwd/forgotPwd_view.dart';
+import 'package:vipc_app/view/login/login_view.dart';
 
-class LoginView extends StatefulWidget {
-  LoginView({key}) : super(key: key);
+class ForgotPasswordView extends StatefulWidget {
+  ForgotPasswordView({key}) : super(key: key);
 
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _ForgotPasswordViewState createState() => _ForgotPasswordViewState();
 }
 
-class _LoginViewState extends StateMVC {
-  _LoginViewState() : super(LoginController()) {
-    _con = LoginController.con;
+class _ForgotPasswordViewState extends StateMVC {
+  _ForgotPasswordViewState() : super(ForgotPasswordController()) {
+    _con = ForgotPasswordController.con;
   }
-  LoginController _con;
+  ForgotPasswordController _con;
+
+  final _empNoController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +54,17 @@ class _LoginViewState extends StateMVC {
                   children: <Widget>[
                     Image.asset('assets/images/logo.png'),
                     SizedBox(height: 50),
-                    _buildUsernameTextField(),
+                    _buildEmpNoTextField(),
                     SizedBox(height: 30),
-                    _buildUserPwdTextField(),
+                    _buildEmailTextField(),
                     SizedBox(height: 30),
-                    _buildLoginBtn(),
-                    SizedBox(height: 10),
-                    _buildAccountText(),
-                    SizedBox(height: 10),
-                    _buildSignupBtn(),
-                    SizedBox(height: 10),
-                    _buildForgotPwdBtn(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildBackBtn(),
+                        _buildSubmitBtn(),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -73,12 +75,12 @@ class _LoginViewState extends StateMVC {
     );
   }
 
-  Widget _buildUsernameTextField() {
+  Widget _buildEmpNoTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Username',
+          'Employee Number',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -100,7 +102,7 @@ class _LoginViewState extends StateMVC {
           ),
           height: 60.0,
           child: TextField(
-            controller: _con.usernameController,
+            controller: _empNoController,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
@@ -108,7 +110,7 @@ class _LoginViewState extends StateMVC {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your username.',
+              hintText: 'Your Employee Number.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -119,12 +121,12 @@ class _LoginViewState extends StateMVC {
     );
   }
 
-  Widget _buildUserPwdTextField() {
+  Widget _buildEmailTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Password',
+          'Email Address',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -145,15 +147,16 @@ class _LoginViewState extends StateMVC {
             ],
           ),
           height: 60.0,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
-            child: PasswordField(
-              controller: _con.userPwdController,
-              inputStyle: TextStyle(
-                color: Colors.white70,
-              ),
+          child: TextField(
+            controller: _emailController,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: 'Enter your password.',
+              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
+              hintText: 'Your Email Address.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -164,33 +167,33 @@ class _LoginViewState extends StateMVC {
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildSubmitBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width / 3,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          _con.LoginUser();
-          _con.loginSuccess == true
-              ? Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return HomeView();
-                }))
-              : showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                    title: new Text("VIPC Message"),
-                    content: new Text("Username or password is incorrect."),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Close'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ),
-                );
+          showDialog(
+            context: context,
+            builder: (_) => new AlertDialog(
+              title: new Text("VIPC Message"),
+              content:
+                  new Text("Your new password has been sent to your email!"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return LoginView();
+                    }));
+                  },
+                )
+              ],
+            ),
+          );
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -198,7 +201,7 @@ class _LoginViewState extends StateMVC {
         ),
         color: Colors.white,
         child: Text(
-          'LOGIN',
+          'Submit',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -210,68 +213,30 @@ class _LoginViewState extends StateMVC {
     );
   }
 
-  Widget _buildAccountText() {
-    return GestureDetector(
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Don\'t have an Account?',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+  Widget _buildBackBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: MediaQuery.of(context).size.width / 3,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return LoginView();
+          }));
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SignupView();
-        }));
-      },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Sign Up',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildForgotPwdBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ForgotPasswordView();
-        }));
-      },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Forgot password?',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        color: Colors.white,
+        child: Text(
+          'Back',
+          style: TextStyle(
+            color: Color(0xFF527DAA),
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

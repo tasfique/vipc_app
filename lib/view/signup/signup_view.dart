@@ -19,8 +19,12 @@ class _SignupViewState extends StateMVC {
 
   final _usernameController = TextEditingController();
   final _userPwdController = TextEditingController();
-  final _userConfirmPwdController = TextEditingController();
-  final _userRealNameController = TextEditingController();
+  final _userEmpNoController = TextEditingController();
+  final _userOption1Controller = TextEditingController();
+  final _userOption2Controller = TextEditingController();
+
+  String selectedRole;
+  List<String> roles = ["Manager", "Advisor", "Admin"];
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +63,14 @@ class _SignupViewState extends StateMVC {
                     SizedBox(height: 30),
                     _buildUserPwdTextField(),
                     SizedBox(height: 30),
-                    _buildConfirmPwdTextField(),
+                    _buildEmployeeNoTextField(),
                     SizedBox(height: 30),
-                    _buildUserEmailTextField(),
+                    _buildDropdownLabel(),
+                    _buildDropdownBtn(),
+                    SizedBox(height: 30),
+                    _buildOption1TextField(),
+                    SizedBox(height: 30),
+                    _buildOption2TextField(),
                     SizedBox(height: 30),
                     _buildSignupBtn(),
                   ],
@@ -109,7 +118,7 @@ class _SignupViewState extends StateMVC {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your username.',
+              hintText: 'Your username.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -154,7 +163,7 @@ class _SignupViewState extends StateMVC {
                 color: Colors.white70,
               ),
               border: InputBorder.none,
-              hintText: 'Enter your password.',
+              hintText: 'Your password.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -165,57 +174,12 @@ class _SignupViewState extends StateMVC {
     );
   }
 
-  Widget _buildConfirmPwdTextField() {
+  Widget _buildEmployeeNoTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Confirm Password',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          height: 60.0,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
-            child: PasswordField(
-              controller: _userConfirmPwdController,
-              inputStyle: TextStyle(
-                color: Colors.white70,
-              ),
-              border: InputBorder.none,
-              hintText: 'Enter your confirm password.',
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildUserEmailTextField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Email',
+          'Employee Number',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -237,7 +201,7 @@ class _SignupViewState extends StateMVC {
           ),
           height: 60.0,
           child: TextField(
-            controller: _userRealNameController,
+            controller: _userEmpNoController,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
@@ -245,7 +209,165 @@ class _SignupViewState extends StateMVC {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your email.',
+              hintText: 'Your employee number.',
+              hintStyle: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdownLabel() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Position',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+      ],
+    );
+  }
+
+  Widget _buildDropdownBtn() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 15, right: 15),
+      decoration: BoxDecoration(
+        color: Colors.white24,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6.0,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      height: 60.0,
+      child: DropdownButton(
+        hint: Container(
+          child: Text("Select a position.",
+              style: TextStyle(color: Colors.white70)),
+        ),
+        isExpanded: true,
+        value: selectedRole,
+        onChanged: (String value) {
+          setState(() {
+            selectedRole = value;
+          });
+        },
+        items: roles.map((String role) {
+          return DropdownMenuItem(
+            value: role,
+            child: Row(
+              children: <Widget>[
+                Text(
+                  role,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildOption1TextField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Option 1',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: TextField(
+            controller: _userOption1Controller,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
+              hintText: 'Option 1.',
+              hintStyle: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOption2TextField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Option 2',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: TextField(
+            controller: _userOption2Controller,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
+              hintText: 'Option 2.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -263,9 +385,25 @@ class _SignupViewState extends StateMVC {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return HomeView();
-          }));
+          showDialog(
+            context: context,
+            builder: (_) => new AlertDialog(
+              title: new Text("VIPC Message"),
+              content: new Text("Successfully signed up!"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return HomeView();
+                    }));
+                  },
+                )
+              ],
+            ),
+          );
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
