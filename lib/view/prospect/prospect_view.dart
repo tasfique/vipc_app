@@ -5,6 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/prospect/prospect_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
+import 'package:vipc_app/model/prospect.dart';
 
 class ProspectView extends StatefulWidget {
   ProspectView({key}) : super(key: key);
@@ -22,464 +23,92 @@ class _ProspectViewState extends StateMVC {
 
   @override
   Widget build(BuildContext context) {
-    final List<Card> cards = [
-      // Number 1
-      Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Adrian Ong',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
+    Prospect.prospectCards.clear();
+    for (int i = 0; i < Prospect.prospectNames.length; i++) {
+      Prospect.prospectCards.add(
+        Card(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, top: 5),
+                        child: Text(
+                          Prospect.prospectNames[i],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Cold Prospect',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, top: 5),
+                        child: Text(
+                          Prospect.prospectTypes[i],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black54,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Step 1',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, top: 5),
+                        child: Text(
+                          Prospect.prospectSteps[i],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 30),
-                      child: Text(
-                        'Meeting at 10AM\nSS15 Starbucks',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, top: 30),
+                        child: Text(
+                          "Meeting at " +
+                              Prospect.prospectSchedules[i]
+                                  .toString()
+                                  .substring(11, 16) +
+                              "\n" +
+                              Prospect.prospectLocations[i],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      // Number 2
-      Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Wu Qing-Feng',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Hot Prospect',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Step 3',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 30),
-                      child: Text(
-                        'Meeting at 11AM\nUSJ Taipan',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      // Number 3
-      Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Cecilia Cheung',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Hot Prospect',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Step 1',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 30),
-                      child: Text(
-                        'Meeting at 10AM\nAra Damansara',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      // Number 4
-      Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Yeoh Choo-Kheng',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Cold Prospect',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Step 4',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 30),
-                      child: Text(
-                        'Meeting at 1:30PM\nKLCC',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      // Number 5
-      Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Eric Yeow',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Hot Prospect',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Step 3',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 30),
-                      child: Text(
-                        'Meeting at 10:30AM\nSunway Pyramid',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      // Number 6
-      Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Raul Owen',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Cold Prospect',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        'Step 2',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, top: 30),
-                      child: Text(
-                        'Meeting at 9AM\nSS15 McDonalds',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    ];
+      );
+    }
+
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
@@ -487,7 +116,7 @@ class _ProspectViewState extends StateMVC {
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: cards.length,
+          itemCount: Prospect.prospectCards.length,
           itemBuilder: (context, index) {
             if (index == 0) {
               return Column(
@@ -508,7 +137,7 @@ class _ProspectViewState extends StateMVC {
                     padding: EdgeInsets.only(top: 15),
                     child: Container(
                       alignment: Alignment.center,
-                      child: cards[index],
+                      child: Prospect.prospectCards[index],
                     ),
                   ),
                 ],
@@ -518,7 +147,7 @@ class _ProspectViewState extends StateMVC {
                 padding: EdgeInsets.only(top: 15),
                 child: Container(
                   alignment: Alignment.center,
-                  child: cards[index],
+                  child: Prospect.prospectCards[index],
                 ),
               );
             }

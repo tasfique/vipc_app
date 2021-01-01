@@ -9,4 +9,6 @@ class ProspectController extends ControllerMVC {
   ProspectController._();
 
   static ProspectController get con => _this;
+
+  int selectedIndex = 0;
 }

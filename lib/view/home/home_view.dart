@@ -12,6 +12,8 @@ import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/sales/sales_view.dart';
 import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
+import 'package:vipc_app/model/prospect.dart';
+import 'package:vipc_app/view/prospect/prospect_view.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({key}) : super(key: key);
@@ -129,107 +131,60 @@ class _HomeViewState extends StateMVC {
     );
 
     // LIST VIEW OF CARDS
-    final List<Card> cards = [
-      Card(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const ListTile(
-                title: Text(
-                  'Kris Wu',
-                  style: TextStyle(
-                    fontSize: 18,
+    Prospect.prospectCards.clear();
+    for (int i = 0; i < Prospect.prospectNames.length; i++) {
+      Prospect.prospectCards.add(
+        Card(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    Prospect.prospectNames[i],
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      "Meeting at " +
+                          Prospect.prospectSchedules[i]
+                              .toString()
+                              .substring(11, 16) +
+                          "\n" +
+                          Prospect.prospectLocations[i],
+                    ),
                   ),
                 ),
-                subtitle: Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text('Meeting at 11:30AM Suria KLCC Ben\'s'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    const SizedBox(width: 8),
+                    FlatButton(
+                      child: const Text('More Info..'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ProspectView();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  const SizedBox(width: 8),
-                  FlatButton(
-                    child: const Text('More Info..'),
-                    onPressed: () {/* ... */},
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      Card(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const ListTile(
-                title: Text(
-                  'Hamid Hosseini',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                subtitle: Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text('Meeting at 12PM Pavilion Sukiya'),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  const SizedBox(width: 8),
-                  FlatButton(
-                    child: const Text('More Info..'),
-                    onPressed: () {/* ... */},
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      Card(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const ListTile(
-                title: Text(
-                  'Alex Raul',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                subtitle: Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Text('Meeting at 12:40PM SS15 Starbucks'),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  const SizedBox(width: 8),
-                  FlatButton(
-                    child: const Text('More Info..'),
-                    onPressed: () {/* ... */},
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    ];
+      );
+    }
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -395,12 +350,12 @@ class _HomeViewState extends StateMVC {
                 height: MediaQuery.of(context).size.height / 3.5,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: cards.length,
+                  itemCount: Prospect.prospectCards.length,
                   itemBuilder: (context, index) {
                     return Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width * 0.5,
-                      child: cards[index],
+                      child: Prospect.prospectCards[index],
                     );
                   },
                 ),
