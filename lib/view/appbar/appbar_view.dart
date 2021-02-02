@@ -23,7 +23,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           tooltip: 'Notifications',
           icon: const Icon(
             Icons.notifications,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -35,7 +35,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           tooltip: 'Search',
           icon: const Icon(
             Icons.search,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {},
         ),

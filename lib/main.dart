@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/login/login_view.dart';
-// import of gradient colour
-import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
-//
 
 void main() {
   runApp(MyApp());
@@ -15,8 +12,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Great Ideals',
       theme: ThemeData(
-        primarySwatch: Colors.yellow,
+        primarySwatch: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        //changing the text color into white globally
+        textTheme: TextTheme(
+          bodyText1: TextStyle(),
+          bodyText2: TextStyle(),
+        ).apply(
+          bodyColor: Colors.white,
+          displayColor: Colors.blue,
+        ),
       ),
       home: LoginView(),
     );

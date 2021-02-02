@@ -44,7 +44,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
-            title: Text('Home'),
+            title: Text(
+              'Home',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return HomeView();
@@ -52,7 +57,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            title: Text('Prospects'),
+            title: Text(
+              'Prospects',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return ProspectView();
@@ -60,7 +70,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            title: Text('Settings'),
+            title: Text(
+              'Settings',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return SettingsView();

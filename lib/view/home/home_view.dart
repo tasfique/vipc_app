@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/constants/font_constants.dart';
 import 'package:vipc_app/controller/home/home_controller.dart';
 // import for charts.
 import 'package:vipc_app/model/chart_data.dart';
@@ -33,6 +34,7 @@ class _HomeViewState extends StateMVC {
   }
 
   HomeController _con;
+  double responsiveFontSize = 18; // Default Font Size
 
   // PIE CHART
   int key = 0;
@@ -48,9 +50,10 @@ class _HomeViewState extends StateMVC {
     Colors.blue,
     Colors.yellow,
   ];
-
+  @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -78,6 +81,14 @@ class _HomeViewState extends StateMVC {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+
+    // CHECKING SCREEN SIZE
+    if (MediaQuery.of(context).size.width > 1024) {
+      responsiveFontSize = FontConstants.fontLargeSize;
+    } else {
+      responsiveFontSize = FontConstants.fontMediumSize;
+    }
     // BAR GRAPH
     var data = [
       MonthlyPointBarChart('Jan', 61, Colors.red),
@@ -96,9 +107,33 @@ class _HomeViewState extends StateMVC {
       ),
     ];
 
+    //changing text color for bar chart
     var chart = charts.BarChart(
       series,
       animate: true,
+      domainAxis: new charts.OrdinalAxisSpec(
+          renderSpec: new charts.SmallTickRendererSpec(
+
+              // Tick and Label styling here.
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 18, // size in Pts.
+                  color: charts.MaterialPalette.white),
+
+              // Change the line colors to match text color.
+              lineStyle: new charts.LineStyleSpec(
+                  color: charts.MaterialPalette.white))),
+      // Assign a custom style for the measure axis.
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+          renderSpec: new charts.GridlineRendererSpec(
+
+              // Tick and Label styling here.
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 18, // size in Pts.
+                  color: charts.MaterialPalette.white),
+
+              // Change the line colors to match text color.
+              lineStyle: new charts.LineStyleSpec(
+                  color: charts.MaterialPalette.white))),
     );
 
     var pieChartWidget = PieChart(
@@ -194,7 +229,10 @@ class _HomeViewState extends StateMVC {
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
+
       body: Container(
+        // MediaQuery.of(context).size.width
+        // MediaQuery.of(context).size.height
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -222,7 +260,7 @@ class _HomeViewState extends StateMVC {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Hello, Tasfique Enam',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: TextStyle(fontSize: responsiveFontSize),
                     ),
                   ),
                 ),
@@ -246,11 +284,13 @@ class _HomeViewState extends StateMVC {
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
+                      padding: EdgeInsets.only(left: 10),
                       width: MediaQuery.of(context).size.width / 2,
                       alignment: Alignment.center,
-                      child: Text(
-                        "Weekly Performance Achievement",
-                      ),
+                      child: Text("Weekly Performance Achievement",
+                          style: TextStyle(
+                            fontSize: responsiveFontSize,
+                          )),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2,
