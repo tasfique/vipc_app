@@ -284,7 +284,7 @@ class _HomeViewState extends StateMVC {
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 10),
+                      padding: EdgeInsets.only(left: 25),
                       width: MediaQuery.of(context).size.width / 2,
                       alignment: Alignment.center,
                       child: Text("Weekly Performance Achievement",

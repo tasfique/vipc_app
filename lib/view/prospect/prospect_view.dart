@@ -27,6 +27,9 @@ class _ProspectViewState extends StateMVC {
     for (int i = 0; i < Prospect.prospectNames.length; i++) {
       Prospect.prospectCards.add(
         Card(
+          //Prospect Card background color
+          color: Colors.amber[50],
+          //
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
             child: Column(
@@ -44,6 +47,7 @@ class _ProspectViewState extends StateMVC {
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 20,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -51,7 +55,7 @@ class _ProspectViewState extends StateMVC {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        padding: EdgeInsets.only(left: 10, top: 5),
+                        padding: EdgeInsets.only(left: 40, top: 5),
                         child: Text(
                           Prospect.prospectTypes[i],
                           overflow: TextOverflow.ellipsis,
@@ -77,6 +81,7 @@ class _ProspectViewState extends StateMVC {
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 18,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -96,6 +101,7 @@ class _ProspectViewState extends StateMVC {
                           maxLines: 3,
                           style: TextStyle(
                             fontSize: 18,
+                            color: Colors.black,
                           ),
                         ),
                       ),
