@@ -13,14 +13,20 @@ class MyApp extends StatelessWidget {
       title: 'Great Ideals',
       theme: ThemeData(
         primarySwatch: Colors.amber,
+        //added Accent colour.
+        accentColor: Colors.amber[400],
+        //added canvas colour for hamburger to have dark background.
+        //canvasColor is changing the background colour globally.
+        canvasColor: Colors.grey[800],
         visualDensity: VisualDensity.adaptivePlatformDensity,
         //changing the text color into white globally
         textTheme: TextTheme(
           bodyText1: TextStyle(),
           bodyText2: TextStyle(),
         ).apply(
-          bodyColor: Colors.white,
-          displayColor: Colors.blue,
+          //here the bodyColor below changes the text color.
+          bodyColor: Colors.grey[50],
+          displayColor: Colors.amberAccent,
         ),
       ),
       home: LoginView(),

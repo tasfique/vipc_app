@@ -162,7 +162,6 @@ class _ProspectViewState extends StateMVC {
           Icons.add,
           size: 35,
         ),
-        backgroundColor: Colors.blue,
       ),
     );
   }

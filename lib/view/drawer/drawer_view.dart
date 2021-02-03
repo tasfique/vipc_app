@@ -21,7 +21,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           UserAccountsDrawerHeader(
             accountName: Text('Tasfique Enam'),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.amber,
             ),
             accountEmail: Text(
               "tasfiqueenam@gmail.com",
@@ -33,7 +33,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: CircleAvatar(
-                backgroundColor: Color(0xffE6E6E6),
+                backgroundColor: Colors.white,
                 radius: 30,
                 child: Icon(
                   Icons.person,
@@ -47,7 +47,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: Text(
               'Home',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             onTap: () {
@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: Text(
               'Prospects',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             onTap: () {
@@ -73,7 +73,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: Text(
               'Settings',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             onTap: () {
