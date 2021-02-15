@@ -6,6 +6,7 @@ import 'package:vipc_app/controller/prospect/prospect_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/model/prospect.dart';
+import 'package:vipc_app/view/prospect/new_prospect.dart';
 
 class ProspectView extends StatefulWidget {
   ProspectView({key}) : super(key: key);
@@ -163,6 +164,8 @@ class _ProspectViewState extends StateMVC {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => NewProspect()));
         },
         child: Icon(
           Icons.add,

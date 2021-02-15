@@ -26,6 +26,7 @@ class _MonitorViewState extends StateMVC {
     for (int i = 0; i < _con.monitorNames.length; i++) {
       _con.monitorCards.add(
         Card(
+          color: Colors.amber[50],
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: Column(
@@ -52,6 +53,7 @@ class _MonitorViewState extends StateMVC {
                             " pts",
                         style: TextStyle(
                           fontSize: 18,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -64,6 +66,7 @@ class _MonitorViewState extends StateMVC {
                             " pts",
                         style: TextStyle(
                           fontSize: 18,
+                          color: Colors.black,
                         ),
                       ),
                     ),

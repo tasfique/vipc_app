@@ -25,6 +25,7 @@ class _NewsViewState extends StateMVC {
     for (int i = 0; i < _con.newsTitles.length; i++) {
       _con.newsCards.add(
         Card(
+          color: Colors.amber[50],
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
             child: Column(
