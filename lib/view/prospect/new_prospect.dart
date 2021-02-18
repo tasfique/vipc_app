@@ -294,7 +294,7 @@ class _AddProspectState extends State<AddProspect> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        color: Colors.amber[400],
+        color: Colors.amber[300],
         child: Text(
           'Save',
           style: TextStyle(
@@ -323,7 +323,7 @@ class _AddProspectState extends State<AddProspect> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        color: Colors.amber[400],
+        color: Colors.amber[300],
         child: Text(
           'Back',
           style: TextStyle(

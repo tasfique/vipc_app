@@ -3,6 +3,8 @@ import 'package:vipc_app/view/login/login_view.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:vipc_app/view/settings/settings_view.dart';
+import 'package:vipc_app/view/monitor/monitor_view.dart';
+import 'package:vipc_app/view/news/news_view.dart';
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({Key key}) : super(key: key);
@@ -58,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             title: Text(
-              'Prospects',
+              'Sales',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -66,6 +68,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return ProspectView();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Monitor',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return MonitorView();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text(
+              'News',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return NewsView();
               }));
             },
           ),

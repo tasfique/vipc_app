@@ -50,34 +50,6 @@ class _HomeViewState extends StateMVC {
     Colors.blue,
     Colors.yellow,
   ];
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: new Text("News"),
-            content: new Text("Announcement on CMCO October 2020"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: Text('Read more...'),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return NewsView();
-                  }));
-                },
-              ),
-            ],
-          ),
-        ));
-  }
 
   @override
   Widget build(BuildContext context) {

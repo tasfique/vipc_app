@@ -5,6 +5,7 @@ import 'package:passwordfield/passwordfield.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/signup/signup_view.dart';
 import 'package:vipc_app/view/forgotPwd/forgotPwd_view.dart';
+import 'package:vipc_app/view/news/news_view.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({key}) : super(key: key);
@@ -174,6 +175,32 @@ class _LoginViewState extends StateMVC {
           _con.LoginUser();
           _con.loginSuccess == true
               ? Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  WidgetsBinding.instance
+                      .addPostFrameCallback((_) => showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: new Text("News"),
+                              content:
+                                  new Text("Announcement on CMCO October 2020"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Close'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Read more...'),
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return NewsView();
+                                    }));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ));
                   return HomeView();
                 }))
               : showDialog(
