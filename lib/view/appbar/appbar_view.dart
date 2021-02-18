@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/notifications/notifications_view.dart';
+import 'package:vipc_app/view/search/search_view.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomAppBar({Key key})
