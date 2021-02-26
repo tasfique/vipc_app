@@ -118,16 +118,16 @@ class _NewsViewState extends StateMVC {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
-        child: Icon(
-          Icons.add,
-          size: 35,
-        ),
-        backgroundColor: Colors.blue,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Add your onPressed code here!
+      //   },
+      //   child: Icon(
+      //     Icons.add,
+      //     size: 35,
+      //   ),
+      //   backgroundColor: Colors.blue,
+      // ),
     );
   }
 }
