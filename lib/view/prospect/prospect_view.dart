@@ -6,7 +6,7 @@ import 'package:vipc_app/controller/prospect/prospect_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/model/prospect.dart';
-import 'package:vipc_app/view/prospect/new_prospect.dart';
+import 'package:vipc_app/view/prospect/prospect_new.dart';
 
 class ProspectView extends StatefulWidget {
   ProspectView({key}) : super(key: key);
