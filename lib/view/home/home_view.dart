@@ -15,7 +15,6 @@ import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 //
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/sales/sales_view.dart';
 import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/model/prospect.dart';
@@ -300,7 +299,7 @@ class _HomeViewState extends StateMVC {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return SalesView();
+                          return ProspectView();
                         }));
                       },
                       textColor: Colors.black,
@@ -315,7 +314,7 @@ class _HomeViewState extends StateMVC {
                           colors: GradientColors.yellow,
                         )),
                         padding: const EdgeInsets.all(15),
-                        child: const Text('Sales',
+                        child: const Text('Prospect',
                             style: TextStyle(
                               fontSize: 17,
                             )),

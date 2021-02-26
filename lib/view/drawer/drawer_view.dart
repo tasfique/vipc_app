@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             title: Text(
-              'Sales',
+              'Prospect',
               style: TextStyle(
                 color: Colors.white,
               ),
