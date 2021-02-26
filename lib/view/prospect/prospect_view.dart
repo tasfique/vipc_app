@@ -126,10 +126,10 @@ class _ProspectViewState extends StateMVC {
           itemCount: Prospect.prospectCards.length,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return Column(
+              return Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 25),
+                    padding: EdgeInsets.only(left: 10),
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -141,12 +141,27 @@ class _ProspectViewState extends StateMVC {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 15),
+                    padding: EdgeInsets.only(left: 210),
                     child: Container(
-                      alignment: Alignment.center,
-                      child: Prospect.prospectCards[index],
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        icon: Icon(Icons.sort),
+                        color: Colors.white,
+                        tooltip: 'Sort by Step Number',
+                        onPressed: () {
+                          //add code for sorting.
+                        },
+                      ),
                     ),
                   ),
+                  //I think padding for prospect cards the below commented code
+                  // Padding(
+                  //   padding: EdgeInsets.only(top: 15),
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     child: Prospect.prospectCards[index],
+                  //   ),
+                  // ),
                 ],
               );
             } else {
