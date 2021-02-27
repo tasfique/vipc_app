@@ -3,7 +3,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/login/login_controller.dart';
 import 'package:passwordfield/passwordfield.dart';
 import 'package:vipc_app/view/home/home_view.dart';
-import 'package:vipc_app/view/signup/signup_view.dart';
 import 'package:vipc_app/view/forgotPwd/forgotPwd_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
 
