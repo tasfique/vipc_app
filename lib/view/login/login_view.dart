@@ -59,10 +59,10 @@ class _LoginViewState extends StateMVC {
                     SizedBox(height: 30),
                     _buildLoginBtn(),
                     SizedBox(height: 10),
-                    _buildAccountText(),
-                    SizedBox(height: 10),
-                    _buildSignupBtn(),
-                    SizedBox(height: 10),
+                    // _buildAccountText(),
+                    // SizedBox(height: 10),
+                    // _buildSignupBtn(),
+                    // SizedBox(height: 10),
                     _buildForgotPwdBtn(),
                   ],
                 ),
@@ -237,48 +237,48 @@ class _LoginViewState extends StateMVC {
     );
   }
 
-  Widget _buildAccountText() {
-    return GestureDetector(
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Don\'t have an Account?',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildAccountText() {
+  //   return GestureDetector(
+  //     child: RichText(
+  //       text: TextSpan(
+  //         children: [
+  //           TextSpan(
+  //             text: 'Don\'t have an Account?',
+  //             style: TextStyle(
+  //               color: Colors.white70,
+  //               fontSize: 18.0,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SignupView();
-        }));
-      },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Sign Up',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildSignupBtn() {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //         return SignupView();
+  //       }));
+  //     },
+  //     child: RichText(
+  //       text: TextSpan(
+  //         children: [
+  //           TextSpan(
+  //             text: 'Sign Up',
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildForgotPwdBtn() {
     return GestureDetector(
