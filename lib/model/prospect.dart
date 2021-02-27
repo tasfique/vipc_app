@@ -18,10 +18,10 @@ class Prospect {
     'Hot Prospect'
   ];
   static List<String> prospectSteps = [
-    'Step 1',
-    'Step 4',
-    'Step 3',
-    'Step 5',
+    'Step 1 Appointment',
+    'Step 4 Closing',
+    'Step 3 Presentation',
+    'Step 2 Open Case',
     'Step 2',
     'Step 3'
   ];

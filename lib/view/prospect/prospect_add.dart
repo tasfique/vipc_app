@@ -6,7 +6,7 @@ import 'package:vipc_app/view/prospect/prospect_view.dart';
 String selectedType;
 List<String> types = ["Suspect", "Cold", "Hot"];
 
-class NewProspect extends StatelessWidget {
+class AddProspectStateless extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,7 @@ class _AddProspectState extends State<AddProspect> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(10),
               child: Text(
-                "Add new prospect",
+                "Add New Prospect",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -46,19 +46,19 @@ class _AddProspectState extends State<AddProspect> {
               ),
             ),
             SizedBox(height: 20),
-            _buildNameTextField(),
+            _buildProspectNameTextField(),
             SizedBox(height: 15),
-            _contactNoTextField(),
+            _buildProspectPhoneNoTextField(),
             SizedBox(height: 15),
-            _buildDropdownList(),
+            _buildProspectTypeDropdownList(),
             SizedBox(height: 30),
-            _buildTextFormField(),
+            _buildMemoTextFormField(),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildSaveBtn(),
-                _buildBackBtn(),
+                _buildCancelBtn(),
               ],
             ),
           ],
@@ -67,7 +67,7 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildNameTextField() {
+  Widget _buildProspectNameTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -102,7 +102,7 @@ class _AddProspectState extends State<AddProspect> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your name.',
+              hintText: "Enter Prospect's Name.",
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -113,12 +113,12 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _contactNoTextField() {
+  Widget _buildProspectPhoneNoTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Contact No',
+          'Phone No',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -148,7 +148,7 @@ class _AddProspectState extends State<AddProspect> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your Contact No',
+              hintText: "Enter Prospect's Phone No.",
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -159,14 +159,14 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildDropdownList() {
+  Widget _buildProspectTypeDropdownList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Position',
+            "Prospect Tyoe",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -225,7 +225,7 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildTextFormField() {
+  Widget _buildMemoTextFormField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -308,7 +308,7 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildBackBtn() {
+  Widget _buildCancelBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: RaisedButton(
@@ -325,7 +325,7 @@ class _AddProspectState extends State<AddProspect> {
         ),
         color: Colors.amber[300],
         child: Text(
-          'Back',
+          'Cancel',
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 1.5,

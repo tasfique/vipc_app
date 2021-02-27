@@ -96,7 +96,7 @@ class _MonitorViewState extends StateMVC {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "VIPC Monitor",
+                        "Monitor",
                         style: TextStyle(
                           fontSize: 20,
                         ),

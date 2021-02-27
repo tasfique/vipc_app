@@ -36,7 +36,7 @@ class _NewsDetailsViewState extends StateMVC {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "VIPC News",
+                    "News Details",
                     style: TextStyle(
                       fontSize: 20,
                     ),
