@@ -3,6 +3,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/login/login_controller.dart';
 import 'package:passwordfield/passwordfield.dart';
 import 'package:vipc_app/view/home/home_view.dart';
+import 'package:vipc_app/view/home/admin_home.dart';
 import 'package:vipc_app/view/signup/signup_view.dart';
 import 'package:vipc_app/view/forgotPwd/forgotPwd_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
@@ -172,52 +173,57 @@ class _LoginViewState extends StateMVC {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          _con.LoginUser();
-          _con.loginSuccess == true
-              ? Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  WidgetsBinding.instance
-                      .addPostFrameCallback((_) => showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: new Text("News"),
-                              content:
-                                  new Text("Announcement on CMCO October 2020"),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Close'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Read more...'),
-                                  onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return NewsView();
-                                    }));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ));
-                  return HomeView();
-                }))
-              : showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                    title: new Text("VIPC Message"),
-                    content: new Text("Username or password is incorrect."),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Close'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ),
-                );
+          if (_con.usernameController.text == 'taz' &&
+              _con.userPwdController.text == '123') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: new Text("News"),
+                      content: new Text("Announcement on CMCO October 2020"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Close'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('Read more...'),
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return NewsView();
+                            }));
+                          },
+                        ),
+                      ],
+                    ),
+                  ));
+              return HomeView();
+            }));
+          } else if (_con.usernameController.text == "admin" &&
+              _con.userPwdController.text == '123') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return AdminNewsView();
+            }));
+          } else {
+            showDialog(
+              context: context,
+              builder: (_) => new AlertDialog(
+                title: new Text("VIPC Message"),
+                content: new Text("Username or password is incorrect."),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ),
+            );
+          }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

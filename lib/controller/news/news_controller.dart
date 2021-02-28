@@ -1,5 +1,6 @@
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:vipc_app/model/user_list.dart';
 
 class NewsController extends ControllerMVC {
   factory NewsController() {
@@ -27,4 +28,18 @@ class NewsController extends ControllerMVC {
     'KUALA LUMPUR, Dec 30 ― Employees Provident Fund (EPF) has instructed employers to remit their mandatory EPF contribution on the 15th of every month, starting January next year. In a statement today, EPF said this is in line with the original contribution payment date determined by them. Previously, the EPF provided an extension for contribution payment from the 15th to the 30th of every month from April until December 2020, to ease the burden of employers in light of the uncertainties surrounding the Covid-19 pandemic.'
   ];
   List<Card> newsCards = [];
+
+  /// [User Type has 'Advisor' and 'Manager']
+  List<User> userList = [
+    User("Eric Robinson", "er123", "Advisor"),
+    User("David Ponder", "da123", "Manager"),
+    User("Eric Robinson", "er123", "Advisor"),
+    User("David Ponder", "da123", "Manager"),
+    User("Eric Robinson", "er123", "Advisor"),
+    User("David Ponder", "da123", "Manager"),
+    User("Eric Robinson", "er123", "Advisor"),
+    User("David Ponder", "da123", "Manager"),
+    User("Eric Robinson", "er123", "Advisor"),
+    User("David Ponder", "da123", "Manager"),
+  ];
 }
