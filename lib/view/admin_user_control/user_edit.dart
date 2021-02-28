@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/controller/news/news_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:passwordfield/passwordfield.dart';
 import 'package:vipc_app/view/home/admin_home.dart';
 
@@ -26,7 +27,11 @@ class EditUser extends StatefulWidget {
   _EditUserState createState() => _EditUserState();
 }
 
-class _EditUserState extends State<EditUser> {
+class _EditUserState extends StateMVC<EditUser> {
+  _EditUserState() : super(NewsController()) {
+    _con = NewsController.con;
+  }
+  NewsController _con;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,8 +68,8 @@ class _EditUserState extends State<EditUser> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildCancelBtn(),
                 _buildDeleteBtn(),
+                _buildCancelBtn(),
                 _buildSaveBtn(),
               ],
             ),
@@ -456,10 +461,14 @@ class _EditUserState extends State<EditUser> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.of(context).pop();
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AdminNewsView();
-          }));
+          _con.selectedIndex = 1;
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => AdminNewsView()));
+          // Navigator.of(context).pop();
+          // _con.selected
+          // Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //   return userListContainer();
+          // }));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

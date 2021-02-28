@@ -13,6 +13,7 @@ class NewsController extends ControllerMVC {
   static NewsController get con => _this;
 
   int selectedIndex = 0;
+  int selectedNewsIndex = 0;
   List<String> newsTitles = [
     'CMCO starts from October',
     'Crowds throng the iconic Penang ferries as service draws to a close today',
@@ -39,4 +40,6 @@ class NewsController extends ControllerMVC {
     User("David Ponder", "david_p115", "Advisor"),
     User("Eric Wilson", "eric_109", "Advisor"),
   ];
+
+  TextEditingController newsContentController = TextEditingController();
 }

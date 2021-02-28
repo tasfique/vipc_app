@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/model/user_list.dart';
+import 'package:vipc_app/view/admin_news_control/news_edit.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/controller/news/news_controller.dart';
@@ -39,13 +40,40 @@ class _AdminNewsViewState extends StateMVC {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  title: Text(
-                    _con.newsTitles[i],
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                  title: Row(
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Text(
+                          _con.newsTitles[i],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: GestureDetector(
+                          onTap: () {
+                            _con.selectedNewsIndex = i;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditArticle()));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Icon(
+                              Icons.edit,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   subtitle: Padding(
                     padding: EdgeInsets.only(top: 20),
@@ -86,28 +114,32 @@ class _AdminNewsViewState extends StateMVC {
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
-      body: selectedIndex == 0 ? newsContainer() : userListContainer(),
+      body: _con.selectedIndex == 0 ? newsContainer() : userListContainer(),
       bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
           notchMargin: 10,
           child: BottomNavigationBar(
-            currentIndex: selectedIndex,
+            currentIndex: _con.selectedIndex,
             onTap: (val) {
               /// [SET STATE MEANS REBUILD WIDGET BUILD]
-              setState(() => selectedIndex = val);
+              setState(() => _con.selectedIndex = val);
             },
             items: [
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.article,
-                  color: selectedIndex == 0 ? Colors.amber[320] : Colors.white,
+                  color: _con.selectedIndex == 0
+                      ? Colors.amber[320]
+                      : Colors.white,
                 ),
                 title: SizedBox.shrink(),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.person,
-                  color: selectedIndex == 1 ? Colors.amber[320] : Colors.white,
+                  color: _con.selectedIndex == 1
+                      ? Colors.amber[320]
+                      : Colors.white,
                 ),
                 title: SizedBox.shrink(),
               ),
@@ -115,10 +147,13 @@ class _AdminNewsViewState extends StateMVC {
           )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddUserStateless())); //NewArticle()
+          _con.selectedIndex == 0
+              ? Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NewArticle()))
+              : Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddUserStateless())); //NewArticle()
         },
         child: Icon(
           Icons.add,

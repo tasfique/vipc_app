@@ -75,8 +75,8 @@ class _EditProspectState extends State<EditProspect> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildCancelBtn(),
                 _buildDeleteBtn(),
+                _buildCancelBtn(),
                 _buildSaveBtn(),
               ],
             ),
