@@ -31,15 +31,12 @@ class NewsController extends ControllerMVC {
 
   /// [User Type has 'Advisor' and 'Manager']
   List<User> userList = [
-    User("Eric Robinson", "er123", "Advisor"),
-    User("David Ponder", "da123", "Manager"),
-    User("Eric Robinson", "er123", "Advisor"),
-    User("David Ponder", "da123", "Manager"),
-    User("Eric Robinson", "er123", "Advisor"),
-    User("David Ponder", "da123", "Manager"),
-    User("Eric Robinson", "er123", "Advisor"),
-    User("David Ponder", "da123", "Manager"),
-    User("Eric Robinson", "er123", "Advisor"),
-    User("David Ponder", "da123", "Manager"),
+    User("Eugene Lim", "eugene_l104", "Advisor"),
+    User("Tasfique Enam", "taz_e110", "Manager"),
+    User("Chen Ming Kwok", "chen_m118", "Advisor"),
+    User("Satomi Ishihara", "satomi_i102", "Advisor"),
+    User("Ji Eun Lee", "ji_e105", "Advisor"),
+    User("David Ponder", "david_p115", "Advisor"),
+    User("Eric Wilson", "eric_109", "Advisor"),
   ];
 }

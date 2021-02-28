@@ -6,7 +6,8 @@ import 'package:vipc_app/controller/prospect/prospect_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/model/prospect.dart';
-import 'package:vipc_app/view/prospect/prospect_new.dart';
+import 'package:vipc_app/view/prospect/prospect_add.dart';
+import 'package:vipc_app/view/prospect/prospect_edit.dart';
 
 class ProspectView extends StatefulWidget {
   ProspectView({key}) : super(key: key);
@@ -32,7 +33,7 @@ class _ProspectViewState extends StateMVC {
           color: Colors.amber[50],
           //
           child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -53,10 +54,32 @@ class _ProspectViewState extends StateMVC {
                         ),
                       ),
                     ),
+                    ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: const Icon(
+                            Icons.edit,
+                            size: 30,
+                            color: Colors.brown,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProspectStateless()));
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
                     Expanded(
                       flex: 1,
                       child: Container(
-                        padding: EdgeInsets.only(left: 40, top: 5),
+                        padding: EdgeInsets.only(left: 10, top: 5),
                         child: Text(
                           Prospect.prospectTypes[i],
                           overflow: TextOverflow.ellipsis,
@@ -90,7 +113,7 @@ class _ProspectViewState extends StateMVC {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        padding: EdgeInsets.only(left: 10, top: 30),
+                        padding: EdgeInsets.only(left: 30, top: 30),
                         child: Text(
                           "Meeting at " +
                               Prospect.prospectSchedules[i]
@@ -109,6 +132,22 @@ class _ProspectViewState extends StateMVC {
                     ),
                   ],
                 ),
+                // ButtonBar(
+                //   children: <Widget>[
+                //     FlatButton(
+                //       child: const Icon(
+                //         Icons.edit,
+                //         size: 30,
+                //       ),
+                //       onPressed: () {
+                //         Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //                 builder: (context) => EditProspectStateless()));
+                //       },
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -176,15 +215,17 @@ class _ProspectViewState extends StateMVC {
           },
         ),
       ),
+
+      //enable this code later on
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => NewProspect()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddProspectStateless()));
         },
         child: Icon(
           Icons.add,
-          size: 35,
+          size: 40,
         ),
       ),
     );

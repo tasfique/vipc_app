@@ -2,29 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
+import 'package:passwordfield/passwordfield.dart';
+import 'package:vipc_app/view/home/admin_home.dart';
 
 String selectedType;
-List<String> types = ["Suspect", "Cold", "Hot"];
+List<String> types = ["Select", "Manager", "Advisor"];
 
-class NewProspect extends StatelessWidget {
+String selectedManager;
+List<String> managerTypes = ["Select", "Tasfique Enam", "Chun Wei"];
+
+class AddUserStateless extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
       body: Center(
-        child: AddProspect(),
+        child: AddUser(),
       ),
     );
   }
 }
 
-class AddProspect extends StatefulWidget {
+class AddUser extends StatefulWidget {
   @override
-  _AddProspectState createState() => _AddProspectState();
+  _AddUserState createState() => _AddUserState();
 }
 
-class _AddProspectState extends State<AddProspect> {
+class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +43,7 @@ class _AddProspectState extends State<AddProspect> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(10),
               child: Text(
-                "Add new prospect",
+                "Add User",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -46,19 +51,25 @@ class _AddProspectState extends State<AddProspect> {
               ),
             ),
             SizedBox(height: 20),
-            _buildNameTextField(),
+            _buildUsernameTextField(),
             SizedBox(height: 15),
-            _contactNoTextField(),
+            _buildEmailTextField(),
             SizedBox(height: 15),
-            _buildDropdownList(),
-            SizedBox(height: 30),
-            _buildTextFormField(),
+            _buildUserFullNameTextField(),
+            SizedBox(height: 15),
+            _buildUserTypeDropdownList(),
+            SizedBox(height: 15),
+            _buildAssignUserDropdownList(),
+            SizedBox(height: 15),
+            _buildUserPasswordField(),
+            SizedBox(height: 15),
+            _buildUserConfirmPasswordField(),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                _buildCancelBtn(),
                 _buildSaveBtn(),
-                _buildBackBtn(),
               ],
             ),
           ],
@@ -67,12 +78,12 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildNameTextField() {
+  Widget _buildUsernameTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Name',
+          'Username',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -102,7 +113,7 @@ class _AddProspectState extends State<AddProspect> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your name.',
+              hintText: "Enter Username",
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -113,12 +124,12 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _contactNoTextField() {
+  Widget _buildEmailTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Contact No',
+          'Email',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -148,7 +159,7 @@ class _AddProspectState extends State<AddProspect> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your Contact No',
+              hintText: "Enter Email",
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -159,14 +170,60 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildDropdownList() {
+  Widget _buildUserFullNameTextField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Full Name',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: TextField(
+            // controller: _usernameController,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
+              hintText: "Enter Full Name",
+              hintStyle: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserTypeDropdownList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Position',
+            "Select User Type",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -192,8 +249,8 @@ class _AddProspectState extends State<AddProspect> {
           child: DropdownButton(
             hint: Container(
               child: Text(
-                "Select the type",
-                style: TextStyle(color: Colors.white70),
+                "Select",
+                style: TextStyle(color: Colors.white),
               ),
             ),
             isExpanded: true,
@@ -225,10 +282,84 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildTextFormField() {
+  Widget _buildAssignUserDropdownList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Container(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Select Manager to assign",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 15, right: 15),
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: DropdownButton(
+            hint: Container(
+              child: Text(
+                "Select",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            isExpanded: true,
+            iconEnabledColor: Colors.white,
+            value: selectedManager,
+            onChanged: (String value) {
+              setState(() {
+                selectedManager = value;
+              });
+            },
+            items: managerTypes.map((String managerTypes) {
+              return DropdownMenuItem(
+                value: managerTypes,
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      managerTypes,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserPasswordField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Enter Password',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
@@ -242,23 +373,60 @@ class _AddProspectState extends State<AddProspect> {
               ),
             ],
           ),
-          child: TextFormField(
-            // controller: _usernameController,
-            minLines: 6,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
+          height: 60.0,
+          child: PasswordField(
+            inputStyle: TextStyle(
               color: Colors.white,
             ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Memo . . .',
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
+            border: InputBorder.none,
+            hintText: 'Enter password',
+            hintStyle: TextStyle(
+              color: Colors.white70,
             ),
-            maxLines: null,
           ),
+          padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserConfirmPasswordField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Confirm Password',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: PasswordField(
+            inputStyle: TextStyle(
+              color: Colors.white,
+            ),
+            border: InputBorder.none,
+            hintText: 'Confirm password',
+            hintStyle: TextStyle(
+              color: Colors.white70,
+            ),
+          ),
+          padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
         ),
       ],
     );
@@ -290,7 +458,12 @@ class _AddProspectState extends State<AddProspect> {
             ),
           );
         },
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.only(
+          left: 60.0,
+          top: 15.0,
+          right: 60.0,
+          bottom: 15.0,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -308,7 +481,7 @@ class _AddProspectState extends State<AddProspect> {
     );
   }
 
-  Widget _buildBackBtn() {
+  Widget _buildCancelBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: RaisedButton(
@@ -319,13 +492,18 @@ class _AddProspectState extends State<AddProspect> {
             return ProspectView();
           }));
         },
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.only(
+          left: 60.0,
+          top: 15.0,
+          right: 60.0,
+          bottom: 15.0,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         color: Colors.amber[300],
         child: Text(
-          'Back',
+          'Cancel',
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 1.5,

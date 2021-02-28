@@ -5,6 +5,9 @@ import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/controller/news/news_controller.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
+import 'package:vipc_app/view/news_upload/news_upload_view.dart';
+import 'package:vipc_app/view/admin_user_control/user_edit.dart';
+import 'package:vipc_app/view/admin_user_control/user_add.dart';
 
 class AdminNewsView extends StatefulWidget {
   AdminNewsView({key}) : super(key: key);
@@ -112,10 +115,10 @@ class _AdminNewsViewState extends StateMVC {
           )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => AdminUserListView())); //NewArticle()
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddUserStateless())); //NewArticle()
         },
         child: Icon(
           Icons.add,
@@ -262,7 +265,12 @@ class _AdminNewsViewState extends StateMVC {
                   flex: 2,
                   child: GestureDetector(
                     /// [EDIT ICON FOR USER]
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditUserStateless()));
+                    },
                     child: Container(
                       alignment: Alignment.topRight,
                       padding: EdgeInsets.all(10),

@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/prospect/prospect_view.dart';
 
-class NewArticle extends StatelessWidget {
+String selectedType;
+List<String> types = ["Suspect", "Cold", "Hot"];
+
+class AddProspectStateless extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
       body: Center(
-        child: AddArticle(),
+        child: AddProspect(),
       ),
     );
   }
 }
 
-class AddArticle extends StatefulWidget {
+class AddProspect extends StatefulWidget {
   @override
-  _AddArticleState createState() => _AddArticleState();
+  _AddProspectState createState() => _AddProspectState();
 }
 
-class _AddArticleState extends State<AddArticle> {
+class _AddProspectState extends State<AddProspect> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +38,7 @@ class _AddArticleState extends State<AddArticle> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(10),
               child: Text(
-                "Add New Article",
+                "Add New Prospect",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -43,9 +46,13 @@ class _AddArticleState extends State<AddArticle> {
               ),
             ),
             SizedBox(height: 20),
-            _buildTitleTextField(),
-            SizedBox(height: 20),
-            _buildTextFormField(),
+            _buildProspectNameTextField(),
+            SizedBox(height: 15),
+            _buildProspectPhoneNoTextField(),
+            SizedBox(height: 15),
+            _buildProspectTypeDropdownList(),
+            SizedBox(height: 30),
+            _buildMemoTextFormField(),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,12 +67,12 @@ class _AddArticleState extends State<AddArticle> {
     );
   }
 
-  Widget _buildTitleTextField() {
+  Widget _buildProspectNameTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Title',
+          'Name',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -95,7 +102,7 @@ class _AddArticleState extends State<AddArticle> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter title name',
+              hintText: "Enter Prospect's Name.",
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -106,12 +113,12 @@ class _AddArticleState extends State<AddArticle> {
     );
   }
 
-  Widget _buildTextFormField() {
+  Widget _buildProspectPhoneNoTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Content',
+          'Phone No',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -131,9 +138,9 @@ class _AddArticleState extends State<AddArticle> {
               ),
             ],
           ),
-          child: TextFormField(
+          height: 60.0,
+          child: TextField(
             // controller: _usernameController,
-            minLines: 20,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
@@ -141,7 +148,111 @@ class _AddArticleState extends State<AddArticle> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Type article content . . .',
+              hintText: "Enter Prospect's Phone No.",
+              hintStyle: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProspectTypeDropdownList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Prospect Tyoe",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 15, right: 15),
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: DropdownButton(
+            hint: Container(
+              child: Text(
+                "Select the type",
+                style: TextStyle(color: Colors.white70),
+              ),
+            ),
+            isExpanded: true,
+            iconEnabledColor: Colors.white,
+            value: selectedType,
+            onChanged: (String value) {
+              setState(() {
+                selectedType = value;
+              });
+            },
+            items: types.map((String prospectTypes) {
+              return DropdownMenuItem(
+                value: prospectTypes,
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      prospectTypes,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMemoTextFormField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Colors.white24,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: TextFormField(
+            // controller: _usernameController,
+            minLines: 6,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
+              hintText: 'Memo . . .',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -171,7 +282,7 @@ class _AddArticleState extends State<AddArticle> {
                     Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AdminNewsView();
+                      return ProspectView();
                     }));
                   },
                 )
@@ -210,7 +321,7 @@ class _AddArticleState extends State<AddArticle> {
         onPressed: () {
           Navigator.of(context).pop();
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AdminNewsView();
+            return ProspectView();
           }));
         },
         padding: const EdgeInsets.only(
@@ -224,7 +335,7 @@ class _AddArticleState extends State<AddArticle> {
         ),
         color: Colors.amber[300],
         child: Text(
-          'Back',
+          'Cancel',
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 1.5,

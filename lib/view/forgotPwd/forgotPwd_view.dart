@@ -56,8 +56,6 @@ class _ForgotPasswordViewState extends StateMVC {
                     SizedBox(height: 50),
                     _buildEmpNoTextField(),
                     SizedBox(height: 30),
-                    _buildEmailTextField(),
-                    SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -80,7 +78,7 @@ class _ForgotPasswordViewState extends StateMVC {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Employee Number',
+          'Username',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -110,53 +108,7 @@ class _ForgotPasswordViewState extends StateMVC {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Your Employee Number.',
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEmailTextField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Email Address',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          height: 60.0,
-          child: TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Your Email Address.',
+              hintText: 'Your Username (Agent Code).',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -177,9 +129,8 @@ class _ForgotPasswordViewState extends StateMVC {
           showDialog(
             context: context,
             builder: (_) => new AlertDialog(
-              title: new Text("VIPC Message"),
-              content:
-                  new Text("Your new password has been sent to your email!"),
+              title: new Text("Message"),
+              content: new Text("Password Reset Request Successfully Sent!"),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Close'),
