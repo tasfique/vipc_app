@@ -31,6 +31,10 @@ dependencies:
   pie_chart:
   percent_indicator:
   settings_ui:
+  firebase_core: "^0.7.0"
+  cloud_firestore: "^0.16.0+1"
+  firebase_auth: "^0.20.1"
+  provider: ^5.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

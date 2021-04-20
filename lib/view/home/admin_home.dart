@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/model/user_list.dart';
+import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';

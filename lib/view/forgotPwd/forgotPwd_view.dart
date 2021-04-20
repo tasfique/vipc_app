@@ -19,7 +19,6 @@ class _ForgotPasswordViewState extends StateMVC {
   ForgotPasswordController _con;
 
   final _empNoController = TextEditingController();
-  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +77,7 @@ class _ForgotPasswordViewState extends StateMVC {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Username',
+          'Usercode',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -108,7 +107,7 @@ class _ForgotPasswordViewState extends StateMVC {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Your Username (Agent Code).',
+              hintText: 'Your usercode (Agent Code).',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),

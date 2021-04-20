@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "289573698547",
+    "project_id": "vipctest-374b3",
+    "storage_bucket": "vipctest-374b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289573698547:android:bda331bdd2ab713d227086",
+        "android_client_info": {
+          "package_name": "com.example.vipc_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289573698547-gtkm8na0856a9qtsre12ofuulh671e8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsFqyoIjO7UGdSoh6NVQkf8asF9Nbjqtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289573698547-gtkm8na0856a9qtsre12ofuulh671e8s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

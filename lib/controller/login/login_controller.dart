@@ -6,6 +6,7 @@ class LoginController extends ControllerMVC {
     if (_this == null) _this = LoginController._();
     return _this;
   }
+
   static LoginController _this;
   LoginController._();
   bool loginSuccess = false;

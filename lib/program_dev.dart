@@ -1,80 +1,100 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:vipc_app/view/home/admin_home.dart';
 import 'package:vipc_app/view/login/login_view.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
-import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:vipc_app/view/news/news_view.dart';
+import 'package:vipc_app/view/splash/splash_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('hello');
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     return MaterialApp(
-      title: 'Great Ideals',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-        //added Accent colour.
-        accentColor: Colors.amber[400],
-        //added canvas colour for hamburger to have dark background.
-        //canvasColor is changing the background colour globally.
-        canvasColor: Colors.grey[800],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        //changing the text color into white globally
-        textTheme: TextTheme(
-          bodyText1: TextStyle(),
-          bodyText2: TextStyle(),
-        ).apply(
-          //here the bodyColor below changes the text color.
-          bodyColor: Colors.grey[50],
-          displayColor: Colors.amberAccent,
+        title: 'Great Ideals',
+        theme: ThemeData(
+          primarySwatch: Colors.amber,
+          //added Accent colour.
+          accentColor: Colors.amber[400],
+          //added canvas colour for hamburger to have dark background.
+          //canvasColor is changing the background colour globally.
+          canvasColor: Colors.grey[800],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          //changing the text color into white globally
+          textTheme: TextTheme(
+            bodyText1: TextStyle(),
+            bodyText2: TextStyle(),
+          ).apply(
+            //here the bodyColor below changes the text color.
+            bodyColor: Colors.grey[50],
+            displayColor: Colors.amberAccent,
+          ),
         ),
-      ),
-      home: SplashScreen(),
-    );
+        home: VipC()
+        // MultiProvider(
+        //     providers: [
+        //       Provider<AuthHelper>(
+        //         create: (_) => AuthHelper(FirebaseAuth.instance),
+        //       ),
+        //       Provider<UserHelper>(
+        //         create: (_) => UserHelper(),
+        //       ),
+        //       StreamProvider(
+        //         create: (context) => context.read<AuthHelper>().authStateChanges,
+        //         initialData: null,
+        //       ),
+        //     ],
+        //     child: VipC(),
+        );
+    // home: SplashScreen(),
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends StateMVC<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(
-        Duration(seconds: 2),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginView())));
-  }
-
+class VipC extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.brown[500],
-            Colors.brown[700],
-            Colors.brown[900],
-            Colors.brown[700],
-            Colors.brown[500],
-          ],
-        ),
-      ),
-      child: Image.asset(
-        "assets/images/logo.png",
-        fit: BoxFit.contain,
-      ),
+    return StreamBuilder<User>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.waiting) {
+          return SplashScreen();
+        }
+        if (userSnapshot.hasData) {
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(userSnapshot.data.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                final userDoc = snapshot.data;
+                final user = userDoc.data();
+                if (user['role'] == 'admin') {
+                  return AdminNewsView();
+                } else if (user['role'] == 'manager') {
+                  return NewsView();
+                } else if (user['role'] == 'advisor') {
+                  return NewsView();
+                }
+              }
+              return LoginView();
+            },
+          );
+        }
+        return LoginView();
+      },
     );
   }
 }

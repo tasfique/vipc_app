@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/login/login_controller.dart';
-import 'package:passwordfield/passwordfield.dart';
 import 'package:vipc_app/view/home/admin_home.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/forgotPwd/forgotPwd_view.dart';
@@ -19,6 +18,13 @@ class _LoginViewState extends StateMVC {
     _con = LoginController.con;
   }
   LoginController _con;
+  bool _passwordVisible;
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +65,6 @@ class _LoginViewState extends StateMVC {
                     SizedBox(height: 30),
                     _buildLoginBtn(),
                     SizedBox(height: 10),
-                    // _buildAccountText(),
-                    // SizedBox(height: 10),
-                    // _buildSignupBtn(),
-                    // SizedBox(height: 10),
                     _buildForgotPwdBtn(),
                   ],
                 ),
@@ -79,7 +81,7 @@ class _LoginViewState extends StateMVC {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Username',
+          'Usercode',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -109,7 +111,7 @@ class _LoginViewState extends StateMVC {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your username.',
+              hintText: 'Enter your usercode.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -148,16 +150,31 @@ class _LoginViewState extends StateMVC {
           height: 60.0,
           child: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
-            child: PasswordField(
+            child: TextFormField(
+              style: TextStyle(color: Colors.white70),
+              decoration: InputDecoration(
+                  hintText: 'Enter your password.',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                    color: Colors.white70,
+                  ),
+                  suffixIcon: IconButton(
+                    padding: const EdgeInsets.all(5),
+                    icon: Icon(
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                  )),
+              obscureText: !_passwordVisible,
               controller: _con.userPwdController,
-              inputStyle: TextStyle(
-                color: Colors.white70,
-              ),
-              border: InputBorder.none,
-              hintText: 'Enter your password.',
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
+              // validator: (val) => val.length < 6 ? 'Password too short.' : null,
             ),
           ),
         ),
@@ -169,8 +186,15 @@ class _LoginViewState extends StateMVC {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 5.0,
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          primary: Colors.white,
+        ),
         onPressed: () {
           if (_con.usernameController.text == 'taz' &&
               _con.userPwdController.text == '123') {
@@ -181,13 +205,13 @@ class _LoginViewState extends StateMVC {
                       title: new Text("News"),
                       content: new Text("Announcement on CMCO October 2020"),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text('Close'),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text('Read more...'),
                           onPressed: () {
                             Navigator.push(context,
@@ -213,7 +237,7 @@ class _LoginViewState extends StateMVC {
                 title: new Text("VIPC Message"),
                 content: new Text("Username or password is incorrect."),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text('Close'),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -224,11 +248,6 @@ class _LoginViewState extends StateMVC {
             );
           }
         },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
         child: Text(
           'LOGIN',
           style: TextStyle(
@@ -241,49 +260,6 @@ class _LoginViewState extends StateMVC {
       ),
     );
   }
-
-  // Widget _buildAccountText() {
-  //   return GestureDetector(
-  //     child: RichText(
-  //       text: TextSpan(
-  //         children: [
-  //           TextSpan(
-  //             text: 'Don\'t have an Account?',
-  //             style: TextStyle(
-  //               color: Colors.white70,
-  //               fontSize: 18.0,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildSignupBtn() {
-  //   return GestureDetector(
-  //     onTap: () {
-  //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //         return SignupView();
-  //       }));
-  //     },
-  //     child: RichText(
-  //       text: TextSpan(
-  //         children: [
-  //           TextSpan(
-  //             text: 'Sign Up',
-  //             style: TextStyle(
-  //               color: Colors.white,
-  //               fontSize: 18,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildForgotPwdBtn() {
     return GestureDetector(
