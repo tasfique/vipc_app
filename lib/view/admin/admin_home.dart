@@ -10,15 +10,15 @@ import 'package:vipc_app/view/news_upload/news_upload_view.dart';
 import 'package:vipc_app/view/admin_user_control/user_edit.dart';
 import 'package:vipc_app/view/admin_user_control/user_add.dart';
 
-class AdminNewsView extends StatefulWidget {
-  AdminNewsView({key}) : super(key: key);
+class AdminPage extends StatefulWidget {
+  AdminPage({key}) : super(key: key);
 
   @override
-  _AdminNewsViewState createState() => _AdminNewsViewState();
+  _AdminPageState createState() => _AdminPageState();
 }
 
-class _AdminNewsViewState extends StateMVC {
-  _AdminNewsViewState() : super(NewsController()) {
+class _AdminPageState extends StateMVC {
+  _AdminPageState() : super(NewsController()) {
     _con = NewsController.con;
   }
 

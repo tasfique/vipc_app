@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home.dart';
 
 class NewArticle extends StatelessWidget {
   @override
@@ -171,7 +171,7 @@ class _AddArticleState extends State<AddArticle> {
                     Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AdminNewsView();
+                      return AdminPage();
                     }));
                   },
                 )
@@ -210,7 +210,7 @@ class _AddArticleState extends State<AddArticle> {
         onPressed: () {
           Navigator.of(context).pop();
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AdminNewsView();
+            return AdminPage();
           }));
         },
         padding: const EdgeInsets.only(

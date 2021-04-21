@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -81,7 +81,7 @@ class VipC extends StatelessWidget {
                 final userDoc = snapshot.data;
                 final user = userDoc.data();
                 if (user['role'] == 'admin') {
-                  return AdminNewsView();
+                  return AdminPage();
                 } else if (user['role'] == 'manager') {
                   return HomeView();
                 } else if (user['role'] == 'advisor') {

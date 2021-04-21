@@ -3,7 +3,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/news/news_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home.dart';
 
 class EditArticle extends StatefulWidget {
   @override
@@ -167,7 +167,7 @@ class _EditArticleState extends StateMVC<EditArticle> {
                     Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AdminNewsView();
+                      return AdminPage();
                     }));
                   },
                 )
@@ -211,7 +211,7 @@ class _EditArticleState extends StateMVC<EditArticle> {
                     Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AdminNewsView();
+                      return AdminPage();
                     }));
                   },
                 )
@@ -244,10 +244,10 @@ class _EditArticleState extends StateMVC<EditArticle> {
         elevation: 5.0,
         onPressed: () {
           _con.selectedIndex = 0;
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => AdminNewsView()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => AdminPage()));
           // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //   return AdminNewsView();
+          //   return AdminPage();
           // }));
         },
         padding: EdgeInsets.all(15.0),

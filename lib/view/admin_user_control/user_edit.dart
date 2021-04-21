@@ -4,7 +4,7 @@ import 'package:vipc_app/controller/news/news_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:passwordfield/passwordfield.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home.dart';
 
 String selectedType;
 List<String> types = ["Manager", "Advisor"];
@@ -385,7 +385,7 @@ class _EditUserState extends StateMVC<EditUser> {
                     Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AdminNewsView();
+                      return AdminPage();
                     }));
                   },
                 )
@@ -429,7 +429,7 @@ class _EditUserState extends StateMVC<EditUser> {
                     Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AdminNewsView();
+                      return AdminPage();
                     }));
                   },
                 )
@@ -462,8 +462,8 @@ class _EditUserState extends StateMVC<EditUser> {
         elevation: 5.0,
         onPressed: () {
           _con.selectedIndex = 1;
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => AdminNewsView()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => AdminPage()));
           // Navigator.of(context).pop();
           // _con.selected
           // Navigator.push(context, MaterialPageRoute(builder: (context) {
