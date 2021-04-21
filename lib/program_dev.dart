@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
 
 void main() async {
@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
     ]);
 
     return MaterialApp(
@@ -84,9 +83,9 @@ class VipC extends StatelessWidget {
                 if (user['role'] == 'admin') {
                   return AdminNewsView();
                 } else if (user['role'] == 'manager') {
-                  return NewsView();
+                  return HomeView();
                 } else if (user['role'] == 'advisor') {
-                  return NewsView();
+                  return HomeView();
                 }
               }
               return LoginView();

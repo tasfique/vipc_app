@@ -54,19 +54,22 @@ class _LoginViewState extends StateMVC {
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/images/logo.png'),
-                    SizedBox(height: 50),
-                    _buildUsernameTextField(),
-                    SizedBox(height: 30),
-                    _buildUserPwdTextField(),
-                    SizedBox(height: 30),
-                    _buildLoginBtn(),
-                    SizedBox(height: 10),
-                    _buildForgotPwdBtn(),
-                  ],
+                child: Form(
+                  key: _con.formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset('assets/images/logo.png'),
+                      SizedBox(height: 50),
+                      _buildUsernameTextField(),
+                      SizedBox(height: 30),
+                      _buildUserPwdTextField(),
+                      SizedBox(height: 30),
+                      _buildLoginBtn(),
+                      SizedBox(height: 10),
+                      _buildForgotPwdBtn(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -102,12 +105,20 @@ class _LoginViewState extends StateMVC {
             ],
           ),
           height: 60.0,
-          child: TextField(
-            controller: _con.usernameController,
+          child: TextFormField(
+            controller: _con.userCodeController,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
             ),
+            autocorrect: false,
+            textCapitalization: TextCapitalization.none,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter a usercode';
+              }
+              return null;
+            },
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
@@ -152,6 +163,12 @@ class _LoginViewState extends StateMVC {
             padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
             child: TextFormField(
               style: TextStyle(color: Colors.white70),
+              validator: (value) {
+                if (value.isEmpty || value.length < 7) {
+                  return 'Please enter Password.';
+                }
+                return null;
+              },
               decoration: InputDecoration(
                   hintText: 'Enter your password.',
                   border: InputBorder.none,
@@ -196,57 +213,58 @@ class _LoginViewState extends StateMVC {
           primary: Colors.white,
         ),
         onPressed: () {
-          if (_con.usernameController.text == 'taz' &&
-              _con.userPwdController.text == '123') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: new Text("News"),
-                      content: new Text("Announcement on CMCO October 2020"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('Close'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text('Read more...'),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return NewsView();
-                            }));
-                          },
-                        ),
-                      ],
-                    ),
-                  ));
-              return HomeView();
-            }));
-          } else if (_con.usernameController.text == "admin" &&
-              _con.userPwdController.text == '123') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return AdminNewsView();
-            }));
-          } else {
-            showDialog(
-              context: context,
-              builder: (_) => new AlertDialog(
-                title: new Text("VIPC Message"),
-                content: new Text("Username or password is incorrect."),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text('Close'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ),
-            );
-          }
+          _con.loginUser(context);
+          // if (_con.usernameController.text == 'taz' &&
+          //     _con.userPwdController.text == '123') {
+          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //     WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
+          //           context: context,
+          //           builder: (_) => AlertDialog(
+          //             title: new Text("News"),
+          //             content: new Text("Announcement on CMCO October 2020"),
+          //             actions: <Widget>[
+          //               TextButton(
+          //                 child: Text('Close'),
+          //                 onPressed: () {
+          //                   Navigator.of(context).pop();
+          //                 },
+          //               ),
+          //               TextButton(
+          //                 child: Text('Read more...'),
+          //                 onPressed: () {
+          //                   Navigator.push(context,
+          //                       MaterialPageRoute(builder: (context) {
+          //                     return NewsView();
+          //                   }));
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //         ));
+          //     return HomeView();
+          //   }));
+          // } else if (_con.usernameController.text == "admin" &&
+          //     _con.userPwdController.text == '123') {
+          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //     return AdminNewsView();
+          //   }));
+          // } else {
+          //   showDialog(
+          //     context: context,
+          //     builder: (_) => new AlertDialog(
+          //       title: new Text("VIPC Message"),
+          //       content: new Text("Username or password is incorrect."),
+          //       actions: <Widget>[
+          //         TextButton(
+          //           child: Text('Close'),
+          //           onPressed: () {
+          //             Navigator.of(context).pop();
+          //           },
+          //         )
+          //       ],
+          //     ),
+          //   );
+          // }
         },
         child: Text(
           'LOGIN',

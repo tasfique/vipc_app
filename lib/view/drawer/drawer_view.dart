@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:vipc_app/view/home/home_view.dart';
@@ -119,14 +120,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   title: new Text("VIPC Message"),
                   content: new Text("Successfully logged out!"),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text('Close'),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return LoginView();
-                        }));
+                        FirebaseAuth.instance.signOut();
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //   return LoginView();
+                        // }));
                       },
                     )
                   ],
