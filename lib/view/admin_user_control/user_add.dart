@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/controller/signup/signup_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:passwordfield/passwordfield.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home.dart';
 
 String selectedType;
 List<String> types = ["Select", "Manager", "Advisor"];
@@ -11,79 +13,78 @@ List<String> types = ["Select", "Manager", "Advisor"];
 String selectedManager;
 List<String> managerTypes = ["Select", "Tasfique Enam", "Chun Wei"];
 
-class AddUserStateless extends StatelessWidget {
+class AddUser extends StatefulWidget {
+  @override
+  _AddUserState createState() => _AddUserState();
+}
+
+class _AddUserState extends StateMVC {
+  _AddUserState() : super(SignupController()) {
+    _con = SignupController.con;
+  }
+
+  SignupController _con;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
       body: Center(
-        child: AddUser(),
-      ),
-    );
-  }
-}
-
-class AddUser extends StatefulWidget {
-  @override
-  _AddUserState createState() => _AddUserState();
-}
-
-class _AddUserState extends State<AddUser> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "Add User",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            _buildUsernameTextField(),
-            SizedBox(height: 15),
-            _buildEmailTextField(),
-            SizedBox(height: 15),
-            _buildUserFullNameTextField(),
-            SizedBox(height: 15),
-            _buildUserTypeDropdownList(),
-            SizedBox(height: 15),
-            _buildAssignUserDropdownList(),
-            SizedBox(height: 15),
-            _buildUserPasswordField(),
-            SizedBox(height: 15),
-            _buildUserConfirmPasswordField(),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Container(
+          height: double.infinity,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(15),
+            child: Column(
               children: [
-                _buildCancelBtn(),
-                _buildSaveBtn(),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Add User",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                _buildEmployeeIdTextField(),
+                SizedBox(height: 15),
+                _buildEmailTextField(),
+                SizedBox(height: 15),
+                _buildUserFullNameTextField(),
+                SizedBox(height: 15),
+                _buildUserTypeDropdownList(),
+                SizedBox(height: 15),
+                _buildAssignUserDropdownList(),
+                SizedBox(height: 15),
+                _buildUserPasswordField(),
+                SizedBox(height: 15),
+                _buildUserConfirmPasswordField(),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildCancelBtn(),
+                    _buildSaveBtn(),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildUsernameTextField() {
+  Widget _buildEmployeeIdTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Username',
+          'Employee ID',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -104,8 +105,8 @@ class _AddUserState extends State<AddUser> {
             ],
           ),
           height: 60.0,
-          child: TextField(
-            // controller: _usernameController,
+          child: TextFormField(
+            controller: _con.empIdController,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
@@ -113,7 +114,7 @@ class _AddUserState extends State<AddUser> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: "Enter Username",
+              hintText: "Enter Employee ID",
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),

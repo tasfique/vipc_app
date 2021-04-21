@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/controller/news/news_controller.dart';
+import 'package:vipc_app/controller/news/admin_controller.dart';
 
 class NewsDetailsView extends StatefulWidget {
   NewsDetailsView({key}) : super(key: key);
@@ -12,11 +12,11 @@ class NewsDetailsView extends StatefulWidget {
 }
 
 class _NewsDetailsViewState extends StateMVC {
-  _NewsDetailsViewState() : super(NewsController()) {
-    _con = NewsController.con;
+  _NewsDetailsViewState() : super(AdminController()) {
+    _con = AdminController.con;
   }
 
-  NewsController _con;
+  AdminController _con;
 
   @override
   Widget build(BuildContext context) {

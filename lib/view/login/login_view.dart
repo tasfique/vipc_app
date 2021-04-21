@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/login/login_controller.dart';
-import 'package:vipc_app/view/home/admin_home.dart';
-import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/forgotPwd/forgotPwd_view.dart';
-import 'package:vipc_app/view/news/news_view.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({key}) : super(key: key);
@@ -61,7 +58,7 @@ class _LoginViewState extends StateMVC {
                     children: <Widget>[
                       Image.asset('assets/images/logo.png'),
                       SizedBox(height: 50),
-                      _buildUsernameTextField(),
+                      _buildEmployeeIDTextField(),
                       SizedBox(height: 30),
                       _buildUserPwdTextField(),
                       SizedBox(height: 30),
@@ -79,12 +76,12 @@ class _LoginViewState extends StateMVC {
     );
   }
 
-  Widget _buildUsernameTextField() {
+  Widget _buildEmployeeIDTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Usercode',
+          'EmployeeID',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -106,7 +103,7 @@ class _LoginViewState extends StateMVC {
           ),
           height: 60.0,
           child: TextFormField(
-            controller: _con.userCodeController,
+            controller: _con.employeeIdController,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
@@ -115,14 +112,21 @@ class _LoginViewState extends StateMVC {
             textCapitalization: TextCapitalization.none,
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter a usercode';
+                return 'Please enter employee ID.';
               }
               return null;
             },
             decoration: InputDecoration(
+              errorBorder: InputBorder.none,
+              errorStyle: TextStyle(
+                height: 2,
+                color: Colors.orange[400],
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
               border: InputBorder.none,
-              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Enter your usercode.',
+              contentPadding: EdgeInsets.fromLTRB(15, 6, 0, 0),
+              hintText: 'Enter your employeeID.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -160,38 +164,43 @@ class _LoginViewState extends StateMVC {
           ),
           height: 60.0,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(15.0, 7, 0, 7),
+            padding: EdgeInsets.fromLTRB(15, 6, 0, 3),
             child: TextFormField(
               style: TextStyle(color: Colors.white70),
               validator: (value) {
                 if (value.isEmpty || value.length < 7) {
-                  return 'Please enter Password.';
+                  return 'Please enter password.';
                 }
                 return null;
               },
               decoration: InputDecoration(
-                  hintText: 'Enter your password.',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
+                errorBorder: InputBorder.none,
+                errorStyle: TextStyle(
+                  height: 4.2,
+                  color: Colors.orange[400],
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+                hintText: 'Enter your password.',
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  color: Colors.white70,
+                ),
+                suffixIcon: IconButton(
+                  padding: const EdgeInsets.all(5),
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
                     color: Colors.white70,
                   ),
-                  suffixIcon: IconButton(
-                    padding: const EdgeInsets.all(5),
-                    icon: Icon(
-                      _passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.white70,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                      });
-                    },
-                  )),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+              ),
               obscureText: !_passwordVisible,
               controller: _con.userPwdController,
-              // validator: (val) => val.length < 6 ? 'Password too short.' : null,
             ),
           ),
         ),

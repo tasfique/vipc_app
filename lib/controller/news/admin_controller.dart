@@ -2,15 +2,15 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/model/user.dart';
 
-class NewsController extends ControllerMVC {
-  factory NewsController() {
-    if (_this == null) _this = NewsController._();
+class AdminController extends ControllerMVC {
+  factory AdminController() {
+    if (_this == null) _this = AdminController._();
     return _this;
   }
-  static NewsController _this;
-  NewsController._();
+  static AdminController _this;
+  AdminController._();
 
-  static NewsController get con => _this;
+  static AdminController get con => _this;
 
   int selectedIndex = 0;
   int selectedNewsIndex = 0;

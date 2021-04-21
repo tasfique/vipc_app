@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/news/news_controller.dart';
+import 'package:vipc_app/controller/news/admin_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:passwordfield/passwordfield.dart';
@@ -28,10 +28,10 @@ class EditUser extends StatefulWidget {
 }
 
 class _EditUserState extends StateMVC<EditUser> {
-  _EditUserState() : super(NewsController()) {
-    _con = NewsController.con;
+  _EditUserState() : super(AdminController()) {
+    _con = AdminController.con;
   }
-  NewsController _con;
+  AdminController _con;
   @override
   Widget build(BuildContext context) {
     return Container(

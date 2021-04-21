@@ -4,7 +4,7 @@ import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/controller/news/news_controller.dart';
+import 'package:vipc_app/controller/news/admin_controller.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/news_upload/news_upload_view.dart';
 import 'package:vipc_app/view/admin_user_control/user_edit.dart';
@@ -18,13 +18,13 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends StateMVC {
-  _AdminPageState() : super(NewsController()) {
-    _con = NewsController.con;
+  _AdminPageState() : super(AdminController()) {
+    _con = AdminController.con;
   }
 
-  NewsController _con;
+  AdminController _con;
 
-  int selectedIndex = 0;
+  // int selectedIndex = 0;
 
   @override
   void initState() {
@@ -116,44 +116,42 @@ class _AdminPageState extends StateMVC {
       drawer: CustomDrawer(),
       body: _con.selectedIndex == 0 ? newsContainer() : userListContainer(),
       bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 10,
-          child: BottomNavigationBar(
-            currentIndex: _con.selectedIndex,
-            onTap: (val) {
-              /// [SET STATE MEANS REBUILD WIDGET BUILD]
-              setState(() => _con.selectedIndex = val);
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.article,
-                  color: _con.selectedIndex == 0
-                      ? Colors.amber[320]
-                      : Colors.white,
-                ),
-                title: SizedBox.shrink(),
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: BottomNavigationBar(
+          currentIndex: _con.selectedIndex,
+          onTap: (val) {
+            setState(() => _con.selectedIndex = val);
+          },
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.article,
+                color:
+                    _con.selectedIndex == 0 ? Colors.amber[320] : Colors.white,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                  color: _con.selectedIndex == 1
-                      ? Colors.amber[320]
-                      : Colors.white,
-                ),
-                title: SizedBox.shrink(),
+              label: 'News',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color:
+                    _con.selectedIndex == 1 ? Colors.amber[320] : Colors.white,
               ),
-            ],
-          )),
+              label: 'User',
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _con.selectedIndex == 0
               ? Navigator.push(context,
                   MaterialPageRoute(builder: (context) => NewArticle()))
               : Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddUserStateless())); //NewArticle()
+                  context, MaterialPageRoute(builder: (context) => AddUser()));
         },
         child: Icon(
           Icons.add,

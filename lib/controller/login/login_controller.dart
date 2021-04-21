@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,12 @@ class LoginController extends ControllerMVC {
   static LoginController _this;
   LoginController._();
 
-  bool loginSuccess = false;
+  // bool loginSuccess = false;
 
   static LoginController get con => _this;
 
   final formKey = GlobalKey<FormState>();
-  final userCodeController = TextEditingController();
+  final employeeIdController = TextEditingController();
   final userPwdController = TextEditingController();
   final auth = FirebaseAuth.instance;
 
@@ -26,10 +27,21 @@ class LoginController extends ControllerMVC {
 
     if (isValid) {
       try {
+        print('display ${employeeIdController.text}');
+        final userData = await FirebaseFirestore.instance
+            .collection('users')
+            .where('empID', isEqualTo: employeeIdController.text)
+            .limit(1)
+            .get();
+
+        // print(val['empID']);
+        // print(val.docs.data()['email']);
+
         // UserCredential authResult;
         // authResult =
         await auth.signInWithEmailAndPassword(
-            email: userCodeController.text, password: userPwdController.text);
+            email: userData.docs.first['email'],
+            password: userPwdController.text);
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -39,12 +51,12 @@ class LoginController extends ControllerMVC {
       }
     }
 
-    // if (userCodeController.text == "taz" && userPwdController.text == "123")
+    // if (employeeIdController.text == "taz" && userPwdController.text == "123")
     //   loginSuccess = true;
     // else
     //   loginSuccess = false;
 
-    userCodeController.clear();
+    employeeIdController.clear();
     userPwdController.clear();
   }
 }

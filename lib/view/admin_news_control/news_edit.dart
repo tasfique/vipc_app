@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/news/news_controller.dart';
+import 'package:vipc_app/controller/news/admin_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/admin/admin_home.dart';
@@ -11,11 +11,11 @@ class EditArticle extends StatefulWidget {
 }
 
 class _EditArticleState extends StateMVC<EditArticle> {
-  _EditArticleState() : super(NewsController()) {
-    _con = NewsController.con;
+  _EditArticleState() : super(AdminController()) {
+    _con = AdminController.con;
   }
 
-  NewsController _con;
+  AdminController _con;
 
   @override
   Widget build(BuildContext context) {
