@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/model/user.dart';
@@ -14,6 +15,39 @@ class AdminController extends ControllerMVC {
 
   int selectedIndex = 0;
   int selectedNewsIndex = 0;
+  List<User> userList = [];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
+// void clean() async {
+
+//     final managerList = await FirebaseFirestore.instance
+//         .collection('users')
+//         .where('type', isEqualTo: 'Manager')
+//         .get();
+//     managerList.docs.forEach((result) {
+//       managers.add(result.data()['fullName']);
+//     });
+//   }
+
+  void getUser() async {
+    final users = await FirebaseFirestore.instance
+        .collection("users")
+        .where("type", whereIn: ["Manager", "Advisor"]).get();
+
+    users.docs.forEach((user) {
+      userList.add(User(
+          userId: user.data()['fullName'],
+          empID: user.data()['empID'],
+          email: user.data()['email'],
+          fullName: user.data()['fullName'],
+          type: user.data()['type'],
+          assignUnder: user.data()['assignUnder']));
+    });
+  }
+
   List<String> newsTitles = [
     'CMCO starts from October',
     'Crowds throng the iconic Penang ferries as service draws to a close today',
@@ -29,17 +63,6 @@ class AdminController extends ControllerMVC {
     'KUALA LUMPUR, Dec 30 ― Employees Provident Fund (EPF) has instructed employers to remit their mandatory EPF contribution on the 15th of every month, starting January next year. In a statement today, EPF said this is in line with the original contribution payment date determined by them. Previously, the EPF provided an extension for contribution payment from the 15th to the 30th of every month from April until December 2020, to ease the burden of employers in light of the uncertainties surrounding the Covid-19 pandemic.'
   ];
   List<Card> newsCards = [];
-
-  /// [User Type has 'Advisor' and 'Manager']
-  List<User> userList = [
-    User("Eugene Lim", "eugene_l104", "Advisor"),
-    User("Tasfique Enam", "taz_e110", "Manager"),
-    User("Chen Ming Kwok", "chen_m118", "Advisor"),
-    User("Satomi Ishihara", "satomi_i102", "Advisor"),
-    User("Ji Eun Lee", "ji_e105", "Advisor"),
-    User("David Ponder", "david_p115", "Advisor"),
-    User("Eric Wilson", "eric_109", "Advisor"),
-  ];
 
   TextEditingController newsContentController = TextEditingController();
 }

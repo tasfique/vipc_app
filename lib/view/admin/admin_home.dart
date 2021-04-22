@@ -29,6 +29,8 @@ class _AdminPageState extends StateMVC {
   @override
   void initState() {
     super.initState();
+    _con.userList = [];
+    _con.getUser();
     _con.newsCards.clear();
     for (int i = 0; i < _con.newsTitles.length; i++) {
       _con.newsCards.add(
@@ -284,7 +286,7 @@ class _AdminPageState extends StateMVC {
                   child: Container(
                     padding: EdgeInsets.only(left: 5),
                     child: Text(
-                      user.userFullName,
+                      user.fullName,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -323,7 +325,7 @@ class _AdminPageState extends StateMVC {
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
-                      user.username,
+                      user.fullName,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -339,7 +341,7 @@ class _AdminPageState extends StateMVC {
                     alignment: Alignment.centerRight,
                     padding: EdgeInsets.only(left: 10, top: 5, right: 5),
                     child: Text(
-                      user.userType,
+                      user.type,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(

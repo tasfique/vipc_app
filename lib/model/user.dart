@@ -1,7 +1,18 @@
-class User {
-  String userFullName;
-  String username;
-  String userType;
+import 'package:flutter/foundation.dart';
 
-  User(this.userFullName, this.username, this.userType);
+class User {
+  String userId;
+  String email;
+  String fullName;
+  String empID;
+  String type;
+  String assignUnder;
+
+  User(
+      {@required this.userId,
+      @required this.empID,
+      @required this.email,
+      @required this.fullName,
+      @required this.type,
+      @required this.assignUnder});
 }

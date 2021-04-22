@@ -46,11 +46,11 @@ class SignupController extends ControllerMVC {
     empIdController.clear();
     selectedType = null;
     selectedManager = null;
-    final result = await FirebaseFirestore.instance
+    final managerList = await FirebaseFirestore.instance
         .collection('users')
         .where('type', isEqualTo: 'Manager')
         .get();
-    result.docs.forEach((result) {
+    managerList.docs.forEach((result) {
       managers.add(result.data()['fullName']);
     });
   }
