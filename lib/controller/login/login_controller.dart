@@ -12,25 +12,26 @@ class LoginController extends ControllerMVC {
   static LoginController _this;
   LoginController._();
 
-  // bool loginSuccess = false;
-
   static LoginController get con => _this;
 
   final formKey = GlobalKey<FormState>();
   final employeeIdController = TextEditingController();
   final userPwdController = TextEditingController();
   final auth = FirebaseAuth.instance;
+  bool isLoading;
 
   Future<void> loginUser(BuildContext context) async {
     FocusScope.of(context).unfocus();
     final isValid = formKey.currentState.validate();
 
     if (isValid) {
+      setState(() {
+        isLoading = true;
+      });
       try {
-        print('display ${employeeIdController.text}');
         final userData = await FirebaseFirestore.instance
             .collection('users')
-            .where('empID', isEqualTo: employeeIdController.text)
+            .where('empID', isEqualTo: employeeIdController.text.trim())
             .limit(1)
             .get();
 
@@ -39,15 +40,19 @@ class LoginController extends ControllerMVC {
 
         // UserCredential authResult;
         // authResult =
+
         await auth.signInWithEmailAndPassword(
             email: userData.docs.first['email'],
-            password: userPwdController.text);
+            password: userPwdController.text.trim());
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(error.message),
               backgroundColor: Theme.of(context).errorColor),
         );
+        setState(() {
+          isLoading = false;
+        });
       }
     }
 

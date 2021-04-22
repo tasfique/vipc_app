@@ -19,6 +19,7 @@ class _LoginViewState extends StateMVC {
 
   @override
   void initState() {
+    _con.isLoading = false;
     _passwordVisible = false;
     super.initState();
   }
@@ -118,8 +119,8 @@ class _LoginViewState extends StateMVC {
             },
             decoration: InputDecoration(
               errorBorder: InputBorder.none,
+              helperText: '',
               errorStyle: TextStyle(
-                height: 2,
                 color: Colors.orange[400],
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
@@ -164,11 +165,11 @@ class _LoginViewState extends StateMVC {
           ),
           height: 60.0,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(15, 6, 0, 3),
+            padding: EdgeInsets.fromLTRB(15, 8, 0, 3),
             child: TextFormField(
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: Colors.white),
               validator: (value) {
-                if (value.isEmpty || value.length < 7) {
+                if (value.isEmpty || value.length < 8) {
                   return 'Please enter password.';
                 }
                 return null;
@@ -176,11 +177,18 @@ class _LoginViewState extends StateMVC {
               decoration: InputDecoration(
                 errorBorder: InputBorder.none,
                 errorStyle: TextStyle(
-                  height: 4.2,
+                  height: 0.1,
                   color: Colors.orange[400],
-                  fontSize: 14,
+                  fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                 ),
+                // errorBorder: InputBorder.none,
+                // errorStyle: TextStyle(
+                //   height: 4.3,
+                //   color: Colors.orange[400],
+                //   fontSize: 14,
+                //   fontWeight: FontWeight.bold,
+                // ),
                 hintText: 'Enter your password.',
                 border: InputBorder.none,
                 hintStyle: TextStyle(
@@ -275,15 +283,17 @@ class _LoginViewState extends StateMVC {
           //   );
           // }
         },
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: _con.isLoading
+            ? CircularProgressIndicator()
+            : Text(
+                'LOGIN',
+                style: TextStyle(
+                  color: Color(0xFF527DAA),
+                  letterSpacing: 1.5,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }

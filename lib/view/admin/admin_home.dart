@@ -88,7 +88,7 @@ class _AdminPageState extends StateMVC {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     const SizedBox(width: 8),
-                    FlatButton(
+                    TextButton(
                       child: const Text('Read more...'),
                       onPressed: () {
                         _con.selectedIndex = i;

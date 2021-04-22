@@ -80,11 +80,11 @@ class VipC extends StatelessWidget {
               if (snapshot.hasData && snapshot.data != null) {
                 final userDoc = snapshot.data;
                 final user = userDoc.data();
-                if (user['role'] == 'Admin') {
+                if (user['type'] == 'Admin') {
                   return AdminPage();
-                } else if (user['role'] == 'Manager') {
+                } else if (user['type'] == 'Manager') {
                   return HomeView();
-                } else if (user['role'] == 'Advisor') {
+                } else if (user['type'] == 'Advisor') {
                   return HomeView();
                 }
               }
