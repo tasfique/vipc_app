@@ -19,6 +19,7 @@ import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({key}) : super(key: key);
@@ -34,6 +35,7 @@ class _HomeViewState extends StateMVC {
 
   HomeController _con;
   double responsiveFontSize = 18; // Default Font Size
+  bool pieChartDisplayed = true;
 
   // PIE CHART
   int key = 0;
@@ -49,6 +51,12 @@ class _HomeViewState extends StateMVC {
     Colors.blue,
     Colors.yellow,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    pieChartDisplayed = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,27 +117,27 @@ class _HomeViewState extends StateMVC {
 
     var pieChartWidget = PieChart(
       dataMap: dataMap,
-      animationDuration: Duration(milliseconds: 800),
+      animationDuration: Duration(milliseconds: 1500),
       chartLegendSpacing: 32,
       // chartRadius: MediaQuery.of(context).size.width / 2,
       colorList: colorList,
       initialAngleInDegree: 0,
-      chartType: ChartType.ring,
-      // ringStrokeWidth: 32,
-      centerText: "Performance",
+      chartType: ChartType.disc,
+      //ringStrokeWidth: 50,
+      //centerText: "Performance",
       legendOptions: LegendOptions(
         showLegendsInRow: true,
         legendPosition: LegendPosition.bottom,
         showLegends: true,
         // legendShape: _BoxShape.circle,
         legendTextStyle: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.normal,
         ),
       ),
       chartValuesOptions: ChartValuesOptions(
         showChartValueBackground: true,
         showChartValues: true,
-        showChartValuesInPercentage: true,
+        showChartValuesInPercentage: false,
         showChartValuesOutside: false,
       ),
     );
@@ -236,41 +244,95 @@ class _HomeViewState extends StateMVC {
                   ),
                 ),
 
-                // CHART AREA
-                Row(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      padding: EdgeInsets.all(15),
-                      child: pieChartWidget,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: barChartWidget,
-                    ),
-                  ],
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 25),
-                      width: MediaQuery.of(context).size.width / 2,
-                      alignment: Alignment.center,
-                      child: Text("Weekly Performance Achievement",
-                          style: TextStyle(
-                            fontSize: responsiveFontSize,
-                          )),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Monthly Points",
+                // CHART and BAR GRAPHS VIEW
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 420,
+                  padding: EdgeInsets.all(20),
+                  child: Stack(
+                    children: [
+                      //condition
+                      pieChartDisplayed == true
+                          //if
+                          ? Center(
+                              child: Column(children: [
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.6,
+                                  padding: EdgeInsets.all(5),
+                                  child: pieChartWidget,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(1),
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.center,
+                                  child: Text("Weekly Performance Achievement",
+                                      style: TextStyle(
+                                        fontSize: responsiveFontSize,
+                                      )),
+                                )
+                              ]),
+                            )
+                          //else
+                          : Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: barChartWidget,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(1),
+                                    width: MediaQuery.of(context).size.width,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Weekly Performance Achievement",
+                                      style: TextStyle(
+                                        fontSize: responsiveFontSize,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (pieChartDisplayed)
+                                  pieChartDisplayed = false;
+                              });
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 35,
+                                color: Colors.white,
+                              ),
+                            )),
                       ),
-                    ),
-                  ],
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (!pieChartDisplayed) pieChartDisplayed = true;
+                            });
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 35,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 // BAR GRAPH OF POINTS TO GO AREA
