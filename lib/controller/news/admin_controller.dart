@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/model/user.dart';
@@ -15,12 +16,27 @@ class AdminController extends ControllerMVC {
 
   int selectedIndex = 0;
   int selectedNewsIndex = 0;
-  List<User> userList = [];
+  List<Usr> userList;
+  // bool isLoadingUser;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
+  List<String> managers = [];
+  void getManagerList(BuildContext context) async {
+    try {
+      final managerList = await FirebaseFirestore.instance
+          .collection('users')
+          .where('type', isEqualTo: 'Manager')
+          .get();
+      managerList.docs.forEach((result) {
+        managers.add(result.data()['fullName']);
+      });
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Error, couldn\'s load data.'),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+  }
 // void clean() async {
 
 //     final managerList = await FirebaseFirestore.instance
@@ -32,20 +48,41 @@ class AdminController extends ControllerMVC {
 //     });
 //   }
 
-  void getUser() async {
-    final users = await FirebaseFirestore.instance
-        .collection("users")
-        .where("type", whereIn: ["Manager", "Advisor"]).get();
-
-    users.docs.forEach((user) {
-      userList.add(User(
-          userId: user.data()['fullName'],
-          empID: user.data()['empID'],
-          email: user.data()['email'],
-          fullName: user.data()['fullName'],
-          type: user.data()['type'],
-          assignUnder: user.data()['assignUnder']));
+  Future<void> getUser(BuildContext context) async {
+    // setState(() {
+    //   isLoadingUser = true;
+    // });
+    //
+    setState(() {
+      userList = [];
     });
+
+    try {
+      final users = await FirebaseFirestore.instance
+          .collection("users")
+          .where("type", whereIn: ["Manager", "Advisor"]).get();
+
+      users.docs.forEach((user) {
+        userList.add(Usr(
+            userId: user.id,
+            empID: user.data()['empID'],
+            email: user.data()['email'],
+            fullName: user.data()['fullName'],
+            type: user.data()['type'],
+            assignUnder: user.data()['assignUnder'],
+            password: user.data()['password']));
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+
+    // setState(() {
+    //   isLoadingUser = false;
+    // });
   }
 
   List<String> newsTitles = [

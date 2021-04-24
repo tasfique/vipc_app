@@ -30,7 +30,8 @@ class _AdminPageState extends StateMVC {
   void initState() {
     super.initState();
     _con.userList = [];
-    _con.getUser();
+    // _con.getUser(context);
+    // _con.isLoadingUser = false;
     _con.newsCards.clear();
     for (int i = 0; i < _con.newsTitles.length; i++) {
       _con.newsCards.add(
@@ -210,70 +211,62 @@ class _AdminPageState extends StateMVC {
   }
 
   Widget userListContainer() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: _con.userList.length,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "User List",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 210),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.sort),
-                      color: Colors.white,
-                      tooltip: 'Sort by Step Number',
-                      onPressed: () {
-                        //add code for sorting.
-                      },
-                    ),
-                  ),
-                ),
-                //I think padding for prospect cards the below commented code
-                // Padding(
-                //   padding: EdgeInsets.only(top: 15),
-                //   child: Container(
-                //     alignment: Alignment.center,
-                //     child: Prospect.prospectCards[index],
-                //   ),
-                // ),
-              ],
-            );
-          } else {
-            return Padding(
-              padding: EdgeInsets.only(top: 15),
+    return FutureBuilder(
+      future: _con.getUser(context),
+      builder: (context, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async => await _con.getUser(context),
               child: Container(
-                alignment: Alignment.center,
-                child: userItemCard(index, _con.userList[index]),
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: _con.userList.length,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "User List",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: userItemCard(index, _con.userList[index]),
+                            ),
+                          )
+                        ],
+                      );
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: userItemCard(index, _con.userList[index]),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-            );
-          }
-        },
-      ),
+            ),
     );
   }
 
-  Widget userItemCard(int index, User user) {
+  Widget userItemCard(int index, Usr user) {
     return Card(
-      //Prospect Card background color
       color: Colors.amber[50],
-      //
       child: Padding(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 15),
         child: Column(
@@ -299,12 +292,11 @@ class _AdminPageState extends StateMVC {
                 Expanded(
                   flex: 2,
                   child: GestureDetector(
-                    /// [EDIT ICON FOR USER]
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditUserStateless()));
+                              builder: (context) => EditUser(user)));
                     },
                     child: Container(
                       alignment: Alignment.topRight,
@@ -325,7 +317,7 @@ class _AdminPageState extends StateMVC {
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
-                      user.fullName,
+                      user.empID,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:vipc_app/controller/news/admin_controller.dart';
 import 'package:vipc_app/view/admin/admin_home.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
@@ -10,6 +12,7 @@ import 'package:vipc_app/view/splash/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.apps.toList().clear();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -41,29 +44,22 @@ class MyApp extends StatelessWidget {
             displayColor: Colors.amberAccent,
           ),
         ),
-        home: VipC()
-        // MultiProvider(
-        //     providers: [
-        //       Provider<AuthHelper>(
-        //         create: (_) => AuthHelper(FirebaseAuth.instance),
-        //       ),
-        //       Provider<UserHelper>(
-        //         create: (_) => UserHelper(),
-        //       ),
-        //       StreamProvider(
-        //         create: (context) => context.read<AuthHelper>().authStateChanges,
-        //         initialData: null,
-        //       ),
-        //     ],
-        //     child: VipC(),
-        );
-    // home: SplashScreen(),
+        home: VipC());
   }
 }
 
 class VipC extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // return MultiProvider(
+    //   providers: [
+    //     // ChangeNotifierProvider.value(value: AdminController()),
+
+    //     // ChangeNotifierProvider(
+    //     //   create: (context) => AdminController(),
+    //     // ),
+    //   ],
+    //   child:
     return StreamBuilder<User>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, userSnapshot) {

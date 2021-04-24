@@ -20,12 +20,14 @@ class _AddUserState extends StateMVC {
 
   @override
   void initState() {
-    _con.clean();
+    _con.managers = [];
+    _con.clean(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context);
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
@@ -69,8 +71,8 @@ class _AddUserState extends StateMVC {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildCancelBtn(),
-                      _buildSaveBtn(),
+                      _buildCancelBtn(screenSize),
+                      _buildSaveBtn(screenSize),
                     ],
                   ),
                 ],
@@ -109,6 +111,7 @@ class _AddUserState extends StateMVC {
           ),
           height: 60.0,
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter employee ID.';
@@ -168,6 +171,7 @@ class _AddUserState extends StateMVC {
           ),
           height: 60.0,
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             validator: (value) {
               if (value.isEmpty || !value.contains('@')) {
                 return 'Please enter valid email address.';
@@ -227,6 +231,7 @@ class _AddUserState extends StateMVC {
           ),
           height: 60.0,
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             textCapitalization: TextCapitalization.words,
             validator: (value) {
               if (value.isEmpty) {
@@ -329,7 +334,7 @@ class _AddUserState extends StateMVC {
               }
             },
             items: types.map((String useType) {
-              return DropdownMenuItem(
+              return DropdownMenuItem<String>(
                 value: useType,
                 child: Row(
                   children: <Widget>[
@@ -356,7 +361,7 @@ class _AddUserState extends StateMVC {
         Container(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Select Manager to assign",
+            "Select Manager To Assign",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -412,7 +417,7 @@ class _AddUserState extends StateMVC {
               FocusScope.of(context).unfocus();
             },
             items: _con.managers.map((String selectedManager) {
-              return DropdownMenuItem(
+              return DropdownMenuItem<String>(
                 value: selectedManager,
                 child: Row(
                   children: <Widget>[
@@ -461,6 +466,7 @@ class _AddUserState extends StateMVC {
           height: 60.0,
           padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             style: TextStyle(color: Colors.white),
             validator: (value) {
               if (value.isEmpty || value.length < 8) {
@@ -532,6 +538,7 @@ class _AddUserState extends StateMVC {
           height: 60.0,
           padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
           child: TextFormField(
+            textInputAction: TextInputAction.done,
             style: TextStyle(color: Colors.white),
             validator: (value) {
               if (value.isEmpty || value != _con.userPwdController.text) {
@@ -575,16 +582,15 @@ class _AddUserState extends StateMVC {
     );
   }
 
-  Widget _buildSaveBtn() {
+  Widget _buildSaveBtn(MediaQueryData screenSize) {
     return Container(
+      width: screenSize.size.width * 0.4,
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
           padding: const EdgeInsets.only(
-            left: 60.0,
             top: 15.0,
-            right: 60.0,
             bottom: 15.0,
           ),
           shape: RoundedRectangleBorder(
@@ -615,7 +621,6 @@ class _AddUserState extends StateMVC {
         child: _con.isLoading
             ? SizedBox(
                 height: 21,
-                width: 36,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,
                 ),
@@ -633,16 +638,15 @@ class _AddUserState extends StateMVC {
     );
   }
 
-  Widget _buildCancelBtn() {
+  Widget _buildCancelBtn(MediaQueryData screenSize) {
     return Container(
+      width: screenSize.size.width * 0.4,
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
           padding: const EdgeInsets.only(
-            left: 46.0,
             top: 15.0,
-            right: 46.0,
             bottom: 15.0,
           ),
           shape: RoundedRectangleBorder(

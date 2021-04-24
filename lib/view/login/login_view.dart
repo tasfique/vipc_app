@@ -104,6 +104,7 @@ class _LoginViewState extends StateMVC {
           ),
           height: 60.0,
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             controller: _con.employeeIdController,
             keyboardType: TextInputType.text,
             style: TextStyle(
@@ -167,6 +168,7 @@ class _LoginViewState extends StateMVC {
           child: Padding(
             padding: EdgeInsets.fromLTRB(15, 8, 0, 3),
             child: TextFormField(
+              textInputAction: TextInputAction.done,
               style: TextStyle(color: Colors.white),
               validator: (value) {
                 if (value.isEmpty || value.length < 8) {
@@ -284,7 +286,7 @@ class _LoginViewState extends StateMVC {
           // }
         },
         child: _con.isLoading
-            ? CircularProgressIndicator()
+            ? Center(child: CircularProgressIndicator())
             : Text(
                 'LOGIN',
                 style: TextStyle(

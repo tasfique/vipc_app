@@ -21,17 +21,18 @@ class SignupController extends ControllerMVC {
   bool passwordVisible;
   bool passwordVisible2;
 
-  final formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey =
+      GlobalKey<FormState>(debugLabel: 'create_User');
   final empIdController = TextEditingController();
   final emailController = TextEditingController();
   final fullNameController = TextEditingController();
   final userPwdController = TextEditingController();
   final userPwdController2 = TextEditingController();
-  List<String> managers = [];
+  List<String> managers;
   String selectedType;
   String selectedManager;
 
-  void clean() async {
+  void clean(BuildContext context) async {
     passwordVisible = false;
     passwordVisible2 = false;
     isLoading = false;
@@ -43,16 +44,23 @@ class SignupController extends ControllerMVC {
     fullNameController.clear();
     userPwdController.clear();
     userPwdController2.clear();
-    empIdController.clear();
     selectedType = null;
     selectedManager = null;
-    final managerList = await FirebaseFirestore.instance
-        .collection('users')
-        .where('type', isEqualTo: 'Manager')
-        .get();
-    managerList.docs.forEach((result) {
-      managers.add(result.data()['fullName']);
-    });
+    try {
+      final managerList = await FirebaseFirestore.instance
+          .collection('users')
+          .where('type', isEqualTo: 'Manager')
+          .get();
+      managerList.docs.forEach((result) {
+        managers.add(result.data()['fullName']);
+      });
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Error, couldn\'s load data.'),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
   }
 
   Future<void> signupUser(BuildContext context) async {
@@ -77,8 +85,8 @@ class SignupController extends ControllerMVC {
           UserCredential userCredential =
               await FirebaseAuth.instanceFor(app: app)
                   .createUserWithEmailAndPassword(
-                      email: emailController.text,
-                      password: userPwdController.text);
+                      email: emailController.text.trim(),
+                      password: userPwdController.text.trim());
 
           await app.delete();
           setState(() {
@@ -90,22 +98,24 @@ class SignupController extends ControllerMVC {
                 .collection('users')
                 .doc(userCredential.user.uid)
                 .set({
-              'empID': empIdController.text,
-              'email': emailController.text,
-              'fullName': fullNameController.text,
+              'empID': empIdController.text.trim(),
+              'email': emailController.text.trim(),
+              'fullName': fullNameController.text.trim(),
               'type': selectedType,
-              'assignUnder': ''
+              'assignUnder': '',
+              'password': userPwdController.text.trim()
             });
           } else if (isAdvisor) {
             await FirebaseFirestore.instance
                 .collection('users')
                 .doc(userCredential.user.uid)
                 .set({
-              'empID': empIdController.text,
-              'email': emailController.text,
-              'fullName': fullNameController.text,
+              'empID': empIdController.text.trim(),
+              'email': emailController.text.trim(),
+              'fullName': fullNameController.text.trim(),
               'type': selectedType,
-              'assignUnder': selectedManager
+              'assignUnder': selectedManager,
+              'password': userPwdController.text.trim()
             });
           }
         } else {
