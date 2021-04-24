@@ -390,7 +390,7 @@ class _EditUserState extends StateMVC<EditUser> {
               ),
               validator: (value) {
                 if (_con.managers.isEmpty || _con.managers == null) return null;
-                if (value == null || value == 'Select') {
+                if (value == null && _con.selectedType == "Advisor") {
                   return 'Please select a manager to assign.';
                 }
                 return null;
