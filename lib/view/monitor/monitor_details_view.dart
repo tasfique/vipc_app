@@ -70,7 +70,7 @@ class _MonitorDetailsViewState extends StateMVC {
       // chartRadius: MediaQuery.of(context).size.width / 2,
       colorList: colorList,
       initialAngleInDegree: 0,
-      chartType: ChartType.ring,
+      chartType: ChartType.disc,
       // ringStrokeWidth: 32,
       centerText: "Performance",
       legendOptions: LegendOptions(

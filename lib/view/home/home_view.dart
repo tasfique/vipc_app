@@ -70,10 +70,18 @@ class _HomeViewState extends StateMVC {
     }
     // BAR GRAPH
     var data = [
-      MonthlyPointBarChart('Jan', 61, Colors.red),
-      MonthlyPointBarChart('Feb', 24, Colors.yellow),
-      MonthlyPointBarChart('Mar', 49, Colors.green),
-      MonthlyPointBarChart('Apr', 30, Colors.blue),
+      MonthlyPointBarChart('Jn', 61, Colors.red),
+      MonthlyPointBarChart('Fb', 24, Colors.yellow),
+      MonthlyPointBarChart('Mc', 49, Colors.green),
+      MonthlyPointBarChart('Ap', 30, Colors.blue),
+      MonthlyPointBarChart('My', 20, Colors.cyan),
+      MonthlyPointBarChart('Ju', 30, Colors.orange),
+      MonthlyPointBarChart('Jl', 40, Colors.brown),
+      MonthlyPointBarChart('Au', 25, Colors.grey),
+      MonthlyPointBarChart('Se', 23, Colors.deepPurple),
+      MonthlyPointBarChart('Oc', 29, Colors.yellow),
+      MonthlyPointBarChart('Nv', 60, Colors.indigo),
+      MonthlyPointBarChart('Dc', 55, Colors.lime),
     ];
 
     var series = [
@@ -137,7 +145,7 @@ class _HomeViewState extends StateMVC {
       chartValuesOptions: ChartValuesOptions(
         showChartValueBackground: true,
         showChartValues: true,
-        showChartValuesInPercentage: false,
+        showChartValuesInPercentage: true,
         showChartValuesOutside: false,
       ),
     );
