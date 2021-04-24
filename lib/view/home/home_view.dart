@@ -327,7 +327,7 @@ class _HomeViewState extends StateMVC {
                             child: Container(
                               child: Icon(
                                 Icons.arrow_back_ios,
-                                size: 35,
+                                size: 30,
                                 color: Colors.white,
                               ),
                             )),
@@ -343,7 +343,7 @@ class _HomeViewState extends StateMVC {
                           child: Container(
                             child: Icon(
                               Icons.arrow_forward_ios,
-                              size: 35,
+                              size: 30,
                               color: Colors.white,
                             ),
                           ),
@@ -355,12 +355,12 @@ class _HomeViewState extends StateMVC {
 
                 // BAR GRAPH OF POINTS TO GO AREA
                 Padding(
-                  padding: EdgeInsets.all(25.0),
+                  padding: EdgeInsets.all(20.0),
                   child: new LinearPercentIndicator(
-                    width: MediaQuery.of(context).size.width - 50,
+                    width: MediaQuery.of(context).size.width - 40,
                     animation: true,
                     lineHeight: 30.0,
-                    animationDuration: 1000,
+                    animationDuration: 2000,
                     percent: 0.65,
                     center: Text("35 points to go!",
                         style: TextStyle(
