@@ -19,7 +19,6 @@ import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({key}) : super(key: key);
@@ -68,20 +67,20 @@ class _HomeViewState extends StateMVC {
     } else {
       responsiveFontSize = FontConstants.fontMediumSize;
     }
-    // BAR GRAPH
+    // BAR GRAPH DATA
     var data = [
-      MonthlyPointBarChart('Jn', 61, Colors.red),
-      MonthlyPointBarChart('Fb', 24, Colors.yellow),
-      MonthlyPointBarChart('Mc', 49, Colors.green),
-      MonthlyPointBarChart('Ap', 30, Colors.blue),
-      MonthlyPointBarChart('My', 20, Colors.cyan),
-      MonthlyPointBarChart('Ju', 30, Colors.orange),
-      MonthlyPointBarChart('Jl', 40, Colors.brown),
-      MonthlyPointBarChart('Au', 25, Colors.grey),
-      MonthlyPointBarChart('Se', 23, Colors.deepPurple),
-      MonthlyPointBarChart('Oc', 29, Colors.yellow),
-      MonthlyPointBarChart('Nv', 60, Colors.indigo),
-      MonthlyPointBarChart('Dc', 55, Colors.lime),
+      MonthlyPointBarChart('Jn', 61, Colors.pink),
+      MonthlyPointBarChart('Fb', 24, Colors.red),
+      MonthlyPointBarChart('Mc', 49, Colors.orange),
+      MonthlyPointBarChart('Ap', 30, Colors.orangeAccent),
+      MonthlyPointBarChart('My', 20, Colors.limeAccent),
+      MonthlyPointBarChart('Ju', 30, Colors.lightGreenAccent),
+      MonthlyPointBarChart('Jl', 40, Colors.green),
+      MonthlyPointBarChart('Au', 25, Colors.cyan),
+      MonthlyPointBarChart('Se', 23, Colors.blue),
+      MonthlyPointBarChart('Oc', 29, Colors.indigo),
+      MonthlyPointBarChart('Nv', 60, Colors.deepPurple),
+      MonthlyPointBarChart('Dc', 55, Colors.purple),
     ];
 
     var series = [
@@ -98,12 +97,18 @@ class _HomeViewState extends StateMVC {
     var chart = charts.BarChart(
       series,
       animate: true,
+      vertical: false,
+      animationDuration: Duration(milliseconds: 750),
+      //not sure what this is code is supposed to do below.
+      //defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
+
+      // barGroupingType: charts.BarGroupingType.stacked,
       domainAxis: new charts.OrdinalAxisSpec(
           renderSpec: new charts.SmallTickRendererSpec(
 
               // Tick and Label styling here.
               labelStyle: new charts.TextStyleSpec(
-                  fontSize: 18, // size in Pts.
+                  fontSize: 16, // size in Pts.
                   color: charts.MaterialPalette.white),
 
               // Change the line colors to match text color.
@@ -113,9 +118,9 @@ class _HomeViewState extends StateMVC {
       primaryMeasureAxis: new charts.NumericAxisSpec(
           renderSpec: new charts.GridlineRendererSpec(
 
-              // Tick and Label styling here.
+              // Tick and Label styling here. for 0 to 100
               labelStyle: new charts.TextStyleSpec(
-                  fontSize: 18, // size in Pts.
+                  fontSize: 16, // size in Pts.
                   color: charts.MaterialPalette.white),
 
               // Change the line colors to match text color.
@@ -126,7 +131,7 @@ class _HomeViewState extends StateMVC {
     var pieChartWidget = PieChart(
       dataMap: dataMap,
       animationDuration: Duration(milliseconds: 1500),
-      chartLegendSpacing: 32,
+      chartLegendSpacing: 20,
       // chartRadius: MediaQuery.of(context).size.width / 2,
       colorList: colorList,
       initialAngleInDegree: 0,
@@ -150,9 +155,10 @@ class _HomeViewState extends StateMVC {
       ),
     );
 
+    //bar widget sizing settings
     var barChartWidget = Container(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 3.5,
+        height: MediaQuery.of(context).size.height / 1.8,
         child: chart,
       ),
     );
@@ -255,7 +261,7 @@ class _HomeViewState extends StateMVC {
                 // CHART and BAR GRAPHS VIEW
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 420,
+                  height: 500,
                   padding: EdgeInsets.all(20),
                   child: Stack(
                     children: [
@@ -266,10 +272,11 @@ class _HomeViewState extends StateMVC {
                               child: Column(children: [
                                 Container(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  padding: EdgeInsets.all(5),
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  padding: EdgeInsets.all(15),
                                   child: pieChartWidget,
                                 ),
+                                //for pie chart
                                 Container(
                                   padding: EdgeInsets.all(1),
                                   width: MediaQuery.of(context).size.width,
@@ -286,17 +293,20 @@ class _HomeViewState extends StateMVC {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  //need to remove maybe
+                                  SizedBox(height: 5),
                                   Container(
                                     padding: EdgeInsets.all(15),
                                     width: MediaQuery.of(context).size.width,
                                     child: barChartWidget,
                                   ),
+                                  //For bar chart
                                   Container(
-                                    padding: EdgeInsets.all(1),
+                                    padding: EdgeInsets.all(5),
                                     width: MediaQuery.of(context).size.width,
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "Weekly Performance Achievement",
+                                      "Monthly Performance Achievement",
                                       style: TextStyle(
                                         fontSize: responsiveFontSize,
                                       ),
