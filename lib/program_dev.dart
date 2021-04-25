@@ -10,7 +10,7 @@ import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.apps.toList().clear();
   await Firebase.initializeApp();

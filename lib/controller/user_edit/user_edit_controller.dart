@@ -161,6 +161,7 @@ class UserEditController extends ControllerMVC {
               // await app2.delete();
 
               setState(() {
+                isLoading = false;
                 editSuccess = true;
               });
             } else {
@@ -217,6 +218,7 @@ class UserEditController extends ControllerMVC {
             }
 
             setState(() {
+              isLoading = false;
               editSuccess = true;
             });
           }

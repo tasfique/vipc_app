@@ -89,9 +89,6 @@ class SignupController extends ControllerMVC {
                       password: userPwdController.text.trim());
 
           await app.delete();
-          setState(() {
-            signUpSuccess = true;
-          });
 
           if (!isAdvisor || managers.isEmpty) {
             await FirebaseFirestore.instance
@@ -105,6 +102,11 @@ class SignupController extends ControllerMVC {
               'assignUnder': '',
               'password': userPwdController.text.trim()
             });
+            setState(() {
+              isLoading = false;
+
+              signUpSuccess = true;
+            });
           } else if (isAdvisor) {
             await FirebaseFirestore.instance
                 .collection('users')
@@ -116,6 +118,10 @@ class SignupController extends ControllerMVC {
               'type': selectedType,
               'assignUnder': selectedManager,
               'password': userPwdController.text.trim()
+            });
+            setState(() {
+              isLoading = false;
+              signUpSuccess = true;
             });
           }
         } else {

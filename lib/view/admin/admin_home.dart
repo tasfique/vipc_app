@@ -6,7 +6,7 @@ import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/controller/news/admin_controller.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
-import 'package:vipc_app/view/news_upload/news_upload_view.dart';
+import 'package:vipc_app/view/admin_news_control/news_upload_view.dart';
 import 'package:vipc_app/view/admin_user_control/user_edit.dart';
 import 'package:vipc_app/view/admin_user_control/user_add.dart';
 
@@ -152,7 +152,7 @@ class _AdminPageState extends StateMVC {
         onPressed: () {
           _con.selectedIndex == 0
               ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewArticle()))
+                  MaterialPageRoute(builder: (context) => AddArticle()))
               : Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AddUser()));
         },
