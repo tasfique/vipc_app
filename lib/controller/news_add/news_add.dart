@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -23,8 +26,10 @@ class NewsAddController extends ControllerMVC {
   File imageFile;
   List<Asset> images;
   bool loadImage;
+  int imageCount;
 
   void clean() {
+    imageCount = null;
     images = <Asset>[];
     loadImage = false;
     isValid = false;
@@ -43,16 +48,70 @@ class NewsAddController extends ControllerMVC {
       setState(() {
         isLoading = true;
       });
-      print('hello');
-      print(titleController.text);
-      print(contentController.text);
 
-      setState(() {
-        addArticleSuccess = true;
-        isLoading = false;
-      });
+      String time = DateTime.now().toIso8601String().toString();
+
+      try {
+        await FirebaseFirestore.instance.collection('news').doc(time).set({
+          'title': titleController.text,
+          'content': contentController.text,
+        });
+        if (imageCount == 0) {
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('news_images')
+              .child(time)
+              .child(imageCount.toString() + '.jpg');
+          await ref.putFile(imageFile);
+
+          final url = await ref.getDownloadURL();
+
+          await FirebaseFirestore.instance.collection('news').doc(time).update({
+            'images': {'length': 1, '0': url},
+          });
+        } else if (imageCount != 0 && imageCount != null) {
+          await FirebaseFirestore.instance.collection('news').doc(time).update({
+            'images': {'length': imageCount}
+          });
+          for (int i = 0; i < imageCount; i++) {
+            final ref = FirebaseStorage.instance
+                .ref()
+                .child('news_images')
+                .child(time)
+                .child(i.toString() + '.jpg');
+            final filePath =
+                await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+            await ref.putFile(File(filePath));
+
+            final url = await ref.getDownloadURL();
+
+            await FirebaseFirestore.instance
+                .collection('news')
+                .doc(time)
+                .update(
+              {
+                'images.$i': url,
+              },
+            );
+          }
+        }
+
+        setState(() {
+          addArticleSuccess = true;
+          isLoading = false;
+        });
+      } catch (err) {
+        setState(() {
+          addArticleSuccess = false;
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Error! ${err.toString()}'),
+              backgroundColor: Theme.of(context).errorColor),
+        );
+      }
     } else {
-      print('nono');
       setState(() {
         addArticleSuccess = false;
         isLoading = false;
@@ -61,10 +120,11 @@ class NewsAddController extends ControllerMVC {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    // imagePicker.getImage();
     final picker = ImagePicker();
     final pickedImage = await picker.getImage(
+      maxHeight: 500.0,
       source: source,
+      maxWidth: 500.0,
     );
     final pickedImageFile = File(pickedImage.path);
 
@@ -73,40 +133,49 @@ class NewsAddController extends ControllerMVC {
     // );
 // imageQuality: 50, maxWidth: 150
     setState(() {
+      loadImage = false;
+      images.clear();
       imageFile = pickedImageFile;
+      imageCount = 0;
     });
   }
 
   void clearImage() {
     setState(() {
+      loadImage = false;
       imageFile = null;
+      imageCount = null;
+      images.clear();
     });
   }
 
-  Future<void> loadAssets() async {
-    List<Asset> resultList = <Asset>[];
-    print('hee');
+  Future<void> loadAssets(BuildContext context) async {
     try {
-      resultList = await MultiImagePicker.pickImages(
+      images = await MultiImagePicker.pickImages(
         maxImages: 10,
         enableCamera: true,
         selectedAssets: images,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
-          actionBarColor: "#abcdef",
-          actionBarTitle: "Example App",
+          actionBarColor: "#ffc928",
+          actionBarTitle: "VIPC App",
           allViewTitle: "All Photos",
           useDetailsView: false,
-          selectCircleStrokeColor: "#000000",
+          selectCircleStrokeColor: "#ffc928",
         ),
       );
-      print('hee231');
+
+      setState(() {
+        imageCount = images.length;
+        // images = resultList;
+        imageFile = null;
+        loadImage = true;
+      });
     } on Exception catch (e) {
-      // error = e.toString();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Error! ${e.toString()}'),
+            backgroundColor: Theme.of(context).errorColor),
+      );
     }
-    setState(() {
-      images = resultList;
-      loadImage = true;
-    });
   }
 }

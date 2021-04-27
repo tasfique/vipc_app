@@ -202,7 +202,8 @@ class _AddArticleState extends StateMVC {
         Row(
           children: [
             Container(
-                height: screenSize.size.height * 0.3,
+                // height: screenSize.size.height * 0.3,
+                height: 220,
                 width: screenSize.size.width * 0.58,
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -217,19 +218,23 @@ class _AddArticleState extends StateMVC {
                 //   ),
                 // ),
                 //
-                child: ListView(children: [
-                  if (_con.imageFile != null) ...[
-                    Image.file(_con.imageFile),
-                    Row(
-                      children: [
-                        TextButton(onPressed: () {}, child: Icon(Icons.crop)),
-                        TextButton(
-                            onPressed: _con.clearImage,
-                            child: Icon(Icons.refresh)),
-                      ],
-                    )
-                  ]
-                ])),
+                child: _con.imageCount != 0 && _con.imageCount != null
+                    ? Center(
+                        child: Text(
+                          'You chose ${_con.imageCount} images',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      )
+                    : (_con.imageFile != null)
+                        ? Image.file(
+                            _con.imageFile,
+                            fit: BoxFit.cover,
+                          )
+                        : null),
             SizedBox(
               width: screenSize.size.width * 0.33,
               child: Column(
@@ -243,7 +248,7 @@ class _AddArticleState extends StateMVC {
                   TextButton.icon(
                     icon: Icon(Icons.image),
                     label: Text('Add Image'),
-                    onPressed: _con.loadAssets,
+                    onPressed: () => _con.loadAssets(context),
                     // onPressed: () => _con.pickImage(ImageSource.gallery),
                   ),
                   TextButton.icon(
@@ -256,18 +261,25 @@ class _AddArticleState extends StateMVC {
             )
           ],
         ),
+        SizedBox(height: 20),
         if (_con.loadImage)
           // SizedBox(
           // height: 400,
           GridView.count(
+            primary: false,
+            padding: const EdgeInsets.all(8),
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
             shrinkWrap: true,
             crossAxisCount: 2,
             children: List.generate(_con.images.length, (index) {
               Asset asset = _con.images[index];
               return AssetThumb(
                 asset: asset,
-                width: 100,
-                height: 100,
+                // width: (screenSize.size.width * 0.2).toInt(),
+                // height: (screenSize.size.width * 0.2).toInt(),
+                width: 500,
+                height: 500,
               );
             }),
           ),

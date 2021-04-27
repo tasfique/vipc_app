@@ -5,7 +5,7 @@ class News {
   String title;
   String content;
   DateTime dateCreated;
-  String imageUrl;
+  Map<String, String> imageUrl;
   News(
       {@required this.newsId,
       @required this.title,
