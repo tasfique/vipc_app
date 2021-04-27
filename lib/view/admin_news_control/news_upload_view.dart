@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/news_add/news_add.dart';
+import 'package:vipc_app/controller/news/news_add_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/admin/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home_view.dart';
 
-class AddArticle extends StatefulWidget {
+class AddNews extends StatefulWidget {
   @override
-  _AddArticleState createState() => _AddArticleState();
+  _AddNewsState createState() => _AddNewsState();
 }
 
-class _AddArticleState extends StateMVC {
-  _AddArticleState() : super(NewsAddController()) {
+class _AddNewsState extends StateMVC {
+  _AddNewsState() : super(NewsAddController()) {
     _con = NewsAddController.con;
   }
 

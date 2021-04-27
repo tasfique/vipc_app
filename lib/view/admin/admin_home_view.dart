@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/controller/admin/admin_controller.dart';
+import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/admin_news_control/news_edit.dart';
+import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/controller/news/admin_controller.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/admin_news_control/news_upload_view.dart';
-import 'package:vipc_app/view/admin_user_control/user_edit.dart';
-import 'package:vipc_app/view/admin_user_control/user_add.dart';
+import 'package:vipc_app/view/admin_user_control/user_edit_view.dart';
+import 'package:vipc_app/view/admin_user_control/user_add_view.dart';
 
 class AdminPage extends StatefulWidget {
   AdminPage({key}) : super(key: key);
@@ -29,87 +31,11 @@ class _AdminPageState extends StateMVC {
   @override
   void initState() {
     super.initState();
-    _con.userList = [];
+    // _con.userList = [];
+    // _con.newsList = [];
+    _con.getNews(context);
     // _con.getUser(context);
     // _con.isLoadingUser = false;
-    _con.newsCards.clear();
-    for (int i = 0; i < _con.newsTitles.length; i++) {
-      _con.newsCards.add(
-        Card(
-          color: Colors.amber[50],
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  title: Row(
-                    children: [
-                      Expanded(
-                        flex: 8,
-                        child: Text(
-                          _con.newsTitles[i],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: GestureDetector(
-                          onTap: () {
-                            _con.selectedNewsIndex = i;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditArticle()));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Icon(
-                              Icons.edit,
-                              size: 30,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Text(
-                      _con.newsContents[i],
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    const SizedBox(width: 8),
-                    TextButton(
-                      child: const Text('Read more...'),
-                      onPressed: () {
-                        _con.selectedIndex = i;
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return NewsDetailsView();
-                        }));
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
   }
 
   @override
@@ -151,8 +77,8 @@ class _AdminPageState extends StateMVC {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _con.selectedIndex == 0
-              ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddArticle()))
+              ? Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AddNews()))
               : Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AddUser()));
         },
@@ -166,46 +92,145 @@ class _AdminPageState extends StateMVC {
   }
 
   Widget newsContainer() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: _con.newsCards.length,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 25),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "VIPC News",
-                      style: TextStyle(
-                        fontSize: 20,
+    return FutureBuilder(
+      future: _con.getNews(context),
+      builder: (context, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async => await _con.getNews(context),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: _con.newsList.length,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 25),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "VIPC News",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: newsItemCard(_con.newsList[index]),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: newsItemCard(_con.newsList[index]),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+    );
+  }
+
+  Widget newsItemCard(News oneNew) {
+    return Card(
+      color: Colors.amber[50],
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              title: Row(
+                children: [
+                  Expanded(
+                    flex: 9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          oneNew.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          DateFormat('dd/MM/yyyy HH:mm')
+                              .format(DateTime.parse(oneNew.newsId)),
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditNews(oneNew)));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Icon(
+                          Icons.edit,
+                          size: 30,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: _con.newsCards[index],
+                ],
+              ),
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  oneNew.content,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: TextStyle(
+                    color: Colors.black87,
                   ),
                 ),
-              ],
-            );
-          } else {
-            return Padding(
-              padding: EdgeInsets.only(top: 15),
-              child: Container(
-                alignment: Alignment.center,
-                child: _con.newsCards[index],
               ),
-            );
-          }
-        },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                const SizedBox(width: 8),
+                TextButton(
+                  child: const Text('Read more...'),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return NewsDetailsView(oneNew);
+                    }));
+                  },
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -243,7 +268,7 @@ class _AdminPageState extends StateMVC {
                             padding: EdgeInsets.only(top: 15),
                             child: Container(
                               alignment: Alignment.center,
-                              child: userItemCard(index, _con.userList[index]),
+                              child: userItemCard(_con.userList[index]),
                             ),
                           )
                         ],
@@ -253,7 +278,7 @@ class _AdminPageState extends StateMVC {
                         padding: EdgeInsets.only(top: 15),
                         child: Container(
                           alignment: Alignment.center,
-                          child: userItemCard(index, _con.userList[index]),
+                          child: userItemCard(_con.userList[index]),
                         ),
                       );
                     }
@@ -264,7 +289,7 @@ class _AdminPageState extends StateMVC {
     );
   }
 
-  Widget userItemCard(int index, Usr user) {
+  Widget userItemCard(Usr user) {
     return Card(
       color: Colors.amber[50],
       child: Padding(

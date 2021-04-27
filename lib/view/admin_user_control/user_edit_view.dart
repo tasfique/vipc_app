@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/user_edit/user_edit_controller.dart';
+import 'package:vipc_app/controller/user/user_edit_controller.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';

@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/controller/news/admin_controller.dart';
 
 class NewsDetailsView extends StatefulWidget {
-  NewsDetailsView({key}) : super(key: key);
+  final News oneNew;
+
+  NewsDetailsView(this.oneNew);
 
   @override
   _NewsDetailsViewState createState() => _NewsDetailsViewState();
 }
 
-class _NewsDetailsViewState extends StateMVC {
-  _NewsDetailsViewState() : super(AdminController()) {
-    _con = AdminController.con;
-  }
+class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
+  // _NewsDetailsViewState() : super(AdminController()) {
+  //   _con = AdminController.con;
+  // }
 
-  AdminController _con;
+  // AdminController _con;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      drawer: CustomDrawer(),
+      // drawer: CustomDrawer(),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -44,14 +47,30 @@ class _NewsDetailsViewState extends StateMVC {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(25),
+                padding: EdgeInsets.fromLTRB(25, 0, 25, 15),
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    _con.newsTitles[_con.selectedIndex],
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.oneNew.title,
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        DateFormat('dd/MM/yyyy HH:mm')
+                            .format(DateTime.parse(widget.oneNew.newsId)),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -60,13 +79,21 @@ class _NewsDetailsViewState extends StateMVC {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    _con.newsContents[_con.selectedIndex],
+                    widget.oneNew.content,
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
                 ),
-              )
+              ),
+              if (widget.oneNew.imageUrl != null) null
+              //                 NetworkImage(widget.oneNew.imageUrl[i])
+
+              // for (int i = 0; i < widget.oneNew.imageUrl['length']; i++)
+              //   NetworkImage(widget.oneNew.imageUrl[i])
+              // Text(widget.oneNew.imageUrl['length'].toString())
+              // Text(widget.oneNew.imageUrl.toString()),
+              // Text(widget.oneNew.imageUrl['0']),
             ],
           ),
         ),

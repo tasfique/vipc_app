@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/news/admin_controller.dart';
+import 'package:vipc_app/controller/news/news_edit_controller.dart';
+import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/admin/admin_home.dart';
+import 'package:vipc_app/view/admin/admin_home_view.dart';
 
-class EditArticle extends StatefulWidget {
+class EditNews extends StatefulWidget {
+  final News oneNew;
+
+  EditNews(this.oneNew);
   @override
-  _EditArticleState createState() => _EditArticleState();
+  _EditNewsState createState() => _EditNewsState();
 }
 
-class _EditArticleState extends StateMVC<EditArticle> {
-  _EditArticleState() : super(AdminController()) {
-    _con = AdminController.con;
+class _EditNewsState extends StateMVC<EditNews> {
+  _EditNewsState() : super(NewsEditController()) {
+    _con = NewsEditController.con;
   }
 
-  AdminController _con;
+  NewsEditController _con;
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +91,7 @@ class _EditArticleState extends StateMVC<EditArticle> {
           ),
           height: 60.0,
           child: TextFormField(
-            controller: TextEditingController(
-                text: _con.newsTitles[_con.selectedNewsIndex].toString()),
+            controller: _con.titleController,
             maxLines: null,
             keyboardType: TextInputType.multiline,
             style: TextStyle(
@@ -130,10 +133,7 @@ class _EditArticleState extends StateMVC<EditArticle> {
             ],
           ),
           child: TextFormField(
-            controller: TextEditingController(
-                text: _con.newsContents[_con.selectedNewsIndex].toString()),
-
-            // controller: _con.newsContentController,
+            controller: _con.contentController,
             maxLines: 10,
             keyboardType: TextInputType.multiline,
             style: TextStyle(
@@ -243,7 +243,7 @@ class _EditArticleState extends StateMVC<EditArticle> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          _con.selectedIndex = 0;
+          // _con.selectedIndex = 0;
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => AdminPage()));
           // Navigator.push(context, MaterialPageRoute(builder: (context) {

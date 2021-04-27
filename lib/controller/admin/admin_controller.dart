@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 
 class AdminController extends ControllerMVC {
@@ -15,11 +17,13 @@ class AdminController extends ControllerMVC {
   static AdminController get con => _this;
 
   int selectedIndex = 0;
-  int selectedNewsIndex = 0;
+  // int selectedNewsIndex = 0;
   List<Usr> userList;
+  List<News> newsList;
+  List<String> managers = [];
+
   // bool isLoadingUser;
 
-  List<String> managers = [];
   void getManagerList(BuildContext context) async {
     try {
       final managerList = await FirebaseFirestore.instance
@@ -37,16 +41,6 @@ class AdminController extends ControllerMVC {
       );
     }
   }
-// void clean() async {
-
-//     final managerList = await FirebaseFirestore.instance
-//         .collection('users')
-//         .where('type', isEqualTo: 'Manager')
-//         .get();
-//     managerList.docs.forEach((result) {
-//       managers.add(result.data()['fullName']);
-//     });
-//   }
 
   Future<void> getUser(BuildContext context) async {
     // setState(() {
@@ -85,6 +79,50 @@ class AdminController extends ControllerMVC {
     // });
   }
 
+  Future<void> getNews(BuildContext context) async {
+    // setState(() {
+    //   isLoadingUser = true;
+    // });
+    //
+    setState(() {
+      newsList = [];
+    });
+
+    try {
+      final news = await FirebaseFirestore.instance.collection("news").get();
+
+      news.docs.forEach((oneNew) {
+        // DateFormat('dd/MM/yyyy hh:mm')
+        // .format(DateTime.parse(oneNew.id.toString()));
+        // DateFormat('dd/MM/yyyy hh:mm').parse(oneNew.id);
+        if (oneNew.data()['images'] == null) {
+          newsList.add(News(
+            newsId: oneNew.id,
+            title: oneNew.data()['title'],
+            content: oneNew.data()['content'],
+            // dateCreated: oneNew.id,
+            // imageUrl: oneNew.data()['images'],
+          ));
+        } else {
+          newsList.add(News(
+            newsId: oneNew.id,
+            title: oneNew.data()['title'],
+            content: oneNew.data()['content'],
+            // dateCreated: oneNew.id,
+            imageUrl: oneNew.data()['images'],
+          ));
+        }
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+  }
+
+  // TODO : delete three below after finish all the news pages
   List<String> newsTitles = [
     'CMCO starts from October',
     'Crowds throng the iconic Penang ferries as service draws to a close today',
@@ -100,6 +138,4 @@ class AdminController extends ControllerMVC {
     'KUALA LUMPUR, Dec 30 ― Employees Provident Fund (EPF) has instructed employers to remit their mandatory EPF contribution on the 15th of every month, starting January next year. In a statement today, EPF said this is in line with the original contribution payment date determined by them. Previously, the EPF provided an extension for contribution payment from the 15th to the 30th of every month from April until December 2020, to ease the burden of employers in light of the uncertainties surrounding the Covid-19 pandemic.'
   ];
   List<Card> newsCards = [];
-
-  TextEditingController newsContentController = TextEditingController();
 }
