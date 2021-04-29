@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/prospect/prospect_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
+import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_add.dart';
@@ -14,7 +15,16 @@ class ProspectView extends StatefulWidget {
 
   @override
   _ProspectViewState createState() => _ProspectViewState();
+  String dropdownValue = 'Sort by Time';
 }
+
+//This class is declared for the dropdown menu
+// class ListItem {
+//   int value;
+//   String name;
+
+//   ListItem(this.value, this.name);
+// }
 
 class _ProspectViewState extends StateMVC {
   _ProspectViewState() : super(ProspectController()) {
@@ -22,9 +32,12 @@ class _ProspectViewState extends StateMVC {
   }
 
   ProspectController _con;
-
+  String dropdownValue = 'Sort by Time';
   @override
   Widget build(BuildContext context) {
+    //to store the current state of the drop down menu _value.
+    //int _value = 1;
+
     Prospect.prospectCards.clear();
     for (int i = 0; i < Prospect.prospectNames.length; i++) {
       Prospect.prospectCards.add(
@@ -155,11 +168,13 @@ class _ProspectViewState extends StateMVC {
       );
     }
 
+    //String dropdownValue = 'Sort by Time';
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: CustomNavBar(),
       drawer: CustomDrawer(),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: Prospect.prospectCards.length,
@@ -175,32 +190,41 @@ class _ProspectViewState extends StateMVC {
                         "Prospects",
                         style: TextStyle(
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 210),
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        icon: Icon(Icons.sort),
+                    padding: EdgeInsets.only(left: 180),
+                    child: DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: const Icon(Icons.sort_rounded),
+                      iconSize: 24,
+                      dropdownColor: Colors.grey[800],
+                      iconEnabledColor: Colors.white,
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.white),
+                      underline: Container(
+                        height: 2,
                         color: Colors.white,
-                        tooltip: 'Sort by Step Number',
-                        onPressed: () {
-                          //add code for sorting.
-                        },
                       ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'Sort by Time',
+                        'Sort by Step',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ),
-                  //I think padding for prospect cards the below commented code
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 15),
-                  //   child: Container(
-                  //     alignment: Alignment.center,
-                  //     child: Prospect.prospectCards[index],
-                  //   ),
-                  // ),
                 ],
               );
             } else {

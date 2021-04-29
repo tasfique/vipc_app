@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
+import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 

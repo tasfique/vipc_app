@@ -27,7 +27,7 @@ dependencies:
   passwordfield:
   json_annotation:
   http:
-  charts_flutter:
+  charts_flutter: ^0.10.0
   pie_chart:
   percent_indicator:
   settings_ui:
@@ -50,7 +50,6 @@ dependencies:
 
   # Used for gradient colour for the background of the app
   flutter_gradient_colors: ^1.0.0
-  carousel_slider: ^3.0.0
 
 dev_dependencies:
   flutter_test:

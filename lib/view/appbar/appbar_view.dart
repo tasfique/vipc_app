@@ -4,7 +4,7 @@ import 'package:vipc_app/view/search/search_view.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomAppBar({Key key})
-      : preferredSize = Size.fromHeight(56),
+      : preferredSize = Size.fromHeight(60),
         super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('VIPC'),
+      title: const Text('VIPC GROUP'),
       actions: [
         IconButton(
           tooltip: 'Notifications',
