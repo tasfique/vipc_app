@@ -92,6 +92,8 @@ class UserEditController extends ControllerMVC {
     if (!(userPwdController.text.isEmpty || userPwdController.text == password))
       return true;
     if (!(selectedType == null || selectedType == type)) return true;
+    if (!(selectedManager == null || selectedManager == assignManager))
+      return true;
     return false;
   }
 

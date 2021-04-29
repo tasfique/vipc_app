@@ -377,7 +377,7 @@ class _EditUserState extends StateMVC<EditUser> {
           ),
           height: 63.0,
           child: FutureBuilder(
-            future: Future.delayed(Duration(milliseconds: 0)),
+            future: Future.delayed(Duration(milliseconds: 1000)),
             builder: (context, snapshot) => DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 errorBorder: InputBorder.none,
