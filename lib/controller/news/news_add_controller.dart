@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:path_provider/path_provider.dart';
 
 class NewsAddController extends ControllerMVC {
   factory NewsAddController() {
@@ -81,7 +83,18 @@ class NewsAddController extends ControllerMVC {
                 .child(i.toString() + '.jpg');
             final filePath =
                 await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
-            await ref.putFile(File(filePath));
+            final tmpDir = (await getTemporaryDirectory()).path;
+
+            final target =
+                "$tmpDir/${DateTime.now().millisecondsSinceEpoch}-90.jpg";
+
+            var compressedFile = await FlutterImageCompress.compressAndGetFile(
+              File(filePath).absolute.path,
+              target,
+              minWidth: 1500,
+              minHeight: 1500,
+            );
+            await ref.putFile(compressedFile);
 
             final url = await ref.getDownloadURL();
 
@@ -119,12 +132,14 @@ class NewsAddController extends ControllerMVC {
     }
   }
 
-  Future<void> pickImage(ImageSource source) async {
+  Future<void> pickImage(ImageSource source, BuildContext context) async {
+    FocusScope.of(context).unfocus();
+
     final picker = ImagePicker();
     final pickedImage = await picker.getImage(
-      maxHeight: 500.0,
+      maxHeight: 1500.0,
       source: source,
-      maxWidth: 500.0,
+      maxWidth: 1500.0,
     );
     final pickedImageFile = File(pickedImage.path);
 
@@ -150,6 +165,8 @@ class NewsAddController extends ControllerMVC {
   }
 
   Future<void> loadAssets(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+
     try {
       images = await MultiImagePicker.pickImages(
         maxImages: 10,

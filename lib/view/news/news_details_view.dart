@@ -23,6 +23,7 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context);
     return Scaffold(
       appBar: CustomAppBar(),
       // drawer: CustomDrawer(),
@@ -86,18 +87,93 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                   ),
                 ),
               ),
-              if (widget.oneNew.imageUrl != null) null
-              //                 NetworkImage(widget.oneNew.imageUrl[i])
-
-              // for (int i = 0; i < widget.oneNew.imageUrl['length']; i++)
-              //   NetworkImage(widget.oneNew.imageUrl[i])
-              // Text(widget.oneNew.imageUrl['length'].toString())
-              // Text(widget.oneNew.imageUrl.toString()),
-              // Text(widget.oneNew.imageUrl['0']),
+              if (widget.oneNew.imageUrl != null &&
+                  widget.oneNew.imageUrl['length'] == 1)
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HeroImage(widget.oneNew.imageUrl['0'])),
+                      );
+                    },
+                    child: Hero(
+                      tag: 'Image',
+                      child: Image.network(
+                        widget.oneNew.imageUrl['0'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  height: screenSize.size.height * 0.4,
+                  width: screenSize.size.width * 0.9,
+                  padding: EdgeInsets.only(bottom: 30),
+                )
+              else if (widget.oneNew.imageUrl != null &&
+                  widget.oneNew.imageUrl['length'] != 1)
+                GridView.count(
+                  primary: false,
+                  padding: const EdgeInsets.all(10),
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  children:
+                      List.generate(widget.oneNew.imageUrl['length'], (index) {
+                    return Container(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HeroImage(
+                                    widget.oneNew.imageUrl['$index'])),
+                          );
+                        },
+                        child: Hero(
+                          tag: '$index',
+                          child: Image.network(
+                            widget.oneNew.imageUrl['$index'],
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                      height: double.infinity,
+                      width: double.infinity,
+                    );
+                  }),
+                ),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class HeroImage extends StatelessWidget {
+  final String imageUrl;
+  HeroImage(this.imageUrl);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: Hero(
+          tag: 'Image',
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            alignment: Alignment.topCenter,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(
+                      imageUrl,
+                    ),
+                    fit: BoxFit.cover)),
+          ),
+        ));
   }
 }

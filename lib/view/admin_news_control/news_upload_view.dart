@@ -31,7 +31,7 @@ class _AddNewsState extends StateMVC {
 
     return Scaffold(
       appBar: CustomAppBar(),
-      drawer: CustomDrawer(),
+      // drawer: CustomDrawer(),
       body: Center(
         child: Container(
           height: double.infinity,
@@ -46,7 +46,7 @@ class _AddNewsState extends StateMVC {
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      "Add New Article",
+                      "Add News",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -103,6 +103,7 @@ class _AddNewsState extends StateMVC {
           ),
           height: 60.0,
           child: TextFormField(
+            textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.next,
             controller: _con.titleController,
             keyboardType: TextInputType.text,
@@ -164,13 +165,15 @@ class _AddNewsState extends StateMVC {
           child: TextFormField(
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter article content.';
+                return 'Please enter news content.';
               }
               return null;
             },
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.newline,
             controller: _con.contentController,
             minLines: 15,
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.multiline,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -202,9 +205,8 @@ class _AddNewsState extends StateMVC {
         Row(
           children: [
             Container(
-                // height: screenSize.size.height * 0.3,
-                height: 220,
-                width: screenSize.size.width * 0.58,
+                height: screenSize.size.height * 0.3,
+                width: screenSize.size.width * 0.57,
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 0.1,
@@ -236,14 +238,15 @@ class _AddNewsState extends StateMVC {
                           )
                         : null),
             SizedBox(
-              width: screenSize.size.width * 0.33,
+              width: screenSize.size.width * 0.35,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextButton.icon(
                     icon: Icon(Icons.photo_camera),
                     label: Text('Open Camera'),
-                    onPressed: () => _con.pickImage(ImageSource.camera),
+                    onPressed: () =>
+                        _con.pickImage(ImageSource.camera, context),
                   ),
                   TextButton.icon(
                     icon: Icon(Icons.image),
@@ -318,8 +321,7 @@ class _AddNewsState extends StateMVC {
                     child: Text('Close'),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-
+                      Navigator.of(context).pop(true);
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) {
                       //   return AdminPage();
@@ -369,7 +371,7 @@ class _AddNewsState extends StateMVC {
           primary: Colors.amber[300],
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true);
           // Navigator.push(context, MaterialPageRoute(builder: (context) {
           //   return AdminPage();
           // }));

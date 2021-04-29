@@ -30,7 +30,7 @@ class _AddUserState extends StateMVC {
     final screenSize = MediaQuery.of(context);
     return Scaffold(
       appBar: CustomAppBar(),
-      drawer: CustomDrawer(),
+      // drawer: CustomDrawer(),
       body: Center(
         child: Container(
           height: double.infinity,
@@ -611,7 +611,7 @@ class _AddUserState extends StateMVC {
                     child: Text('Close'),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                   )
                 ],
@@ -655,7 +655,7 @@ class _AddUserState extends StateMVC {
           primary: Colors.amber[300],
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true);
         },
         child: Text(
           'Cancel',

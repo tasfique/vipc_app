@@ -25,15 +25,18 @@ class _AdminPageState extends StateMVC {
   }
 
   AdminController _con;
+  bool check = true;
+  bool check2 = true;
 
   // int selectedIndex = 0;
 
   @override
   void initState() {
+    _con.userList = [];
+    _con.newsList = [];
+    // _con.managers = [];
     super.initState();
-    // _con.userList = [];
-    // _con.newsList = [];
-    _con.getNews(context);
+    // _con.getNews(context);
     // _con.getUser(context);
     // _con.isLoadingUser = false;
   }
@@ -75,12 +78,32 @@ class _AdminPageState extends StateMVC {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _con.selectedIndex == 0
-              ? Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddNews()))
-              : Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddUser()));
+        onPressed: () async {
+          if (_con.selectedIndex == 0) {
+            final pushP = await Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddNews()));
+            if (pushP) {
+              setState(() {
+                check = false;
+              });
+              await _con.getNews(context);
+              setState(() {
+                check = true;
+              });
+            }
+          } else {
+            final pushP2 = await Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddUser()));
+            if (pushP2) {
+              setState(() {
+                check2 = false;
+              });
+              await _con.getUser(context);
+              setState(() {
+                check2 = true;
+              });
+            }
+          }
         },
         child: Icon(
           Icons.add,
@@ -98,49 +121,60 @@ class _AdminPageState extends StateMVC {
               ConnectionState.waiting
           ? Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-              onRefresh: () async => await _con.getNews(context),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: _con.newsList.length,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 25),
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "VIPC News",
-                                style: TextStyle(
-                                  fontSize: 20,
+              onRefresh: () async {
+                setState(() {
+                  check = false;
+                });
+                _con.getNews(context);
+                setState(() {
+                  check = true;
+                });
+              },
+              child: (check)
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 24.0),
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: _con.newsList.length,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 25),
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "VIPC News",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: newsItemCard(_con.newsList[index]),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: newsItemCard(_con.newsList[index]),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 15),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: newsItemCard(_con.newsList[index]),
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: newsItemCard(_con.newsList[index]),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  : Center(child: CircularProgressIndicator()),
             ),
     );
   }
@@ -157,7 +191,7 @@ class _AdminPageState extends StateMVC {
               title: Row(
                 children: [
                   Expanded(
-                    flex: 9,
+                    flex: 8,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -181,13 +215,22 @@ class _AdminPageState extends StateMVC {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final pushPage = await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => EditNews(oneNew)));
+                        if (pushPage) {
+                          setState(() {
+                            check = false;
+                          });
+                          _con.getNews(context);
+                          setState(() {
+                            check = true;
+                          });
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -242,49 +285,60 @@ class _AdminPageState extends StateMVC {
               ConnectionState.waiting
           ? Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-              onRefresh: () async => await _con.getUser(context),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: _con.userList.length,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "User List",
-                                style: TextStyle(
-                                  fontSize: 20,
+              onRefresh: () async {
+                setState(() {
+                  check2 = false;
+                });
+                _con.getUser(context);
+                setState(() {
+                  check2 = true;
+                });
+              },
+              child: (check2)
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 24.0),
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: _con.userList.length,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "User List",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: userItemCard(_con.userList[index]),
+                                  ),
+                                )
+                              ],
+                            );
+                          } else {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: userItemCard(_con.userList[index]),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 15),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: userItemCard(_con.userList[index]),
-                            ),
-                          )
-                        ],
-                      );
-                    } else {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: userItemCard(_con.userList[index]),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  : Center(child: CircularProgressIndicator()),
             ),
     );
   }
@@ -317,11 +371,20 @@ class _AdminPageState extends StateMVC {
                 Expanded(
                   flex: 2,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      final pushPage2 = await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => EditUser(user)));
+                      if (pushPage2) {
+                        setState(() {
+                          check2 = false;
+                        });
+                        _con.getUser(context);
+                        setState(() {
+                          check2 = true;
+                        });
+                      }
                     },
                     child: Container(
                       alignment: Alignment.topRight,

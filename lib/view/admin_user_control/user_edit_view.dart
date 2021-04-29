@@ -45,7 +45,7 @@ class _EditUserState extends StateMVC<EditUser> {
     final screenSize = MediaQuery.of(context);
     return Scaffold(
       appBar: CustomAppBar(),
-      drawer: CustomDrawer(),
+      // drawer: CustomDrawer(),
       body: Center(
         child: Container(
           height: double.infinity,
@@ -608,7 +608,7 @@ class _EditUserState extends StateMVC<EditUser> {
                     onPressed: () async {
                       await _con.setToDefault();
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                   )
                 ],
@@ -668,7 +668,7 @@ class _EditUserState extends StateMVC<EditUser> {
                     await _con.deleteUser(context);
                     await _con.setToDefault();
                     Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
                   },
                 )
               ],
@@ -703,7 +703,7 @@ class _EditUserState extends StateMVC<EditUser> {
         ),
         onPressed: () async {
           await _con.setToDefault();
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true);
         },
         child: Text(
           'Cancel',

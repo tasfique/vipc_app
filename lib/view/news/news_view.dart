@@ -23,61 +23,75 @@ class _NewsViewState extends StateMVC<NewsView> {
 
   @override
   Widget build(BuildContext context) {
+    bool check = true;
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
       body: FutureBuilder(
         future: _con.getNews(context),
-        builder: (context, snapshot) => snapshot.connectionState ==
-                ConnectionState.waiting
-            ? Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: () async => await _con.getNews(context),
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: _con.newsList.length,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 25),
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "VIPC News",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child:
-                                    newsItemCard(context, _con.newsList[index]),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: newsItemCard(context, _con.newsList[index]),
-                          ),
-                        );
-                      }
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        check = false;
+                      });
+                      _con.getNews(context);
+                      setState(() {
+                        check = true;
+                      });
                     },
+                    child: (check)
+                        ? Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 24.0),
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: _con.newsList.length,
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 25),
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "VIPC News",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 15),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: newsItemCard(
+                                              context, _con.newsList[index]),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: newsItemCard(
+                                          context, _con.newsList[index]),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          ),
                   ),
-                ),
-              ),
       ),
     );
   }
