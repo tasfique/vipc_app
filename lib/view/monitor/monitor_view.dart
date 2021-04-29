@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
+import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/controller/monitor/monitor_controller.dart';
 import 'package:vipc_app/view/monitor/monitor_details_view.dart';
@@ -81,9 +82,10 @@ class _MonitorViewState extends StateMVC {
 
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: CustomNavBar(),
       drawer: CustomDrawer(),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: _con.monitorCards.length,
@@ -92,13 +94,14 @@ class _MonitorViewState extends StateMVC {
               return Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 25),
+                    padding: EdgeInsets.only(left: 10),
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Monitor",
                         style: TextStyle(
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),

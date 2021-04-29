@@ -14,6 +14,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 //
 import 'package:vipc_app/view/appbar/appbar_view.dart';
+import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
@@ -69,8 +70,8 @@ class _HomeViewState extends StateMVC {
     }
     // BAR GRAPH DATA
     var data = [
-      MonthlyPointBarChart('Jn', 61, Colors.pink),
-      MonthlyPointBarChart('Fb', 24, Colors.red),
+      MonthlyPointBarChart('Jn', 30, Colors.pink),
+      MonthlyPointBarChart('Fb', 92, Colors.red),
       MonthlyPointBarChart('Mc', 49, Colors.orange),
       MonthlyPointBarChart('Ap', 30, Colors.orangeAccent),
       MonthlyPointBarChart('My', 20, Colors.limeAccent),
@@ -78,8 +79,8 @@ class _HomeViewState extends StateMVC {
       MonthlyPointBarChart('Jl', 40, Colors.green),
       MonthlyPointBarChart('Au', 25, Colors.cyan),
       MonthlyPointBarChart('Se', 23, Colors.blue),
-      MonthlyPointBarChart('Oc', 29, Colors.indigo),
-      MonthlyPointBarChart('Nv', 60, Colors.deepPurple),
+      MonthlyPointBarChart('Oc', 85, Colors.indigo),
+      MonthlyPointBarChart('Nv', 30, Colors.deepPurple),
       MonthlyPointBarChart('Dc', 55, Colors.purple),
     ];
 
@@ -144,7 +145,7 @@ class _HomeViewState extends StateMVC {
         showLegends: true,
         // legendShape: _BoxShape.circle,
         legendTextStyle: TextStyle(
-          fontWeight: FontWeight.normal,
+          fontWeight: FontWeight.bold,
         ),
       ),
       chartValuesOptions: ChartValuesOptions(
@@ -221,6 +222,7 @@ class _HomeViewState extends StateMVC {
 
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: CustomNavBar(),
       drawer: CustomDrawer(),
 
       body: Container(
