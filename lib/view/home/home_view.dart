@@ -20,6 +20,7 @@ import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
+import 'package:bouncing_widget/bouncing_widget.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({key}) : super(key: key);
@@ -271,6 +272,7 @@ class _HomeViewState extends StateMVC {
                 // CHART and BAR GRAPHS VIEW
                 Container(
                   width: MediaQuery.of(context).size.width,
+                  //height: MediaQuery.of(context).size.height,
                   height: 500,
                   padding: EdgeInsets.all(20),
                   child: Stack(
@@ -328,7 +330,15 @@ class _HomeViewState extends StateMVC {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
-                            onTap: () {
+                          onTap: () {
+                            setState(() {
+                              if (pieChartDisplayed) pieChartDisplayed = false;
+                            });
+                          },
+                          child: BouncingWidget(
+                            // duration: Duration(milliseconds: 100),
+                            scaleFactor: 1.5,
+                            onPressed: () {
                               setState(() {
                                 if (pieChartDisplayed)
                                   pieChartDisplayed = false;
@@ -340,7 +350,9 @@ class _HomeViewState extends StateMVC {
                                 size: 30,
                                 color: Colors.white,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
@@ -350,11 +362,21 @@ class _HomeViewState extends StateMVC {
                               if (!pieChartDisplayed) pieChartDisplayed = true;
                             });
                           },
-                          child: Container(
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 30,
-                              color: Colors.white,
+                          child: BouncingWidget(
+                            // duration: Duration(milliseconds: 100),
+                            scaleFactor: 1.5,
+                            onPressed: () {
+                              setState(() {
+                                if (!pieChartDisplayed)
+                                  pieChartDisplayed = true;
+                              });
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 30,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
