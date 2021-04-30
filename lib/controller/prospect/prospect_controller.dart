@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class ProspectController extends ControllerMVC {
@@ -11,4 +12,9 @@ class ProspectController extends ControllerMVC {
   static ProspectController get con => _this;
 
   int selectedIndex = 0;
+
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
 }

@@ -41,5 +41,6 @@ class Prospect {
     '2020-03-17 08:30:00',
     '2020-03-25 10:30:00'
   ];
+  static List<Card> prospectCardsForHome = [];
   static List<Card> prospectCards = [];
 }

@@ -56,6 +56,70 @@ class _HomeViewState extends StateMVC {
   void initState() {
     super.initState();
     pieChartDisplayed = true;
+    //!
+
+    // LIST VIEW OF CARDS
+    Prospect.prospectCardsForHome.clear();
+    for (int i = 0; i < Prospect.prospectNames.length; i++) {
+      Prospect.prospectCardsForHome.add(
+        Card(
+          color: Colors.amber[200],
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  child: ListTile(
+                    title: Text(
+                      Prospect.prospectNames[i],
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        "Meeting at " +
+                            Prospect.prospectSchedules[i]
+                                .toString()
+                                .substring(11, 16) +
+                            "\n" +
+                            Prospect.prospectLocations[i],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      const SizedBox(width: 8),
+                      FlatButton(
+                        child: const Text('More Info..'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ProspectView();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    //!
   }
 
   @override
@@ -163,62 +227,6 @@ class _HomeViewState extends StateMVC {
         child: chart,
       ),
     );
-
-    // LIST VIEW OF CARDS
-    Prospect.prospectCards.clear();
-    for (int i = 0; i < Prospect.prospectNames.length; i++) {
-      Prospect.prospectCards.add(
-        Card(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  title: Text(
-                    Prospect.prospectNames[i],
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  subtitle: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
-                      "Meeting at " +
-                          Prospect.prospectSchedules[i]
-                              .toString()
-                              .substring(11, 16) +
-                          "\n" +
-                          Prospect.prospectLocations[i],
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    const SizedBox(width: 8),
-                    FlatButton(
-                      child: const Text('More Info..'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return ProspectView();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -374,97 +382,71 @@ class _HomeViewState extends StateMVC {
                 ),
 
                 // THREE BUTTONS
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return ProspectView();
-                        }));
-                      },
-                      textColor: Colors.black,
-                      padding: const EdgeInsets.all(0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width / 4,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: GradientColors.yellow,
-                        )),
-                        padding: const EdgeInsets.all(15),
-                        child: const Text('Prospect',
-                            style: TextStyle(
-                              fontSize: 17,
-                            )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ProspectView();
+                          }));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(5),
+                          child: const Text('Prospect',
+                              style: TextStyle(
+                                fontSize: 17,
+                              )),
+                        ),
                       ),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MonitorView();
-                        }));
-                      },
-                      // 1111
-                      textColor: Colors.black,
-                      padding: const EdgeInsets.all(0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width / 4,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: GradientColors.yellow,
-                        )),
-                        padding: const EdgeInsets.all(15),
-                        child: const Text('Monitor',
-                            style: TextStyle(fontSize: 17)),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return MonitorView();
+                          }));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(5),
+                          child: const Text('Monitor',
+                              style: TextStyle(fontSize: 17)),
+                        ),
                       ),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return NewsView();
-                        }));
-                      },
-                      textColor: Colors.black,
-                      padding: const EdgeInsets.all(0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width / 4,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: GradientColors.yellow,
-                        )),
-                        padding: const EdgeInsets.all(15),
-                        child:
-                            const Text('News', style: TextStyle(fontSize: 17)),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return NewsView();
+                          }));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(5),
+                          child: const Text('News',
+                              style: TextStyle(fontSize: 17)),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
 
                 // CARDS
                 Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                  height: MediaQuery.of(context).size.height / 3.5,
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                  height: MediaQuery.of(context).size.height / 4.5,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: Prospect.prospectCards.length,
+                    itemCount: Prospect.prospectCardsForHome.length,
                     itemBuilder: (context, index) {
                       return Container(
                         alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width * 0.5,
-                        child: Prospect.prospectCards[index],
+                        child: Prospect.prospectCardsForHome[index],
                       );
                     },
                   ),

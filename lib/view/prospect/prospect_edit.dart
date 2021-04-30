@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/controller/prospect/prospect_controller.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
@@ -34,7 +36,20 @@ class EditProspect extends StatefulWidget {
   _EditProspectState createState() => _EditProspectState();
 }
 
-class _EditProspectState extends State<EditProspect> {
+class _EditProspectState extends StateMVC<EditProspect> {
+  _EditProspectState() : super(ProspectController()) {
+    _con = ProspectController.con;
+  }
+
+  ProspectController _con;
+
+  @override
+  void initState() {
+    super.initState();
+    _con.dateController.text = "";
+    _con.timeController.text = "";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -369,32 +384,66 @@ class _EditProspectState extends State<EditProspect> {
           ),
         ),
         SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          height: 60.0,
-          child: IconButton(
-            icon: Icon(Icons.calendar_today),
-            color: Colors.white,
-            tooltip: 'Tap to open date picker',
-            onPressed: () {
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2015, 8),
-                lastDate: DateTime(2101),
-              );
-            },
+        GestureDetector(
+          onTap: () async {
+            final DateTime picked = await showDatePicker(
+              context: context,
+              initialDate: _con.selectedDate,
+              firstDate: DateTime(2015, 8),
+              lastDate: DateTime(2101),
+              builder: (BuildContext context, Widget child) {
+                return Theme(
+                  data: ThemeData.dark().copyWith(
+                    dialogBackgroundColor: Colors.grey[800],
+                    colorScheme: ColorScheme.dark(
+                      surface: Colors.grey[800],
+                      primary: Colors.amber[500],
+                    ),
+                  ),
+                  child: child,
+                );
+              },
+            );
+            if (picked != null) {
+              setState(() {
+                _con.selectedDate = picked;
+                _con.dateController.text = _con.selectedDate.toString();
+              });
+            }
+          },
+          child: Container(
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6.0,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            height: 60.0,
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Icon(
+                    Icons.calendar_today,
+                    color: Colors.white,
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    _con.dateController.text == "" ||
+                            _con.dateController.text == null
+                        ? "Select meeting date."
+                        : _con.dateController.text.substring(0, 10),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -413,33 +462,63 @@ class _EditProspectState extends State<EditProspect> {
           ),
         ),
         SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          height: 60.0,
-          child: TextField(
-            // controller: _usernameController,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
-              color: Colors.white,
+        GestureDetector(
+          onTap: () async {
+            final TimeOfDay pickedTime = await showTimePicker(
+                context: context,
+                initialTime: _con.selectedTime,
+                builder: (BuildContext context, Widget child) {
+                  return Theme(
+                    data: ThemeData.dark().copyWith(
+                      dialogBackgroundColor: Colors.grey[800],
+                      colorScheme: ColorScheme.dark(
+                        surface: Colors.grey[800],
+                        primary: Colors.amber[500],
+                      ),
+                    ),
+                    child: child,
+                  );
+                });
+            if (pickedTime != null) {
+              setState(() {
+                _con.selectedTime = pickedTime;
+                _con.timeController.text =
+                    "${_con.selectedTime.hourOfPeriod}:${_con.selectedTime.minute == 0 ? "00" : _con.selectedTime.minute} ${_con.selectedTime.period.index == 0 ? 'AM' : 'PM'}";
+              });
+            }
+          },
+          child: Container(
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6.0,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: "02:30 PM",
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
+            height: 60.0,
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Icon(
+                    Icons.access_time,
+                    color: Colors.white,
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    _con.timeController.text == "" ||
+                            _con.timeController.text == null
+                        ? "Select meeting time."
+                        : _con.timeController.text,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -487,43 +566,45 @@ class _EditProspectState extends State<EditProspect> {
   }
 
   Widget _buildSaveBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => new AlertDialog(
-              title: new Text("Message"),
-              content: new Text("Successfully Saved!"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Close'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ProspectView();
-                    }));
-                  },
-                )
-              ],
+    return GestureDetector(
+      onTap: () {
+        print("Meeting Date: ${_con.dateController.text.substring(0, 10)}");
+        print("Meeting Time: ${_con.timeController.text}");
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            title: new Text("Message"),
+            content: new Text("Successfully Saved!"),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProspectView();
+                  }));
+                },
+              )
+            ],
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+            color: Colors.amber[300],
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            'Save',
+            style: TextStyle(
+              color: Colors.black,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.amber[300],
-        child: Text(
-          'Save',
-          style: TextStyle(
-            color: Colors.black,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -531,43 +612,43 @@ class _EditProspectState extends State<EditProspect> {
   }
 
   Widget _buildDeleteBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => new AlertDialog(
-              title: new Text("Message"),
-              content: new Text("Successfully Deleted!"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Close'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ProspectView();
-                    }));
-                  },
-                )
-              ],
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            title: new Text("Message"),
+            content: new Text("Successfully Deleted!"),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProspectView();
+                  }));
+                },
+              )
+            ],
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+            color: Colors.deepOrange[500],
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            'Delete',
+            style: TextStyle(
+              color: Colors.black,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.deepOrange[500],
-        child: Text(
-          'Delete',
-          style: TextStyle(
-            color: Colors.black,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -575,28 +656,29 @@ class _EditProspectState extends State<EditProspect> {
   }
 
   Widget _buildCancelBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          Navigator.of(context).pop();
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ProspectView();
-          }));
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.amber[300],
-        child: Text(
-          'Cancel',
-          style: TextStyle(
-            color: Colors.black,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ProspectView();
+        }));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+            color: Colors.amber[300],
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            'Cancel',
+            style: TextStyle(
+              color: Colors.black,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
