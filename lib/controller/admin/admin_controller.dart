@@ -21,6 +21,74 @@ class AdminController extends ControllerMVC {
   List<Usr> userList;
   List<News> newsList;
   // List<String> managers;
+  final empNoController = TextEditingController();
+  GlobalKey<FormState> formKeyForget =
+      GlobalKey<FormState>(debugLabel: 'request_changing_password');
+  bool isValid;
+  bool isLoading;
+  bool requestSuccess;
+
+  void clean() {
+    isValid = false;
+    isLoading = false;
+    requestSuccess = false;
+    empNoController.clear();
+  }
+
+  Future<void> requestChangePassword(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    isValid = formKeyForget.currentState.validate();
+
+    if (isValid) {
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        final userData = await FirebaseFirestore.instance
+            .collection('users')
+            .where('empID', isEqualTo: empNoController.text)
+            .limit(1)
+            .get();
+
+        if (userData.docs.length == 1) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userData.docs.first.id)
+              .update({'requestChangingPassword': '1'});
+
+          setState(() {
+            isLoading = false;
+            requestSuccess = true;
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('Employee ID does not exist.'),
+                backgroundColor: Theme.of(context).errorColor),
+          );
+          setState(() {
+            requestSuccess = false;
+            isLoading = false;
+          });
+        }
+      } catch (error) {
+        setState(() {
+          requestSuccess = false;
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Error! ${error.toString()}'),
+              backgroundColor: Theme.of(context).errorColor),
+        );
+      }
+    } else {
+      setState(() {
+        requestSuccess = false;
+        isLoading = false;
+      });
+    }
+  }
 
   // bool isLoadingUser;
 
