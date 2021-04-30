@@ -50,6 +50,7 @@ dependencies:
 
   # Used for gradient colour for the background of the app
   flutter_gradient_colors: ^1.0.0
+  bouncing_widget: ^2.0.0
 
 dev_dependencies:
   flutter_test:
