@@ -57,14 +57,13 @@ class _HomeViewState extends StateMVC {
   void initState() {
     super.initState();
     pieChartDisplayed = true;
-    //!
 
     // LIST VIEW OF CARDS
     Prospect.prospectCardsForHome.clear();
     for (int i = 0; i < Prospect.prospectNames.length; i++) {
       Prospect.prospectCardsForHome.add(
         Card(
-          color: Colors.amber[200],
+          color: Colors.amber[50],
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Column(
