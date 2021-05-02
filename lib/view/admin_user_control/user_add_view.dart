@@ -26,10 +26,17 @@ class _AddUserState extends StateMVC {
   }
 
   @override
+  void dispose() async {
+    await _con.app.delete();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
+        dispose();
         Navigator.pop(context, true);
         return false;
       },

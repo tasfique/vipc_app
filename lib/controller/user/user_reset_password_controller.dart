@@ -27,7 +27,7 @@ class UserResetPasswordController extends ControllerMVC {
   bool isLoading;
   bool isValid;
   bool resetSuccess;
-  FirebaseApp app2;
+  FirebaseApp app;
 
   Future<void> setToDefault() async {
     uid = null;
@@ -40,7 +40,7 @@ class UserResetPasswordController extends ControllerMVC {
     isLoading = false;
     userPwdController.clear();
     userPwdController2.clear();
-    await app2.delete();
+    // await app.delete();
   }
 
   Future<void> start() async {
@@ -51,7 +51,7 @@ class UserResetPasswordController extends ControllerMVC {
     resetSuccess = false;
     userPwdController.clear();
     userPwdController2.clear();
-    app2 = await Firebase.initializeApp(
+    app = await Firebase.initializeApp(
         name: 'Fourth', options: Firebase.app().options);
   }
 
@@ -69,7 +69,7 @@ class UserResetPasswordController extends ControllerMVC {
           'requestChangingPassword': '0'
         });
 
-        await FirebaseAuth.instanceFor(app: app2)
+        await FirebaseAuth.instanceFor(app: app)
             .signInWithEmailAndPassword(email: email, password: password)
             .then((value) {
           value.user.updatePassword(userPwdController.text);

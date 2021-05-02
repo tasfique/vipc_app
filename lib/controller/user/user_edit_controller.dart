@@ -30,7 +30,7 @@ class UserEditController extends ControllerMVC {
   // bool passwordVisible;
   bool isValid;
   bool editSuccess;
-  FirebaseApp app2;
+  FirebaseApp app;
   bool isLoading;
   List<String> managers = [];
 
@@ -51,7 +51,7 @@ class UserEditController extends ControllerMVC {
     emailController.clear();
     fullNameController.clear();
     // userPwdController.clear();
-    await app2.delete();
+    // await app.delete();
   }
 
   Future<void> start(BuildContext context) async {
@@ -83,7 +83,7 @@ class UserEditController extends ControllerMVC {
             backgroundColor: Theme.of(context).errorColor),
       );
     }
-    app2 = await Firebase.initializeApp(
+    app = await Firebase.initializeApp(
         name: 'Third', options: Firebase.app().options);
   }
 
@@ -147,7 +147,7 @@ class UserEditController extends ControllerMVC {
               // app2 = await Firebase.initializeApp(
               //     name: 'Third', options: Firebase.app().options);
 
-              await FirebaseAuth.instanceFor(app: app2)
+              await FirebaseAuth.instanceFor(app: app)
                   .signInWithEmailAndPassword(email: email, password: password)
                   .then((value) {
                 value.user.updateEmail(emailController.text);
@@ -210,8 +210,6 @@ class UserEditController extends ControllerMVC {
 
             // if (!(userPwdController.text.isEmpty ||
             //     userPwdController.text == password)) {
-            //   // app2 = await Firebase.initializeApp(
-            //   //     name: 'Third', options: Firebase.app().options);
 
             //   await FirebaseAuth.instanceFor(app: app2)
             //       .signInWithEmailAndPassword(email: email, password: password)
@@ -219,7 +217,6 @@ class UserEditController extends ControllerMVC {
             //     value.user.updatePassword(userPwdController.text);
             //   });
 
-            //   // await app2.delete();
             // }
 
             setState(() {
@@ -255,7 +252,7 @@ class UserEditController extends ControllerMVC {
       //  app2 = await Firebase.initializeApp(
       //     name: 'Third', options: Firebase.app().options);
 
-      await FirebaseAuth.instanceFor(app: app2)
+      await FirebaseAuth.instanceFor(app: app)
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
         value.user.delete();

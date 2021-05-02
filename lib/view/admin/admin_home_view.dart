@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -28,7 +29,6 @@ class _AdminPageState extends StateMVC {
   AdminController _con;
   bool check = true;
   bool check2 = true;
-
   // int selectedIndex = 0;
 
   @override
@@ -45,7 +45,6 @@ class _AdminPageState extends StateMVC {
   }
 
   void dispose() {
-    print('test dispose admin');
     super.dispose();
   }
 

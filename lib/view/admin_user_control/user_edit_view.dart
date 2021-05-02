@@ -41,10 +41,18 @@ class _EditUserState extends StateMVC<EditUser> {
   }
 
   @override
+  void dispose() async {
+    await _con.setToDefault();
+    await _con.app.delete();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
+        dispose();
         Navigator.pop(context, true);
         return false;
       },
@@ -620,8 +628,7 @@ class _EditUserState extends StateMVC<EditUser> {
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
-                    onPressed: () async {
-                      await _con.setToDefault();
+                    onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop(true);
                     },
@@ -682,7 +689,6 @@ class _EditUserState extends StateMVC<EditUser> {
                   child: Text('Yes'),
                   onPressed: () async {
                     await _con.deleteUser(context);
-                    await _con.setToDefault();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop(true);
                   },
@@ -717,8 +723,8 @@ class _EditUserState extends StateMVC<EditUser> {
           ),
           primary: Colors.amber[300],
         ),
-        onPressed: () async {
-          await _con.setToDefault();
+        onPressed: () {
+          // await _con.setToDefault();
           Navigator.of(context).pop(true);
         },
         child: Text(

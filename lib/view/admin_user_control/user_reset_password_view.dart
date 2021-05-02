@@ -29,10 +29,18 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
   }
 
   @override
+  void dispose() async {
+    await _con.setToDefault();
+    await _con.app.delete();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
+        dispose();
         Navigator.pop(context, true);
         return;
       },
@@ -258,8 +266,8 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
-                    onPressed: () async {
-                      await _con.setToDefault();
+                    onPressed: () {
+                      // await _con.setToDefault();
                       Navigator.of(context).pop();
                       Navigator.of(context).pop(true);
                     },
@@ -303,8 +311,8 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
           ),
           primary: Colors.amber[300],
         ),
-        onPressed: () async {
-          await _con.setToDefault();
+        onPressed: () {
+          // await _con.setToDefault();
           Navigator.of(context).pop(true);
         },
         child: Text(

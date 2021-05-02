@@ -276,7 +276,6 @@ class NewsEditController extends ControllerMVC {
     // );
 // imageQuality: 50, maxWidth: 150
     setState(() {
-      print('cancel');
       changed = true;
       loadImage = false;
       clearDone = true;
@@ -314,7 +313,6 @@ class NewsEditController extends ControllerMVC {
       );
 
       setState(() {
-        print('cancel');
         changed = true;
         imageCount = images.length;
         // images = resultList;
