@@ -31,6 +31,7 @@ class SignupController extends ControllerMVC {
   List<String> managers;
   String selectedType;
   String selectedManager;
+  FirebaseApp app;
 
   void clean(BuildContext context) async {
     passwordVisible = false;
@@ -61,6 +62,8 @@ class SignupController extends ControllerMVC {
             backgroundColor: Theme.of(context).errorColor),
       );
     }
+    app = await Firebase.initializeApp(
+        name: 'Secondary', options: Firebase.app().options);
   }
 
   Future<void> signupUser(BuildContext context) async {
@@ -79,16 +82,13 @@ class SignupController extends ControllerMVC {
             .get();
 
         if (userData.docs.length == 0) {
-          FirebaseApp app = await Firebase.initializeApp(
-              name: 'Secondary', options: Firebase.app().options);
-
           UserCredential userCredential =
               await FirebaseAuth.instanceFor(app: app)
                   .createUserWithEmailAndPassword(
                       email: emailController.text.trim(),
                       password: userPwdController.text.trim());
 
-          await app.delete();
+          // await app.delete();
 
           if (!isAdvisor || managers.isEmpty) {
             await FirebaseFirestore.instance

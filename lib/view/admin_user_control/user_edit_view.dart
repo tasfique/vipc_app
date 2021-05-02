@@ -41,57 +41,81 @@ class _EditUserState extends StateMVC<EditUser> {
   }
 
   @override
+  void dispose() async {
+    await _con.setToDefault();
+    await _con.app.delete();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
-    return Scaffold(
-      appBar: CustomAppBar(),
-      // drawer: CustomDrawer(),
-      body: Center(
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.all(15),
-            child: Form(
-              key: _con.formKey,
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      "Edit User",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  _buildEmployeeIdTextField(),
-                  SizedBox(height: 15),
-                  _buildEmailTextField(),
-                  SizedBox(height: 15),
-                  _buildUserFullNameTextField(),
-                  SizedBox(height: 15),
-                  _buildUserTypeDropdownList(),
-                  SizedBox(height: 15),
-                  (_con.isAdvisor)
-                      ? _buildAssignUserDropdownList()
-                      : SizedBox(),
-                  _buildUserChangePasswordField(),
-                  // SizedBox(height: 15),
-                  // _buildUserConfirmPasswordField(),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return WillPopScope(
+      onWillPop: () async {
+        dispose();
+        Navigator.pop(context, true);
+        return false;
+      },
+      child: Scaffold(
+        // appBar: CustomAppBar(),
+        appBar: AppBar(
+          title: Text('Edit User'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ),
+        // drawer: CustomDrawer(),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(15),
+                child: Form(
+                  key: _con.formKey,
+                  child: Column(
                     children: [
-                      _buildDeleteBtn(screenSize),
-                      _buildCancelBtn(screenSize),
-                      _buildSaveBtn(screenSize),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Edit User",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 25),
+                      _buildEmployeeIdTextField(),
+                      SizedBox(height: 20),
+                      _buildEmailTextField(),
+                      SizedBox(height: 20),
+                      _buildUserFullNameTextField(),
+                      SizedBox(height: 20),
+                      _buildUserTypeDropdownList(),
+                      SizedBox(height: 20),
+                      (_con.isAdvisor)
+                          ? _buildAssignUserDropdownList()
+                          : SizedBox(),
+                      // _buildUserChangePasswordField(),
+                      // SizedBox(height: 15),
+                      // _buildUserConfirmPasswordField(),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildDeleteBtn(screenSize),
+                          _buildCancelBtn(screenSize),
+                          _buildSaveBtn(screenSize),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -360,7 +384,7 @@ class _EditUserState extends StateMVC<EditUser> {
             ),
           ),
         ),
-        SizedBox(height: 10.0),
+        SizedBox(height: 20.0),
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 15, right: 15),
@@ -432,82 +456,81 @@ class _EditUserState extends StateMVC<EditUser> {
             ),
           ),
         ),
-        SizedBox(height: 15),
       ],
     );
   }
 
-  Widget _buildUserChangePasswordField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Enter Password',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          height: 60.0,
-          padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
-          child: TextFormField(
-            textInputAction: TextInputAction.next,
-            style: TextStyle(color: Colors.white),
-            // validator: (value) {
-            //   if (value.isEmpty || value.length < 8) {
-            //     return 'Please enter password with at least 8 characters long.';
-            //   }
-            //   return null;
-            // },
-            decoration: InputDecoration(
-              errorBorder: InputBorder.none,
-              errorStyle: TextStyle(
-                color: Colors.orange[400],
-                height: 0.1,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-              border: InputBorder.none,
-              hintText: 'Enter Password',
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
-              suffixIcon: IconButton(
-                padding: const EdgeInsets.all(5),
-                icon: Icon(
-                  _con.passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: Colors.white70,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _con.passwordVisible = !_con.passwordVisible;
-                  });
-                },
-              ),
-            ),
-            obscureText: !_con.passwordVisible,
-            controller: _con.userPwdController,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildUserChangePasswordField() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text(
+  //         'Enter Password',
+  //         style: TextStyle(
+  //           color: Colors.white,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //       SizedBox(height: 10.0),
+  //       Container(
+  //         alignment: Alignment.centerLeft,
+  //         decoration: BoxDecoration(
+  //           color: Colors.white24,
+  //           borderRadius: BorderRadius.circular(10.0),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.black12,
+  //               blurRadius: 6.0,
+  //               offset: Offset(0, 2),
+  //             ),
+  //           ],
+  //         ),
+  //         height: 60.0,
+  //         padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
+  //         child: TextFormField(
+  //           textInputAction: TextInputAction.next,
+  //           style: TextStyle(color: Colors.white),
+  //           // validator: (value) {
+  //           //   if (value.isEmpty || value.length < 8) {
+  //           //     return 'Please enter password with at least 8 characters long.';
+  //           //   }
+  //           //   return null;
+  //           // },
+  //           decoration: InputDecoration(
+  //             errorBorder: InputBorder.none,
+  //             errorStyle: TextStyle(
+  //               color: Colors.orange[400],
+  //               height: 0.1,
+  //               fontSize: 14,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //             border: InputBorder.none,
+  //             hintText: 'Enter Password',
+  //             hintStyle: TextStyle(
+  //               color: Colors.white70,
+  //             ),
+  //             suffixIcon: IconButton(
+  //               padding: const EdgeInsets.all(5),
+  //               icon: Icon(
+  //                 _con.passwordVisible
+  //                     ? Icons.visibility
+  //                     : Icons.visibility_off,
+  //                 color: Colors.white70,
+  //               ),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   _con.passwordVisible = !_con.passwordVisible;
+  //                 });
+  //               },
+  //             ),
+  //           ),
+  //           obscureText: !_con.passwordVisible,
+  //           controller: _con.userPwdController,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   // Widget _buildUserConfirmPasswordField() {
   //   return Column(
@@ -605,8 +628,7 @@ class _EditUserState extends StateMVC<EditUser> {
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
-                    onPressed: () async {
-                      await _con.setToDefault();
+                    onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop(true);
                     },
@@ -618,6 +640,7 @@ class _EditUserState extends StateMVC<EditUser> {
         },
         child: _con.isLoading
             ? SizedBox(
+                width: 21,
                 height: 21,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,
@@ -666,7 +689,6 @@ class _EditUserState extends StateMVC<EditUser> {
                   child: Text('Yes'),
                   onPressed: () async {
                     await _con.deleteUser(context);
-                    await _con.setToDefault();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop(true);
                   },
@@ -701,8 +723,8 @@ class _EditUserState extends StateMVC<EditUser> {
           ),
           primary: Colors.amber[300],
         ),
-        onPressed: () async {
-          await _con.setToDefault();
+        onPressed: () {
+          // await _con.setToDefault();
           Navigator.of(context).pop(true);
         },
         child: Text(

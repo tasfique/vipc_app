@@ -35,12 +35,6 @@ class LoginController extends ControllerMVC {
             .limit(1)
             .get();
 
-        // print(val['empID']);
-        // print(val.docs.data()['email']);
-
-        // UserCredential authResult;
-        // authResult =
-
         await auth.signInWithEmailAndPassword(
             email: userData.docs.first['email'],
             password: userPwdController.text.trim());

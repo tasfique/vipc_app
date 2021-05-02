@@ -27,51 +27,53 @@ class _LoginViewState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black,
-                    Colors.black87,
-                    Colors.brown,
-                    Colors.orangeAccent,
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
-                child: Form(
-                  key: _con.formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset('assets/images/logo.png'),
-                      SizedBox(height: 50),
-                      _buildEmployeeIDTextField(),
-                      SizedBox(height: 30),
-                      _buildUserPwdTextField(),
-                      SizedBox(height: 30),
-                      _buildLoginBtn(),
-                      SizedBox(height: 10),
-                      _buildForgotPwdBtn(),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black,
+                      Colors.black87,
+                      Colors.brown,
+                      Colors.orangeAccent,
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+              Container(
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
+                  child: Form(
+                    key: _con.formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset('assets/images/logo.png'),
+                        SizedBox(height: 50),
+                        _buildEmployeeIDTextField(),
+                        SizedBox(height: 30),
+                        _buildUserPwdTextField(),
+                        SizedBox(height: 30),
+                        _buildLoginBtn(),
+                        SizedBox(height: 10),
+                        _buildForgotPwdBtn(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -221,6 +223,7 @@ class _LoginViewState extends StateMVC {
   Widget _buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
+      height: 105,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(

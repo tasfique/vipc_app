@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/forgotPwd/forgotPwd_controller.dart';
-import 'package:passwordfield/passwordfield.dart';
-import 'package:vipc_app/view/home/home_view.dart';
+import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 
 class ForgotPasswordView extends StatefulWidget {
@@ -13,60 +11,70 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends StateMVC {
-  _ForgotPasswordViewState() : super(ForgotPasswordController()) {
-    _con = ForgotPasswordController.con;
+  _ForgotPasswordViewState() : super(AdminController()) {
+    _con = AdminController.con;
   }
-  ForgotPasswordController _con;
 
-  final _empNoController = TextEditingController();
+  AdminController _con;
+
+  @override
+  void initState() {
+    _con.clean();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black,
-                    Colors.black87,
-                    Colors.brown,
-                    Colors.orangeAccent,
-                  ],
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black,
+                      Colors.black87,
+                      Colors.brown,
+                      Colors.orangeAccent,
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/images/logo.png'),
-                    SizedBox(height: 50),
-                    _buildEmpNoTextField(),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildBackBtn(),
-                        _buildSubmitBtn(),
+              Container(
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
+                  child: Form(
+                    key: _con.formKeyForget,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset('assets/images/logo.png'),
+                        SizedBox(height: 50),
+                        _buildEmpNoTextField(),
+                        SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildBackBtn(),
+                            _buildSubmitBtn(),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -77,7 +85,7 @@ class _ForgotPasswordViewState extends StateMVC {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Usercode',
+          'Employee ID',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -98,16 +106,27 @@ class _ForgotPasswordViewState extends StateMVC {
             ],
           ),
           height: 60.0,
-          child: TextField(
-            controller: _empNoController,
+          child: TextFormField(
+            validator: (value) {
+              if (value.isEmpty) return 'Please enter employee ID';
+              return null;
+            },
+            controller: _con.empNoController,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
             ),
             decoration: InputDecoration(
+              errorBorder: InputBorder.none,
+              helperText: '',
+              errorStyle: TextStyle(
+                color: Colors.orange[400],
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Your usercode (Agent Code).',
+              hintText: 'Your employee ID (Agent Code).',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -122,43 +141,52 @@ class _ForgotPasswordViewState extends StateMVC {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: MediaQuery.of(context).size.width / 3,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => new AlertDialog(
-              title: new Text("Message"),
-              content: new Text("Password Reset Request Successfully Sent!"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Close'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return LoginView();
-                    }));
-                  },
-                )
-              ],
-            ),
-          );
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'Submit',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 5.0,
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
+          primary: Colors.white,
         ),
+        onPressed: () async {
+          await _con.requestChangePassword(context);
+          if (_con.requestSuccess)
+            showDialog(
+              context: context,
+              builder: (_) => new AlertDialog(
+                title: new Text("VIPC Message"),
+                content: new Text("Password Reset Request Successfully Sent!"),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ),
+            );
+        },
+        child: _con.isLoading
+            ? SizedBox(
+                width: 21,
+                height: 21,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ),
+              )
+            : Text(
+                'Submit',
+                style: TextStyle(
+                  color: Color(0xFF527DAA),
+                  letterSpacing: 1.5,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
@@ -167,18 +195,18 @@ class _ForgotPasswordViewState extends StateMVC {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: MediaQuery.of(context).size.width / 3,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return LoginView();
-          }));
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 5.0,
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          primary: Colors.white,
         ),
-        color: Colors.white,
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
         child: Text(
           'Back',
           style: TextStyle(

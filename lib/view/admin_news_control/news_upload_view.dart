@@ -1,3 +1,5 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -29,45 +31,61 @@ class _AddNewsState extends StateMVC {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
 
-    return Scaffold(
-      appBar: CustomAppBar(),
-      // drawer: CustomDrawer(),
-      body: Center(
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.all(15),
-            child: Form(
-              key: _con.formKey,
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      "Add News",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  _buildTitleTextField(),
-                  SizedBox(height: 20),
-                  _buildTextFormField(),
-                  SizedBox(height: 20),
-                  _buildImageUpload(screenSize),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, true);
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Add News'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ),
+        // appBar: CustomAppBar(),
+        // drawer: CustomDrawer(),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(15),
+                child: Form(
+                  key: _con.formKey,
+                  child: Column(
                     children: [
-                      _buildCancelBtn(screenSize),
-                      _buildSaveBtn(screenSize),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Add News",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      _buildTitleTextField(),
+                      SizedBox(height: 20),
+                      _buildTextFormField(),
+                      SizedBox(height: 20),
+                      _buildImageUpload(screenSize),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildCancelBtn(screenSize),
+                          _buildSaveBtn(screenSize),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -334,6 +352,7 @@ class _AddNewsState extends StateMVC {
         },
         child: _con.isLoading
             ? SizedBox(
+                width: 21,
                 height: 21,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,
@@ -377,7 +396,7 @@ class _AddNewsState extends StateMVC {
           // }));
         },
         child: Text(
-          'Back',
+          'Cancel',
           style: TextStyle(
             color: Colors.black,
             letterSpacing: 1.5,
@@ -387,5 +406,25 @@ class _AddNewsState extends StateMVC {
         ),
       ),
     );
+  }
+}
+
+class MessageHandler extends StatefulWidget {
+  @override
+  _MessageHandlerState createState() => _MessageHandlerState();
+}
+
+class _MessageHandlerState extends State<MessageHandler> {
+  final FirebaseStorage _db = FirebaseStorage.instance;
+  final FirebaseMessaging messaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
