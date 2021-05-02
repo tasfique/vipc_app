@@ -81,19 +81,19 @@ class _EditUserState extends StateMVC<EditUser> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 25),
                       _buildEmployeeIdTextField(),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       _buildEmailTextField(),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       _buildUserFullNameTextField(),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       _buildUserTypeDropdownList(),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       (_con.isAdvisor)
                           ? _buildAssignUserDropdownList()
                           : SizedBox(),
-                      _buildUserChangePasswordField(),
+                      // _buildUserChangePasswordField(),
                       // SizedBox(height: 15),
                       // _buildUserConfirmPasswordField(),
                       SizedBox(height: 10),
@@ -376,7 +376,7 @@ class _EditUserState extends StateMVC<EditUser> {
             ),
           ),
         ),
-        SizedBox(height: 10.0),
+        SizedBox(height: 20.0),
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 15, right: 15),
@@ -448,82 +448,81 @@ class _EditUserState extends StateMVC<EditUser> {
             ),
           ),
         ),
-        SizedBox(height: 15),
       ],
     );
   }
 
-  Widget _buildUserChangePasswordField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Enter Password',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          height: 60.0,
-          padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
-          child: TextFormField(
-            textInputAction: TextInputAction.next,
-            style: TextStyle(color: Colors.white),
-            // validator: (value) {
-            //   if (value.isEmpty || value.length < 8) {
-            //     return 'Please enter password with at least 8 characters long.';
-            //   }
-            //   return null;
-            // },
-            decoration: InputDecoration(
-              errorBorder: InputBorder.none,
-              errorStyle: TextStyle(
-                color: Colors.orange[400],
-                height: 0.1,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-              border: InputBorder.none,
-              hintText: 'Enter Password',
-              hintStyle: TextStyle(
-                color: Colors.white70,
-              ),
-              suffixIcon: IconButton(
-                padding: const EdgeInsets.all(5),
-                icon: Icon(
-                  _con.passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: Colors.white70,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _con.passwordVisible = !_con.passwordVisible;
-                  });
-                },
-              ),
-            ),
-            obscureText: !_con.passwordVisible,
-            controller: _con.userPwdController,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildUserChangePasswordField() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text(
+  //         'Enter Password',
+  //         style: TextStyle(
+  //           color: Colors.white,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //       SizedBox(height: 10.0),
+  //       Container(
+  //         alignment: Alignment.centerLeft,
+  //         decoration: BoxDecoration(
+  //           color: Colors.white24,
+  //           borderRadius: BorderRadius.circular(10.0),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.black12,
+  //               blurRadius: 6.0,
+  //               offset: Offset(0, 2),
+  //             ),
+  //           ],
+  //         ),
+  //         height: 60.0,
+  //         padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
+  //         child: TextFormField(
+  //           textInputAction: TextInputAction.next,
+  //           style: TextStyle(color: Colors.white),
+  //           // validator: (value) {
+  //           //   if (value.isEmpty || value.length < 8) {
+  //           //     return 'Please enter password with at least 8 characters long.';
+  //           //   }
+  //           //   return null;
+  //           // },
+  //           decoration: InputDecoration(
+  //             errorBorder: InputBorder.none,
+  //             errorStyle: TextStyle(
+  //               color: Colors.orange[400],
+  //               height: 0.1,
+  //               fontSize: 14,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //             border: InputBorder.none,
+  //             hintText: 'Enter Password',
+  //             hintStyle: TextStyle(
+  //               color: Colors.white70,
+  //             ),
+  //             suffixIcon: IconButton(
+  //               padding: const EdgeInsets.all(5),
+  //               icon: Icon(
+  //                 _con.passwordVisible
+  //                     ? Icons.visibility
+  //                     : Icons.visibility_off,
+  //                 color: Colors.white70,
+  //               ),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   _con.passwordVisible = !_con.passwordVisible;
+  //                 });
+  //               },
+  //             ),
+  //           ),
+  //           obscureText: !_con.passwordVisible,
+  //           controller: _con.userPwdController,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   // Widget _buildUserConfirmPasswordField() {
   //   return Column(
