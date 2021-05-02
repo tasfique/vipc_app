@@ -24,7 +24,6 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({key}) : super(key: key);
-
   @override
   _HomeViewState createState() => _HomeViewState();
 }

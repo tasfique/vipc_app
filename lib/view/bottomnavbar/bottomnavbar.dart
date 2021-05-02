@@ -23,19 +23,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
   int _selectedIndex = 0;
   // static const TextStyle optionStyle =
   //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      //style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      //style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      //style: optionStyle,
-    ),
+  List<Widget> _widgetOptions = <Widget>[
+    HomeView(),
+    ProspectView(),
+    MonitorView(),
+    NewsView(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,6 +38,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    Center(child: _widgetOptions.elementAt(_selectedIndex));
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
