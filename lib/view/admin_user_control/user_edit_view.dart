@@ -43,55 +43,71 @@ class _EditUserState extends StateMVC<EditUser> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
-    return Scaffold(
-      appBar: CustomAppBar(),
-      // drawer: CustomDrawer(),
-      body: Center(
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.all(15),
-            child: Form(
-              key: _con.formKey,
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      "Edit User",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  _buildEmployeeIdTextField(),
-                  SizedBox(height: 15),
-                  _buildEmailTextField(),
-                  SizedBox(height: 15),
-                  _buildUserFullNameTextField(),
-                  SizedBox(height: 15),
-                  _buildUserTypeDropdownList(),
-                  SizedBox(height: 15),
-                  (_con.isAdvisor)
-                      ? _buildAssignUserDropdownList()
-                      : SizedBox(),
-                  _buildUserChangePasswordField(),
-                  // SizedBox(height: 15),
-                  // _buildUserConfirmPasswordField(),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, true);
+        return false;
+      },
+      child: Scaffold(
+        // appBar: CustomAppBar(),
+        appBar: AppBar(
+          title: Text('Edit User'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ),
+        // drawer: CustomDrawer(),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(15),
+                child: Form(
+                  key: _con.formKey,
+                  child: Column(
                     children: [
-                      _buildDeleteBtn(screenSize),
-                      _buildCancelBtn(screenSize),
-                      _buildSaveBtn(screenSize),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Edit User",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      _buildEmployeeIdTextField(),
+                      SizedBox(height: 15),
+                      _buildEmailTextField(),
+                      SizedBox(height: 15),
+                      _buildUserFullNameTextField(),
+                      SizedBox(height: 15),
+                      _buildUserTypeDropdownList(),
+                      SizedBox(height: 15),
+                      (_con.isAdvisor)
+                          ? _buildAssignUserDropdownList()
+                          : SizedBox(),
+                      _buildUserChangePasswordField(),
+                      // SizedBox(height: 15),
+                      // _buildUserConfirmPasswordField(),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildDeleteBtn(screenSize),
+                          _buildCancelBtn(screenSize),
+                          _buildSaveBtn(screenSize),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -618,6 +634,7 @@ class _EditUserState extends StateMVC<EditUser> {
         },
         child: _con.isLoading
             ? SizedBox(
+                width: 21,
                 height: 21,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,

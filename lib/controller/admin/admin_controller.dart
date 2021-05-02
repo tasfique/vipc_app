@@ -5,6 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
+import 'package:provider/provider.dart';
 
 class AdminController extends ControllerMVC {
   factory AdminController() {
@@ -19,6 +20,7 @@ class AdminController extends ControllerMVC {
   int selectedIndex = 0;
   // int selectedNewsIndex = 0;
   List<Usr> userList;
+  List<Usr> userListRequestPassword;
   List<News> newsList;
   // List<String> managers;
   final empNoController = TextEditingController();
@@ -27,6 +29,7 @@ class AdminController extends ControllerMVC {
   bool isValid;
   bool isLoading;
   bool requestSuccess;
+  int requestPasswordCount;
 
   void clean() {
     isValid = false;
@@ -90,6 +93,21 @@ class AdminController extends ControllerMVC {
     }
   }
 
+  Future<void> getRequestPasswordCount() async {
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .where('requestChangingPassword', isEqualTo: '1')
+        .get();
+
+    setState(() {
+      requestPasswordCount = userData.docs.length;
+    });
+
+    // setState(() {
+
+    // });
+  }
+
   // bool isLoadingUser;
 
   // void getManagerList(BuildContext context) async {
@@ -122,6 +140,7 @@ class AdminController extends ControllerMVC {
     // });
     //
     List<Usr> userListTemp = [];
+    getRequestPasswordCount();
 
     try {
       // setState(() {
@@ -164,6 +183,7 @@ class AdminController extends ControllerMVC {
     // setState(() {
     //   newsList.clear();
     // });
+    getRequestPasswordCount();
 
     List<News> newsListTemp = [];
 
@@ -193,6 +213,37 @@ class AdminController extends ControllerMVC {
         }
       });
       newsList = newsListTemp;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+  }
+
+  Future<void> getRequestedPasswordUser(BuildContext context) async {
+    List<Usr> userListRequestTemp = [];
+
+    // getRequestPassword();
+
+    try {
+      final users = await FirebaseFirestore.instance
+          .collection("users")
+          .where("requestChangingPassword", isEqualTo: '1')
+          .get();
+
+      users.docs.forEach((user) {
+        userListRequestTemp.add(Usr(
+            userId: user.id,
+            empID: user.data()['empID'],
+            email: user.data()['email'],
+            fullName: user.data()['fullName'],
+            type: user.data()['type'],
+            assignUnder: user.data()['assignUnder'],
+            password: user.data()['password']));
+      });
+      userListRequestPassword = userListRequestTemp;
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

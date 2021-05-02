@@ -55,6 +55,9 @@ class UserEditController extends ControllerMVC {
   }
 
   Future<void> start(BuildContext context) async {
+    emailController.clear();
+    fullNameController.clear();
+    userPwdController.clear();
     passwordVisible = false;
     isLoading = false;
     isValid = false;

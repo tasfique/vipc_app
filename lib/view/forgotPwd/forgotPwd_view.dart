@@ -172,6 +172,7 @@ class _ForgotPasswordViewState extends StateMVC {
         },
         child: _con.isLoading
             ? SizedBox(
+                width: 21,
                 height: 21,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,

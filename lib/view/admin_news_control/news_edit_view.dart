@@ -40,45 +40,61 @@ class _EditNewsState extends StateMVC<EditNews> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
-    return Scaffold(
-      appBar: CustomAppBar(),
-      // drawer: CustomDrawer(),
-      body: Container(
-        height: double.infinity,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.all(15),
-          child: Form(
-            key: _con.formKey,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    "Edit News",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                _buildTitleTextField(),
-                SizedBox(height: 20),
-                _buildTextFormField(),
-                SizedBox(height: 20),
-                _buildImageEdit(screenSize),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, true);
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Edit News'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ),
+        // appBar: CustomAppBar(),
+        // drawer: CustomDrawer(),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Container(
+            height: double.infinity,
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.all(15),
+              child: Form(
+                key: _con.formKey,
+                child: Column(
                   children: [
-                    _buildDeleteBtn(screenSize),
-                    _buildCancelBtn(screenSize),
-                    _buildSaveBtn(screenSize),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Edit News",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    _buildTitleTextField(),
+                    SizedBox(height: 20),
+                    _buildTextFormField(),
+                    SizedBox(height: 20),
+                    _buildImageEdit(screenSize),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildDeleteBtn(screenSize),
+                        _buildCancelBtn(screenSize),
+                        _buildSaveBtn(screenSize),
+                      ],
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -372,6 +388,7 @@ class _EditNewsState extends StateMVC<EditNews> {
         },
         child: _con.isLoading
             ? SizedBox(
+                width: 21,
                 height: 21,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white,

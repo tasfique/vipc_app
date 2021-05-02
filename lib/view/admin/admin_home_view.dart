@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:provider/provider.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
+import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/admin_news_control/news_upload_view.dart';
@@ -34,17 +35,24 @@ class _AdminPageState extends StateMVC {
   void initState() {
     _con.userList = [];
     _con.newsList = [];
+    _con.requestPasswordCount = 0;
     // _con.managers = [];
+    _con.getRequestPasswordCount();
     super.initState();
     // _con.getNews(context);
     // _con.getUser(context);
     // _con.isLoadingUser = false;
   }
 
+  void dispose() {
+    print('test dispose admin');
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AdminAppBar(),
       drawer: CustomDrawer(),
       body: _con.selectedIndex == 0 ? newsContainer() : userListContainer(),
       bottomNavigationBar: BottomAppBar(
@@ -218,6 +226,7 @@ class _AdminPageState extends StateMVC {
                     flex: 2,
                     child: GestureDetector(
                       onTap: () async {
+                        _con.getRequestPasswordCount();
                         final pushPage = await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -262,11 +271,19 @@ class _AdminPageState extends StateMVC {
                 const SizedBox(width: 8),
                 TextButton(
                   child: const Text('Read more...'),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return NewsDetailsView(oneNew);
-                    }));
+                  onPressed: () async {
+                    // await _con.getRequestPasswordCount();
+                    final pushDetailResult = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewsDetailsView(oneNew)));
+                    if (pushDetailResult) {
+                      await _con.getRequestPasswordCount();
+                    }
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) {
+                    //   return NewsDetailsAdminView(oneNew);
+                    // }));
                   },
                 ),
                 const SizedBox(width: 8),
@@ -372,6 +389,7 @@ class _AdminPageState extends StateMVC {
                   flex: 2,
                   child: GestureDetector(
                     onTap: () async {
+                      _con.getRequestPasswordCount();
                       final pushPage2 = await Navigator.push(
                           context,
                           MaterialPageRoute(
