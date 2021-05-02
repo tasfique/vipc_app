@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:provider/provider.dart';
+import 'package:vipc_app/view/admin/admin_home_view.dart';
 
 class AdminController extends ControllerMVC {
   factory AdminController() {

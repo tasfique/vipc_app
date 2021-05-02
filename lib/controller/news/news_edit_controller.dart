@@ -67,6 +67,29 @@ class NewsEditController extends ControllerMVC {
     }
   }
 
+  setSearchParam(String searchString) {
+    List<String> caseSearchList = [];
+    String temp = "", temp2 = '';
+    bool checkValue = false;
+    for (int i = 0; i < searchString.length; i++) {
+      if (searchString[i] == " ") {
+        if (!checkValue) {
+          temp = temp2;
+          checkValue = true;
+        }
+        temp2 = "";
+      } else {
+        temp2 = temp2 + searchString[i];
+        caseSearchList.add(temp2.toLowerCase());
+      }
+      if (checkValue) {
+        temp = temp + searchString[i];
+        caseSearchList.add(temp.toLowerCase());
+      }
+    }
+    return caseSearchList;
+  }
+
   Future<void> editNews(BuildContext context) async {
     FocusScope.of(context).unfocus();
     isValid = formKey.currentState.validate();
@@ -77,9 +100,22 @@ class NewsEditController extends ControllerMVC {
       });
 
       try {
+        List<String> caseSearchListSaveToFireBase =
+            setSearchParam(titleController.text);
+
         await FirebaseFirestore.instance.collection('news').doc(nid).update({
           'title': titleController.text,
           'content': contentController.text,
+        }).then((_) async {
+          await FirebaseFirestore.instance
+              .collection('search')
+              .doc('adminSearch')
+              .collection('search')
+              .doc(nid)
+              .update({
+            'title': titleController.text,
+            'searchCase': caseSearchListSaveToFireBase.toList()
+          });
         });
 
         if (!clearDone && crossCheck) {
@@ -240,7 +276,18 @@ class NewsEditController extends ControllerMVC {
 
   Future<void> deleteNews(BuildContext context) async {
     try {
-      await FirebaseFirestore.instance.collection('news').doc(nid).delete();
+      await FirebaseFirestore.instance
+          .collection('news')
+          .doc(nid)
+          .delete()
+          .then((_) async {
+        await FirebaseFirestore.instance
+            .collection('search')
+            .doc('adminSearch')
+            .collection('search')
+            .doc(nid)
+            .delete();
+      });
 
       if (imageUrl != null) {
         for (int i = 0; i < imageUrl['length']; i++)

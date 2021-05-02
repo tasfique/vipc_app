@@ -42,6 +42,29 @@ class NewsAddController extends ControllerMVC {
     clearImage();
   }
 
+  setSearchParam(String searchString) {
+    List<String> caseSearchList = [];
+    String temp = "", temp2 = '';
+    bool checkValue = false;
+    for (int i = 0; i < searchString.length; i++) {
+      if (searchString[i] == " ") {
+        if (!checkValue) {
+          temp = temp2;
+          checkValue = true;
+        }
+        temp2 = "";
+      } else {
+        temp2 = temp2 + searchString[i];
+        caseSearchList.add(temp2.toLowerCase());
+      }
+      if (checkValue) {
+        temp = temp + searchString[i];
+        caseSearchList.add(temp.toLowerCase());
+      }
+    }
+    return caseSearchList;
+  }
+
   Future<void> saveArticle(BuildContext context) async {
     FocusScope.of(context).unfocus();
     isValid = formKey.currentState.validate();
@@ -54,10 +77,35 @@ class NewsAddController extends ControllerMVC {
       String time = DateTime.now().toIso8601String().toString();
 
       try {
+        List<String> caseSearchListSaveToFireBase =
+            setSearchParam(titleController.text);
+
         await FirebaseFirestore.instance.collection('news').doc(time).set({
           'title': titleController.text,
           'content': contentController.text,
+        }).then((_) async {
+          await FirebaseFirestore.instance
+              .collection('search')
+              .doc('adminSearch')
+              .collection('search')
+              .doc(time)
+              .set({
+            'title': titleController.text,
+            'type': 'News',
+            'searchCase': caseSearchListSaveToFireBase.toList()
+          });
         });
+
+        // await FirebaseFirestore.instance
+        //     .collection('search').
+        //     .doc('adminSearch')
+        //     .collection('search').set({'title': titleController.text,'type': 'News',});
+
+        //     .set({
+        //   'title': titleController.text,
+        //   'content': contentController.text,
+        // });
+
         if (imageCount == 0) {
           final ref = FirebaseStorage.instance
               .ref()

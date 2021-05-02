@@ -6,9 +6,6 @@ import 'package:vipc_app/view/admin_user_control/user_reset_password_view.dart';
 import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 
 class AdminNotificationView extends StatefulWidget {
-  Function callback;
-
-  AdminNotificationView(this.callback);
   @override
   _AdminNotificationViewState createState() => _AdminNotificationViewState();
 }
@@ -27,17 +24,17 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
     super.initState();
   }
 
-  @override
-  void dispose() {
+  // @override
+  void disposeMethod() {
     _con.getRequestPasswordCount();
-    super.dispose();
+    // super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        dispose();
+        disposeMethod();
         Navigator.of(context).pop();
         return;
       },

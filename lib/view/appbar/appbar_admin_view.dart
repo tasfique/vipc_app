@@ -3,6 +3,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/view/notifications/admin_notification_view.dart';
 import 'package:vipc_app/view/notifications/notifications_view.dart';
+import 'package:vipc_app/view/search/admin_search_view.dart';
 import 'package:vipc_app/view/search/search_view.dart';
 
 class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -24,10 +25,10 @@ class _AdminAppBarState extends StateMVC {
 
   AdminController _con;
 
-  refreshState() {
-    _con.getRequestPasswordCount();
-    setState(() {});
-  }
+  // refreshState() {
+  //   _con.getRequestPasswordCount();
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +48,7 @@ class _AdminAppBarState extends StateMVC {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            AdminNotificationView(refreshState)));
+                        builder: (context) => AdminNotificationView()));
               },
             ),
             _con.requestPasswordCount != 0
@@ -84,7 +84,10 @@ class _AdminAppBarState extends StateMVC {
             Icons.search,
             color: Colors.black,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AdminSearchView()));
+          },
         ),
       ],
     );

@@ -28,11 +28,11 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
     super.initState();
   }
 
-  @override
-  void dispose() async {
+  // @override
+  void disposeMethod() async {
     await _con.setToDefault();
     await _con.app.delete();
-    super.dispose();
+    // super.dispose();
   }
 
   @override
@@ -40,7 +40,7 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        dispose();
+        disposeMethod();
         Navigator.pop(context, true);
         return;
       },

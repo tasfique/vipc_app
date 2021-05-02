@@ -35,7 +35,7 @@ class _AdminPageState extends StateMVC {
   void initState() {
     _con.userList = [];
     _con.newsList = [];
-    _con.requestPasswordCount = 0;
+    // _con.requestPasswordCount = 0;
     // _con.managers = [];
     _con.getRequestPasswordCount();
     super.initState();

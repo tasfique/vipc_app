@@ -100,6 +100,29 @@ class UserEditController extends ControllerMVC {
     return false;
   }
 
+  setSearchParam(String searchString) {
+    List<String> caseSearchList = [];
+    String temp = "", temp2 = '';
+    bool checkValue = false;
+    for (int i = 0; i < searchString.length; i++) {
+      if (searchString[i] == " ") {
+        if (!checkValue) {
+          temp = temp2;
+          checkValue = true;
+        }
+        temp2 = "";
+      } else {
+        temp2 = temp2 + searchString[i];
+        caseSearchList.add(temp2.toLowerCase());
+      }
+      if (checkValue) {
+        temp = temp + searchString[i];
+        caseSearchList.add(temp.toLowerCase());
+      }
+    }
+    return caseSearchList;
+  }
+
   Future<void> editUser(BuildContext context) async {
     FocusScope.of(context).unfocus();
     isValid = formKey.currentState.validate();
@@ -109,6 +132,9 @@ class UserEditController extends ControllerMVC {
           isLoading = true;
         });
         try {
+          List<String> caseSearchListSaveToFireBase =
+              setSearchParam(fullNameController.text.trim());
+
           if (emailController.text != email &&
               (emailController.text.isNotEmpty)) {
             final userData = await FirebaseFirestore.instance
@@ -142,6 +168,16 @@ class UserEditController extends ControllerMVC {
                 //         userPwdController.text != password)
                 //     ? userPwdController.text
                 //     : password
+              }).then((_) async {
+                await FirebaseFirestore.instance
+                    .collection('search')
+                    .doc('adminSearch')
+                    .collection('search')
+                    .doc(uid)
+                    .update({
+                  'fullName': fullNameController.text.trim(),
+                  'searchCase': caseSearchListSaveToFireBase.toList()
+                });
               });
 
               // app2 = await Firebase.initializeApp(
@@ -206,6 +242,16 @@ class UserEditController extends ControllerMVC {
               //         userPwdController.text != password)
               //     ? userPwdController.text
               //     : password
+            }).then((_) async {
+              await FirebaseFirestore.instance
+                  .collection('search')
+                  .doc('adminSearch')
+                  .collection('search')
+                  .doc(uid)
+                  .update({
+                'fullName': fullNameController.text.trim(),
+                'searchCase': caseSearchListSaveToFireBase.toList()
+              });
             });
 
             // if (!(userPwdController.text.isEmpty ||
@@ -257,7 +303,19 @@ class UserEditController extends ControllerMVC {
           .then((value) {
         value.user.delete();
       });
-      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .delete()
+          .then((_) async {
+        await FirebaseFirestore.instance
+            .collection('search')
+            .doc('adminSearch')
+            .collection('search')
+            .doc(uid)
+            .delete();
+      });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

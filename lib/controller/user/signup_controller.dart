@@ -66,6 +66,29 @@ class SignupController extends ControllerMVC {
         name: 'Secondary', options: Firebase.app().options);
   }
 
+  setSearchParam(String searchString) {
+    List<String> caseSearchList = [];
+    String temp = "", temp2 = '';
+    bool checkValue = false;
+    for (int i = 0; i < searchString.length; i++) {
+      if (searchString[i] == " ") {
+        if (!checkValue) {
+          temp = temp2;
+          checkValue = true;
+        }
+        temp2 = "";
+      } else {
+        temp2 = temp2 + searchString[i];
+        caseSearchList.add(temp2.toLowerCase());
+      }
+      if (checkValue) {
+        temp = temp + searchString[i];
+        caseSearchList.add(temp.toLowerCase());
+      }
+    }
+    return caseSearchList;
+  }
+
   Future<void> signupUser(BuildContext context) async {
     FocusScope.of(context).unfocus();
     isValid = formKey.currentState.validate();
@@ -90,6 +113,9 @@ class SignupController extends ControllerMVC {
 
           // await app.delete();
 
+          List<String> caseSearchListSaveToFireBase =
+              setSearchParam(fullNameController.text.trim());
+
           if (!isAdvisor || managers.isEmpty) {
             await FirebaseFirestore.instance
                 .collection('users')
@@ -101,6 +127,17 @@ class SignupController extends ControllerMVC {
               'type': selectedType,
               'assignUnder': '',
               'password': userPwdController.text.trim()
+            }).then((_) async {
+              await FirebaseFirestore.instance
+                  .collection('search')
+                  .doc('adminSearch')
+                  .collection('search')
+                  .doc(userCredential.user.uid)
+                  .set({
+                'fullName': fullNameController.text.trim(),
+                'type': 'User',
+                'searchCase': caseSearchListSaveToFireBase.toList()
+              });
             });
             setState(() {
               isLoading = false;
@@ -118,6 +155,17 @@ class SignupController extends ControllerMVC {
               'type': selectedType,
               'assignUnder': selectedManager,
               'password': userPwdController.text.trim()
+            }).then((_) async {
+              await FirebaseFirestore.instance
+                  .collection('search')
+                  .doc('adminSearch')
+                  .collection('search')
+                  .doc(userCredential.user.uid)
+                  .set({
+                'fullName': fullNameController.text.trim(),
+                'type': 'User',
+                'searchCase': caseSearchListSaveToFireBase.toList()
+              });
             });
             setState(() {
               isLoading = false;

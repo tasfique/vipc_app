@@ -6,6 +6,7 @@ import 'package:vipc_app/view/admin/admin_home_view.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:vipc_app/view/search/admin_search_view.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
 
 Future<void> main() async {

@@ -44,6 +44,9 @@ dependencies:
   flutter_image_compress: ^1.0.0
   firebase_messaging: ^7.0.3
   mailer:
+  # flutter_search_bar: ^2.1.0
+
+  # material_floating_search_bar: ^0.2.6
 
 
   # The following adds the Cupertino Icons font to your application.
