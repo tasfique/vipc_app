@@ -40,11 +40,11 @@ class _EditUserState extends StateMVC<EditUser> {
     super.initState();
   }
 
-  // @override
-  void disposeMethod() async {
+  @override
+  void dispose() async {
     await _con.setToDefault();
     await _con.app.delete();
-    // super.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,7 +52,7 @@ class _EditUserState extends StateMVC<EditUser> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        disposeMethod();
+        dispose();
         Navigator.pop(context, true);
         return false;
       },

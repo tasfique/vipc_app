@@ -24,17 +24,18 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
     super.initState();
   }
 
-  // @override
-  void disposeMethod() {
+  @override
+  void dispose() {
     _con.getRequestPasswordCount();
-    // super.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        disposeMethod();
+        dispose();
         Navigator.of(context).pop();
         return;
       },
@@ -63,6 +64,7 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                   },
                   child: (_check)
                       ? SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
                           child: Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 24.0),
