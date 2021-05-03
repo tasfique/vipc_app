@@ -12,7 +12,6 @@ import 'package:vipc_app/view/prospect/prospect_edit.dart';
 
 class ProspectView extends StatefulWidget {
   ProspectView({key}) : super(key: key);
-
   @override
   _ProspectViewState createState() => _ProspectViewState();
   String dropdownValue = 'Sort by Time';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:vipc_app/controller/home/home_controller.dart';
 import 'package:vipc_app/view/notifications/notifications_view.dart';
 import 'package:vipc_app/view/search/search_view.dart';
 import 'package:vipc_app/view/home/home_view.dart';
@@ -19,8 +21,12 @@ class CustomNavBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomNavBarState createState() => _CustomNavBarState();
 }
 
-class _CustomNavBarState extends State<CustomNavBar> {
-  int _selectedIndex = 0;
+class _CustomNavBarState extends StateMVC {
+  _CustomNavBarState() : super(HomeController()) {
+    _con = HomeController.con;
+  }
+  HomeController _con;
+  // _con.selectedIndex = 0;
   // static const TextStyle optionStyle =
   //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
@@ -30,17 +36,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
     NewsView(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    Center(child: _widgetOptions.elementAt(_selectedIndex));
+    print('sfd');
+
+    Center(child: _widgetOptions.elementAt(_con.selectedIndex));
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
@@ -58,9 +60,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
           label: 'News',
         ),
       ],
-      currentIndex: _selectedIndex,
+      currentIndex: _con.selectedIndex,
       selectedItemColor: Colors.amber,
-      onTap: _onItemTapped,
+      onTap:
+          // widget.func,
+          _con.onItemTapped,
     );
   }
 }

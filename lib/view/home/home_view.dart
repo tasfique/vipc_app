@@ -32,8 +32,22 @@ class _HomeViewState extends StateMVC {
   _HomeViewState() : super(HomeController()) {
     _con = HomeController.con;
   }
-
   HomeController _con;
+
+  // List<Widget> _widgetOptions = <Widget>[
+  //   HomeView(),
+  //   ProspectView(),
+  //   MonitorView(),
+  //   NewsView(),
+  // ];
+
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _con.selectedIndex = index;
+  //   });
+  // }
+  //
+
   double responsiveFontSize = 18; // Default Font Size
   bool pieChartDisplayed = true;
 
@@ -54,6 +68,7 @@ class _HomeViewState extends StateMVC {
 
   @override
   void initState() {
+    _con.selectedIndex = 0;
     super.initState();
     pieChartDisplayed = true;
 
@@ -117,12 +132,11 @@ class _HomeViewState extends StateMVC {
         ),
       );
     }
-
-    //!
   }
 
   @override
   Widget build(BuildContext context) {
+    print('af');
     print(MediaQuery.of(context).size.width);
 
     // CHECKING SCREEN SIZE
@@ -229,253 +243,262 @@ class _HomeViewState extends StateMVC {
 
     return Scaffold(
       appBar: CustomAppBar(),
-      bottomNavigationBar: CustomNavBar(),
       drawer: CustomDrawer(),
-
-      body: Container(
-        // MediaQuery.of(context).size.width
-        // MediaQuery.of(context).size.height
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: GradientColors.lightBlack,
-            // stop:[
-            // 0.6,
-            // 0.7
-            // ]
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
-            child: Column(
-              children: [
-                // maybe here
-                Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Hello, Tasfique Enam',
-                      style: TextStyle(fontSize: responsiveFontSize),
-                    ),
-                  ),
+      bottomNavigationBar: CustomNavBar(),
+      body: _con.selectedIndex == 0
+          ? Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: GradientColors.lightBlack,
                 ),
-
-                // CHART and BAR GRAPHS VIEW
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  //height: MediaQuery.of(context).size.height,
-                  height: 500,
-                  padding: EdgeInsets.all(20),
-                  child: Stack(
+              ),
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
+                  child: Column(
                     children: [
-                      //condition
-                      pieChartDisplayed == true
-                          //if
-                          ? Center(
-                              child: Column(children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  padding: EdgeInsets.all(15),
-                                  child: pieChartWidget,
-                                ),
-                                //for pie chart
-                                Container(
-                                  padding: EdgeInsets.all(1),
-                                  width: MediaQuery.of(context).size.width,
-                                  alignment: Alignment.center,
-                                  child: Text("Weekly Performance Achievement",
-                                      style: TextStyle(
-                                        fontSize: responsiveFontSize,
-                                      )),
-                                )
-                              ]),
-                            )
-                          //else
-                          : Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  //need to remove maybe
-                                  SizedBox(height: 5),
-                                  Container(
-                                    padding: EdgeInsets.all(15),
-                                    width: MediaQuery.of(context).size.width,
-                                    child: barChartWidget,
-                                  ),
-                                  //For bar chart
-                                  Container(
-                                    padding: EdgeInsets.all(5),
-                                    width: MediaQuery.of(context).size.width,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Monthly Performance Achievement",
-                                      style: TextStyle(
-                                        fontSize: responsiveFontSize,
+                      // maybe here
+                      Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Hello, Tasfique Enam',
+                            style: TextStyle(fontSize: responsiveFontSize),
+                          ),
+                        ),
+                      ),
+
+                      // CHART and BAR GRAPHS VIEW
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        //height: MediaQuery.of(context).size.height,
+                        height: 500,
+                        padding: EdgeInsets.all(20),
+                        child: Stack(
+                          children: [
+                            //condition
+                            pieChartDisplayed == true
+                                //if
+                                ? Center(
+                                    child: Column(children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        padding: EdgeInsets.all(15),
+                                        child: pieChartWidget,
                                       ),
-                                    ),
+                                      //for pie chart
+                                      Container(
+                                        padding: EdgeInsets.all(1),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                            "Weekly Performance Achievement",
+                                            style: TextStyle(
+                                              fontSize: responsiveFontSize,
+                                            )),
+                                      )
+                                    ]),
                                   )
-                                ],
+                                //else
+                                : Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        //need to remove maybe
+                                        SizedBox(height: 5),
+                                        Container(
+                                          padding: EdgeInsets.all(15),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: barChartWidget,
+                                        ),
+                                        //For bar chart
+                                        Container(
+                                          padding: EdgeInsets.all(5),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Monthly Performance Achievement",
+                                            style: TextStyle(
+                                              fontSize: responsiveFontSize,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (pieChartDisplayed)
+                                      pieChartDisplayed = false;
+                                  });
+                                },
+                                child: BouncingWidget(
+                                  // duration: Duration(milliseconds: 100),
+                                  scaleFactor: 1.5,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (pieChartDisplayed)
+                                        pieChartDisplayed = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (pieChartDisplayed) pieChartDisplayed = false;
-                            });
-                          },
-                          child: BouncingWidget(
-                            // duration: Duration(milliseconds: 100),
-                            scaleFactor: 1.5,
-                            onPressed: () {
-                              setState(() {
-                                if (pieChartDisplayed)
-                                  pieChartDisplayed = false;
-                              });
-                            },
-                            child: Container(
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                size: 30,
-                                color: Colors.white,
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (!pieChartDisplayed)
+                                      pieChartDisplayed = true;
+                                  });
+                                },
+                                child: BouncingWidget(
+                                  // duration: Duration(milliseconds: 100),
+                                  scaleFactor: 1.5,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (!pieChartDisplayed)
+                                        pieChartDisplayed = true;
+                                    });
+                                  },
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (!pieChartDisplayed) pieChartDisplayed = true;
-                            });
-                          },
-                          child: BouncingWidget(
-                            // duration: Duration(milliseconds: 100),
-                            scaleFactor: 1.5,
-                            onPressed: () {
-                              setState(() {
-                                if (!pieChartDisplayed)
-                                  pieChartDisplayed = true;
-                              });
-                            },
-                            child: Container(
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
-                // BAR GRAPH OF POINTS TO GO AREA
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: new LinearPercentIndicator(
-                    width: MediaQuery.of(context).size.width - 40,
-                    animation: true,
-                    lineHeight: 30.0,
-                    animationDuration: 2000,
-                    percent: 0.65,
-                    center: Text("35 points to go!",
-                        style: TextStyle(
-                          color: Colors.black,
-                        )),
-                    linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: Colors.yellowAccent,
-                  ),
-                ),
-
-                // THREE BUTTONS
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ProspectView();
-                          }));
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(5),
-                          child: const Text('Prospect',
+                      // BAR GRAPH OF POINTS TO GO AREA
+                      Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: new LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 40,
+                          animation: true,
+                          lineHeight: 30.0,
+                          animationDuration: 2000,
+                          percent: 0.65,
+                          center: Text("35 points to go!",
                               style: TextStyle(
-                                fontSize: 17,
+                                color: Colors.black,
                               )),
+                          linearStrokeCap: LinearStrokeCap.butt,
+                          progressColor: Colors.yellowAccent,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return MonitorView();
-                          }));
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(5),
-                          child: const Text('Monitor',
-                              style: TextStyle(fontSize: 17)),
+
+                      // THREE BUTTONS
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ProspectView();
+                                }));
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(5),
+                                child: const Text('Prospect',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                    )),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return MonitorView();
+                                }));
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(5),
+                                child: const Text('Monitor',
+                                    style: TextStyle(fontSize: 17)),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return NewsView();
+                                }));
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(5),
+                                child: const Text('News',
+                                    style: TextStyle(fontSize: 17)),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return NewsView();
-                          }));
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(5),
-                          child: const Text('News',
-                              style: TextStyle(fontSize: 17)),
+
+                      // CARDS
+                      Container(
+                        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        height: MediaQuery.of(context).size.height / 4.5,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: Prospect.prospectCardsForHome.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: Prospect.prospectCardsForHome[index],
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                // CARDS
-                Container(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  height: MediaQuery.of(context).size.height / 4.5,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: Prospect.prospectCardsForHome.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Prospect.prospectCardsForHome[index],
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              ),
+            )
+          : (_con.selectedIndex == 1)
+              ? Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProspectView()))
+              : (_con.selectedIndex == 2)
+                  ? Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MonitorView()))
+                  : Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => NewsView())),
 
       // SizedBox(height: 30),
       // Row(

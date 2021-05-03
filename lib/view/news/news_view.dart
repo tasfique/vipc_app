@@ -27,7 +27,7 @@ class _NewsViewState extends StateMVC<NewsView> {
     bool check = true;
     return Scaffold(
       appBar: CustomAppBar(),
-      bottomNavigationBar: CustomNavBar(),
+      // bottomNavigationBar: CustomNavBar(),
       drawer: CustomDrawer(),
       body: FutureBuilder(
         future: _con.getNews(context),
