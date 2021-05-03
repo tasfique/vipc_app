@@ -62,106 +62,110 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                     });
                   },
                   child: (_check)
-                      ? Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 24.0),
-                          child: Column(
-                            children: [
-                              (_con.userListRequestPassword.length != 0)
-                                  ? ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount:
-                                          _con.userListRequestPassword.length,
-                                      itemBuilder: (context, index) {
-                                        if (index == 0) {
-                                          return Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 25),
-                                                child: Container(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Text(
-                                                    "User Request For Password Reset",
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(top: 15),
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  child: userItemCard(
-                                                      context,
-                                                      _con.userListRequestPassword[
-                                                          index]),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        } else {
-                                          return Padding(
-                                            padding: EdgeInsets.only(top: 15),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              child: userItemCard(
-                                                  context,
-                                                  _con.userListRequestPassword[
-                                                      index]),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    )
-                                  : Column(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 25),
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              "User Request For Password Reset",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 25),
-                                          child: ListView(
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            children: List.generate(
-                                                1,
-                                                (f) => Text(
-                                                      'No User Request For Password Reset',
+                      ? SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 24.0),
+                            child: Column(
+                              children: [
+                                (_con.userListRequestPassword.length != 0)
+                                    ? ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount:
+                                            _con.userListRequestPassword.length,
+                                        itemBuilder: (context, index) {
+                                          if (index == 0) {
+                                            return Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 25),
+                                                  child: Container(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: Text(
+                                                      "User Request For Password Reset",
                                                       style: TextStyle(
                                                         fontSize: 20,
                                                       ),
-                                                    )),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 15),
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    child: userItemCard(
+                                                        context,
+                                                        _con.userListRequestPassword[
+                                                            index]),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: EdgeInsets.only(top: 15),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: userItemCard(
+                                                    context,
+                                                    _con.userListRequestPassword[
+                                                        index]),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      )
+                                    : Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 25),
+                                            child: Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                "User Request For Password Reset",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        // Padding(
-                                        //   padding: EdgeInsets.only(top: 30),
-                                        //   child: Container(
-                                        //     alignment: Alignment.topLeft,
-                                        //     child: Text(
-                                        //       'No User Request For Password Reset',
-                                        //       style: TextStyle(
-                                        //         fontSize: 15,
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                      ],
-                                    )
-                            ],
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 25),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.vertical,
+                                              children: List.generate(
+                                                  1,
+                                                  (f) => Text(
+                                                        'No User Request For Password Reset',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                        ),
+                                                      )),
+                                            ),
+                                          ),
+                                          // Padding(
+                                          //   padding: EdgeInsets.only(top: 30),
+                                          //   child: Container(
+                                          //     alignment: Alignment.topLeft,
+                                          //     child: Text(
+                                          //       'No User Request For Password Reset',
+                                          //       style: TextStyle(
+                                          //         fontSize: 15,
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                        ],
+                                      )
+                              ],
+                            ),
                           ),
                         )
                       : Center(

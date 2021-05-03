@@ -32,7 +32,7 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
       child: Scaffold(
         // appBar: CustomAppBar(),
         appBar: AppBar(
-          title: Text('News Details'),
+          title: Text('News Detail'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(true),
@@ -52,7 +52,7 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "News Details",
+                      "News Detail",
                       style: TextStyle(
                         fontSize: 20,
                       ),
