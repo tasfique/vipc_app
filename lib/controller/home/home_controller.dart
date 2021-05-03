@@ -14,6 +14,14 @@ class HomeController extends ControllerMVC {
   HomeController._();
 
   static HomeController get con => _this;
+  int selectedIndex;
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+    print(selectedIndex);
+  }
 
   Future<Member> fetchMember() async {
     final url = 'https://jsonplaceholder.typicode.com/users/1';
