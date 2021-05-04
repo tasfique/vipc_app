@@ -21,6 +21,7 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
   @override
   void initState() {
     _con.userListRequestPassword = [];
+
     super.initState();
   }
 

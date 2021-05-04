@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vipc_app/view/admin/admin_home_view.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:vipc_app/view/notifications/admin_notification_view.dart';
 import 'package:vipc_app/view/search/admin_search_view.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
 
@@ -47,7 +49,57 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class VipC extends StatelessWidget {
+class VipC extends StatefulWidget {
+  @override
+  _VipCState createState() => _VipCState();
+}
+
+class _VipCState extends State<VipC> {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  _saveDeviceToken() async {
+    String fcmToken = await _fcm.getToken();
+
+    print('Token:  $fcmToken');
+  }
+
+  @override
+  void initState() {
+    _saveDeviceToken();
+    _fcm.configure(onMessage: (Map<String, dynamic> message) async {
+      print('onMessage: $message');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: ListTile(
+            title: Text(message['notification']['title']),
+            subtitle: Text(message['notification']['body']),
+          ),
+          actions: [
+            TextButton(
+              child: Text('ok'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
+    }, onResume: (Map<String, dynamic> message) async {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdminPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => AdminNotificationView()));
+      print('on resume $message');
+    }, onLaunch: (Map<String, dynamic> message) async {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdminPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => AdminNotificationView()));
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // return MultiProvider(

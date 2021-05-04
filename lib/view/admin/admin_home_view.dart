@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -30,9 +32,12 @@ class _AdminPageState extends StateMVC {
   bool check = true;
   bool check2 = true;
   // int selectedIndex = 0;
+  //
+  //
 
   @override
   void initState() {
+    //
     _con.userList = [];
     _con.newsList = [];
     // _con.requestPasswordCount = 0;
