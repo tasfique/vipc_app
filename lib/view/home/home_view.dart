@@ -226,6 +226,10 @@ class _HomeViewState extends StateMVC {
         ),
       ),
       chartValuesOptions: ChartValuesOptions(
+        chartValueStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.black,
+            backgroundColor: Colors.transparent),
         showChartValueBackground: true,
         showChartValues: true,
         showChartValuesInPercentage: true,

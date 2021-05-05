@@ -29,11 +29,10 @@ class _MonitorDetailsViewState extends StateMVC {
       "Complete": 500,
       "Incomplete": _con.totalPoints[_con.selectedIndex].toDouble(),
     };
+    //PIE CHART
     List<Color> colorList = [
-      Colors.red,
       Colors.green,
-      Colors.blue,
-      Colors.yellow,
+      Colors.red,
     ];
 
     // BAR GRAPH
@@ -61,28 +60,61 @@ class _MonitorDetailsViewState extends StateMVC {
     var chart = charts.BarChart(
       series,
       animate: true,
+      vertical: false,
+      animationDuration: Duration(milliseconds: 750),
+      //not sure what this is code is supposed to do below.
+      //defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
+
+      // barGroupingType: charts.BarGroupingType.stacked,
+      domainAxis: new charts.OrdinalAxisSpec(
+          renderSpec: new charts.SmallTickRendererSpec(
+
+              // Tick and Label styling here.
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 16, // size in Pts.
+                  color: charts.MaterialPalette.white),
+
+              // Change the line colors to match text color.
+              lineStyle: new charts.LineStyleSpec(
+                  color: charts.MaterialPalette.white))),
+      // Assign a custom style for the measure axis.
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+          renderSpec: new charts.GridlineRendererSpec(
+
+              // Tick and Label styling here. for 0 to 100
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 16, // size in Pts.
+                  color: charts.MaterialPalette.white),
+
+              // Change the line colors to match text color.
+              lineStyle: new charts.LineStyleSpec(
+                  color: charts.MaterialPalette.white))),
     );
 
     var pieChartWidget = PieChart(
       dataMap: dataMap,
-      animationDuration: Duration(milliseconds: 800),
-      chartLegendSpacing: 32,
+      animationDuration: Duration(milliseconds: 1500),
+      chartLegendSpacing: 20,
       // chartRadius: MediaQuery.of(context).size.width / 2,
       colorList: colorList,
-      initialAngleInDegree: 0,
+      initialAngleInDegree: 20,
       chartType: ChartType.disc,
-      // ringStrokeWidth: 32,
+      //ringStrokeWidth: 32,
       centerText: "Performance",
       legendOptions: LegendOptions(
         showLegendsInRow: true,
         legendPosition: LegendPosition.bottom,
         showLegends: true,
-        // legendShape: _BoxShape.circle,
         legendTextStyle: TextStyle(
           fontWeight: FontWeight.bold,
+          //fontSize: 10,
         ),
       ),
       chartValuesOptions: ChartValuesOptions(
+        chartValueStyle: TextStyle(
+            fontSize: 17,
+            color: Colors.black,
+            backgroundColor: Colors.transparent),
         showChartValueBackground: true,
         showChartValues: true,
         showChartValuesInPercentage: true,
@@ -92,7 +124,8 @@ class _MonitorDetailsViewState extends StateMVC {
 
     var barChartWidget = Container(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 3.5,
+        height: MediaQuery.of(context).size.height / 3.0,
+        //width: MediaQuery.of(context).size.width / 10.0,
         child: chart,
       ),
     );
@@ -120,6 +153,14 @@ class _MonitorDetailsViewState extends StateMVC {
                   ),
                 ),
               ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  width: MediaQuery.of(context).size.width / 0.8,
+                  child: pieChartWidget,
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(25),
                 child: Container(
@@ -136,24 +177,27 @@ class _MonitorDetailsViewState extends StateMVC {
                 alignment: Alignment.center,
                 child: Container(
                   padding: EdgeInsets.all(15),
-                  width: MediaQuery.of(context).size.width / 1.5,
-                  child: pieChartWidget,
+                  width: MediaQuery.of(context).size.width / 0.8,
+                  child: barChartWidget,
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
+              Padding(
+                padding: EdgeInsets.all(25),
                 child: Container(
-                  padding: EdgeInsets.all(15),
-                  width: MediaQuery.of(context).size.width / 1.5,
-                  child: barChartWidget,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Weekly Performance",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  "Weekly Average: " +
-                      _con.weeklyAvgPoints[_con.selectedIndex].toString() +
-                      " pts",
+                  "Average Weekly Points: " +
+                      _con.weeklyAvgPoints[_con.selectedIndex].toString(),
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -162,9 +206,8 @@ class _MonitorDetailsViewState extends StateMVC {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  "Total: " +
-                      _con.totalPoints[_con.selectedIndex].toString() +
-                      " pts",
+                  "Total Points: " +
+                      _con.totalPoints[_con.selectedIndex].toString(),
                   style: TextStyle(
                     fontSize: 20,
                   ),
