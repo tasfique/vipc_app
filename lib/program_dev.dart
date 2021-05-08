@@ -45,11 +45,14 @@ class MyApp extends StatelessWidget {
             displayColor: Colors.amberAccent,
           ),
         ),
-        home: VipC());
+        home: VipC(null));
   }
 }
 
 class VipC extends StatefulWidget {
+  final RemoteMessage message;
+  VipC(this.message);
+
   @override
   _VipCState createState() => _VipCState();
 }
@@ -57,8 +60,9 @@ class VipC extends StatefulWidget {
 class _VipCState extends State<VipC> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  final FirebaseMessaging _fcm = FirebaseMessaging();
-
+  // final FirebaseMessaging _fcm = FirebaseMessaging();
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  int _count = 0;
   _saveDeviceToken() async {
     String fcmToken = await _fcm.getToken();
 
@@ -67,36 +71,122 @@ class _VipCState extends State<VipC> {
 
   @override
   void initState() {
-    _saveDeviceToken();
-    _fcm.configure(onMessage: (Map<String, dynamic> message) async {
-      print('onMessage: $message');
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: ListTile(
-            title: Text(message['notification']['title']),
-            subtitle: Text(message['notification']['body']),
+    print(_count);
+    Future.delayed(Duration.zero, () {
+      if (widget.message != null) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(widget.message.notification.title),
+              subtitle: Text(widget.message.notification.body),
+            ),
+            actions: [
+              TextButton(
+                child: Text('ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
           ),
-          actions: [
-            TextButton(
-              child: Text('ok'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-        ),
-      );
-    }, onResume: (Map<String, dynamic> message) async {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AdminPage()));
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AdminNotificationView()));
-      print('on resume $message');
-    }, onLaunch: (Map<String, dynamic> message) async {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AdminPage()));
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AdminNotificationView()));
+        );
+      }
     });
+
+    _saveDeviceToken();
+
+    if (_count == 0) {
+      _count++;
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(_count);
+        print('testonmessage');
+
+        // print('Got a message whilst in the foreground!');
+        // print('Message data: ${message.data}');
+
+        // if (message.notification != null) {
+        //   print('Message also contained a notification: ${message.notification}');
+        // }
+
+        // print('onMessage: ${message.data}');
+        if (_count == 1) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: ListTile(
+                title: Text(message.notification.title),
+                subtitle: Text(message.notification.body),
+              ),
+              actions: [
+                TextButton(
+                    child: Text('ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      // print(_count);
+                      _count = 0;
+                      // print(_count);
+                      // Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
+                    }
+                    // if (message.data['click_action'] !=
+                    //     'FLUTTER_NOTIFICATION_CLICK')
+                    //   Navigator.of(context).pop();
+                    // else {
+                    //   Navigator.of(context).pop();
+                    //   Navigator.of(context).pop();
+                    //   Navigator.of(context).pop();
+                    // }
+                    // },
+                    )
+              ],
+            ),
+          );
+        }
+        _count++;
+      });
+    }
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('testonmessageopenapp');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => VipC(message)));
+    });
+
+    FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+      await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => VipC(message)));
+    });
+
+    // _fcm.configure(onMessage: (Map<String, dynamic> message) async {
+    //   print('onMessage: $message');
+    //   showDialog(
+    //     context: context,
+    //     builder: (context) => AlertDialog(
+    //       content: ListTile(
+    //         title: Text(message['notification']['title']),
+    //         subtitle: Text(message['notification']['body']),
+    //       ),
+    //       actions: [
+    //         TextButton(
+    //           child: Text('ok'),
+    //           onPressed: () => Navigator.of(context).pop(),
+    //         )
+    //       ],
+    //     ),
+    //   );
+    // }, onResume: (Map<String, dynamic> message) async {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => AdminPage()));
+    //   Navigator.push(context,
+    //       MaterialPageRoute(builder: (context) => AdminNotificationView()));
+    //   print('on resume $message');
+    // }, onLaunch: (Map<String, dynamic> message) async {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => AdminPage()));
+    //   Navigator.push(context,
+    //       MaterialPageRoute(builder: (context) => AdminNotificationView()));
+    // });
     super.initState();
   }
 

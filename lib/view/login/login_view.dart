@@ -173,7 +173,7 @@ class _LoginViewState extends StateMVC {
               textInputAction: TextInputAction.done,
               style: TextStyle(color: Colors.white),
               validator: (value) {
-                if (value.isEmpty || value.length < 8) {
+                if (value.isEmpty || value.length < 6) {
                   return 'Please enter password.';
                 }
                 return null;

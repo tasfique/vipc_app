@@ -491,8 +491,8 @@ class _EditUserState extends StateMVC<EditUser> {
   //           textInputAction: TextInputAction.next,
   //           style: TextStyle(color: Colors.white),
   //           // validator: (value) {
-  //           //   if (value.isEmpty || value.length < 8) {
-  //           //     return 'Please enter password with at least 8 characters long.';
+  //           //   if (value.isEmpty || value.length < 6) {
+  //           //     return 'Please enter password with at least 6 characters long.';
   //           //   }
   //           //   return null;
   //           // },
