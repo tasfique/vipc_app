@@ -58,11 +58,11 @@ class VipC extends StatefulWidget {
 }
 
 class _VipCState extends State<VipC> {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // final FirebaseMessaging _fcm = FirebaseMessaging();
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  int _count = 0;
+  static int _count = 0;
   _saveDeviceToken() async {
     String fcmToken = await _fcm.getToken();
 
@@ -71,7 +71,6 @@ class _VipCState extends State<VipC> {
 
   @override
   void initState() {
-    print(_count);
     Future.delayed(Duration.zero, () {
       if (widget.message != null) {
         showDialog(
@@ -90,18 +89,18 @@ class _VipCState extends State<VipC> {
               )
             ],
           ),
-        );
+        ).then((value) => _count = 0);
       }
     });
 
-    _saveDeviceToken();
-
     if (_count == 0) {
-      _count++;
-
+      // print('initial $_count');
+      // _count++;
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print(_count);
-        print('testonmessage');
+        // print(_count);
+        _count++;
+        // print('new count $_count');
+        // print('testonmessage');
 
         // print('Got a message whilst in the foreground!');
         // print('Message data: ${message.data}');
@@ -124,9 +123,9 @@ class _VipCState extends State<VipC> {
                     child: Text('ok'),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      // print(_count);
-                      _count = 0;
-                      // print(_count);
+
+                      // _count = 0;
+
                       // Navigator.of(context).pop();
                       // Navigator.of(context).pop();
                     }
@@ -142,11 +141,20 @@ class _VipCState extends State<VipC> {
                     )
               ],
             ),
-          );
+          ).then((value) {
+            Future.delayed(Duration(milliseconds: 100), () {
+              _count = 0;
+              // print('count now is $_count');
+            });
+          });
         }
         _count++;
+        // print(_count);
       });
+      // _count++;
+      // print(_count);
     }
+
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('testonmessageopenapp');
       Navigator.push(
@@ -187,6 +195,9 @@ class _VipCState extends State<VipC> {
     //   Navigator.push(context,
     //       MaterialPageRoute(builder: (context) => AdminNotificationView()));
     // });
+
+    _saveDeviceToken();
+
     super.initState();
   }
 
