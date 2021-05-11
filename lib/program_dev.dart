@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vipc_app/view/admin/admin_home_view.dart';
-import 'package:vipc_app/view/home/home_view.dart';
+import 'package:vipc_app/view/home/advisor_view.dart';
+import 'package:vipc_app/view/home/manager_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
@@ -185,9 +186,9 @@ class _VipCState extends State<VipC> {
                 if (user['type'] == 'Admin') {
                   return AdminPage();
                 } else if (user['type'] == 'Manager') {
-                  return HomeView();
+                  return ManagerView();
                 } else if (user['type'] == 'Advisor') {
-                  return HomeView();
+                  return AdvisorView();
                 }
               }
               return LoginView();

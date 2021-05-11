@@ -5,22 +5,21 @@ import 'package:vipc_app/model/member.dart';
 import 'dart:async';
 import 'dart:convert';
 
-class HomeController extends ControllerMVC {
-  factory HomeController() {
-    if (_this == null) _this = HomeController._();
+class AdvisorController extends ControllerMVC {
+  factory AdvisorController() {
+    if (_this == null) _this = AdvisorController._();
     return _this;
   }
-  static HomeController _this;
-  HomeController._();
+  static AdvisorController _this;
+  AdvisorController._();
 
-  static HomeController get con => _this;
+  static AdvisorController get con => _this;
   int selectedIndex;
 
   void onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
-    print(selectedIndex);
   }
 
   Future<Member> fetchMember() async {

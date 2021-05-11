@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/login/login_view.dart';
-import 'package:vipc_app/view/home/home_view.dart';
+import 'package:vipc_app/view/home/advisor_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:vipc_app/view/settings/settings_view.dart';
 import 'package:vipc_app/view/monitor/monitor_view.dart';
@@ -55,7 +55,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return HomeView();
+                return AdvisorView();
               }));
             },
           ),

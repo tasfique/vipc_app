@@ -1,9 +1,8 @@
 // If the role is manager, there should be one more button 'monitor' in the middle.
-
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/constants/font_constants.dart';
-import 'package:vipc_app/controller/home/home_controller.dart';
+import 'package:vipc_app/controller/home/advisor_controller.dart';
 // import for charts.
 import 'package:vipc_app/model/chart_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -14,7 +13,6 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 //
 import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
@@ -22,31 +20,24 @@ import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 
-class HomeView extends StatefulWidget {
-  HomeView({key}) : super(key: key);
+class ManagerView extends StatefulWidget {
+  ManagerView({key}) : super(key: key);
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _ManagerViewState createState() => _ManagerViewState();
 }
 
-class _HomeViewState extends StateMVC {
-  _HomeViewState() : super(HomeController()) {
-    _con = HomeController.con;
+class _ManagerViewState extends StateMVC {
+  _ManagerViewState() : super(AdvisorController()) {
+    _con = AdvisorController.con;
   }
-  HomeController _con;
+  AdvisorController _con;
 
-  // List<Widget> _widgetOptions = <Widget>[
-  //   HomeView(),
-  //   ProspectView(),
-  //   MonitorView(),
-  //   NewsView(),
-  // ];
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _con.selectedIndex = index;
-  //   });
-  // }
-  //
+  List<Widget> _widgetOptions = <Widget>[
+    ManagerView(),
+    ProspectView(),
+    MonitorView(),
+    NewsView(),
+  ];
 
   double responsiveFontSize = 18; // Default Font Size
   bool pieChartDisplayed = true;
@@ -69,8 +60,8 @@ class _HomeViewState extends StateMVC {
   @override
   void initState() {
     _con.selectedIndex = 0;
-    super.initState();
     pieChartDisplayed = true;
+    super.initState();
 
     // LIST VIEW OF CARDS
     Prospect.prospectCardsForHome.clear();
@@ -109,7 +100,7 @@ class _HomeViewState extends StateMVC {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       const SizedBox(width: 8),
-                      FlatButton(
+                      TextButton(
                         child: const Text('More Info..'),
                         onPressed: () {
                           Navigator.push(
@@ -136,7 +127,9 @@ class _HomeViewState extends StateMVC {
 
   @override
   Widget build(BuildContext context) {
-    print('af');
+    Center(child: _widgetOptions.elementAt(_con.selectedIndex));
+
+    print('testAdvisor');
     print(MediaQuery.of(context).size.width);
 
     // CHECKING SCREEN SIZE
@@ -248,7 +241,29 @@ class _HomeViewState extends StateMVC {
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
-      bottomNavigationBar: CustomNavBar(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Prospect',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.supervisor_account),
+            label: 'Monitor',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.my_library_books),
+            label: 'News',
+          ),
+        ],
+        currentIndex: _con.selectedIndex,
+        selectedItemColor: Colors.amber,
+        onTap: _con.onItemTapped,
+      ),
       body: _con.selectedIndex == 0
           ? Container(
               height: double.infinity,
@@ -542,5 +557,70 @@ class _HomeViewState extends StateMVC {
       //   ],
       // ),
     );
+  }
+
+  Widget newsContainer() {
+    // return FutureBuilder(
+    //   future: _con.getNews(context),
+    //   builder: (context, snapshot) => snapshot.connectionState ==
+    //           ConnectionState.waiting
+    //       ? Center(child: CircularProgressIndicator())
+    //       : RefreshIndicator(
+    //           onRefresh: () async {
+    //             setState(() {
+    //               check = false;
+    //             });
+    //             _con.getNews(context);
+    //             setState(() {
+    //               check = true;
+    //             });
+    //           },
+    //           child: (check)
+    //               ? Container(
+    //                   padding: EdgeInsets.symmetric(
+    //                       horizontal: 16.0, vertical: 24.0),
+    //                   child: ListView.builder(
+    //                     scrollDirection: Axis.vertical,
+    //                     itemCount: _con.newsList.length,
+    //                     itemBuilder: (context, index) {
+    //                       if (index == 0) {
+    //                         return Column(
+    //                           children: [
+    //                             Padding(
+    //                               padding: EdgeInsets.only(left: 25),
+    //                               child: Container(
+    //                                 alignment: Alignment.centerLeft,
+    //                                 child: Text(
+    //                                   "VIPC News",
+    //                                   style: TextStyle(
+    //                                     fontSize: 20,
+    //                                   ),
+    //                                 ),
+    //                               ),
+    //                             ),
+    //                             Padding(
+    //                               padding: EdgeInsets.only(top: 15),
+    //                               child: Container(
+    //                                 alignment: Alignment.center,
+    //                                 child: newsItemCard(_con.newsList[index]),
+    //                               ),
+    //                             ),
+    //                           ],
+    //                         );
+    //                       } else {
+    //                         return Padding(
+    //                           padding: EdgeInsets.only(top: 15),
+    //                           child: Container(
+    //                             alignment: Alignment.center,
+    //                             child: newsItemCard(_con.newsList[index]),
+    //                           ),
+    //                         );
+    //                       }
+    //                     },
+    //                   ),
+    //                 )
+    //               : Center(child: CircularProgressIndicator()),
+    //         ),
+    // );
   }
 }

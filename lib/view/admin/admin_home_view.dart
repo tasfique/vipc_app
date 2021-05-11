@@ -94,12 +94,12 @@ class _AdminPageState extends StateMVC {
           onTap: (val) {
             setState(() => _con.selectedIndex = val);
           },
-          showSelectedLabels: false,
+          showSelectedLabels: true,
           showUnselectedLabels: false,
           items: [
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.article,
+                Icons.my_library_books,
                 color:
                     _con.selectedIndex == 0 ? Colors.amber[320] : Colors.white,
               ),

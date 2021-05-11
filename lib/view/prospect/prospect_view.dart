@@ -170,7 +170,7 @@ class _ProspectViewState extends StateMVC {
     //String dropdownValue = 'Sort by Time';
     return Scaffold(
       appBar: CustomAppBar(),
-      bottomNavigationBar: CustomNavBar(),
+      // bottomNavigationBar: CustomNavBar(),
       drawer: CustomDrawer(),
       body: Container(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
