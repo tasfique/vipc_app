@@ -1,15 +1,9 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:provider/provider.dart';
-import 'package:vipc_app/view/admin/admin_home_view.dart';
 import 'package:http/http.dart' as http;
 
 class AdminController extends ControllerMVC {

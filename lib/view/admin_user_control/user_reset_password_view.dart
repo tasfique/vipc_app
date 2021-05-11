@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/user/user_reset_password_controller.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 
 class ResetPassword extends StatefulWidget {
   final Usr user;

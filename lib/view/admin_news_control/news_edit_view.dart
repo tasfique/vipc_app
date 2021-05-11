@@ -4,9 +4,6 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/news/news_edit_controller.dart';
 import 'package:vipc_app/model/news.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/admin/admin_home_view.dart';
 
 class EditNews extends StatefulWidget {
   final News oneNew;
