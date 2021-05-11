@@ -11,9 +11,7 @@ import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/monitor/monitor_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
-import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
@@ -31,38 +29,39 @@ class _AdvisorViewState extends StateMVC {
   AdvisorController _con;
 
   double responsiveFontSize = 18; // Default Font Size
-  bool pieChartDisplayed;
+  int chartIndex;
   bool check = true;
+  bool checkHome = true;
 
   var series = [
     charts.Series(
-      domainFn: (MonthlyPointBarChart clickData, _) => clickData.month,
-      measureFn: (MonthlyPointBarChart clickData, _) => clickData.point,
-      colorFn: (MonthlyPointBarChart clickData, _) => clickData.color,
-      id: 'month',
-      data: [
-        MonthlyPointBarChart('Jan', 30, Colors.pink),
-        MonthlyPointBarChart('Feb', 92, Colors.red),
-        MonthlyPointBarChart('Mar', 49, Colors.orange),
-        MonthlyPointBarChart('Apr', 30, Colors.orangeAccent),
-        MonthlyPointBarChart('May', 20, Colors.limeAccent),
-        MonthlyPointBarChart('Jun', 30, Colors.lightGreenAccent),
-        MonthlyPointBarChart('Jul', 40, Colors.green),
-        MonthlyPointBarChart('Aug', 25, Colors.cyan),
-        MonthlyPointBarChart('Sep', 23, Colors.blue),
-        MonthlyPointBarChart('Oct', 85, Colors.indigo),
-        MonthlyPointBarChart('Nov', 30, Colors.deepPurple),
-        MonthlyPointBarChart('Dec', 55, Colors.purple),
-      ],
-    ),
+        domainFn: (MonthlyPointBarChart clickData, _) => clickData.month,
+        measureFn: (MonthlyPointBarChart clickData, _) => clickData.point,
+        colorFn: (MonthlyPointBarChart clickData, _) => clickData.color,
+        id: 'month',
+        data: [
+          MonthlyPointBarChart('Jan', 30, Colors.pink),
+          MonthlyPointBarChart('Feb', 92, Colors.red),
+          MonthlyPointBarChart('Mar', 49, Colors.orange),
+          MonthlyPointBarChart('Apr', 30, Colors.orangeAccent),
+          MonthlyPointBarChart('May', 20, Colors.limeAccent),
+          MonthlyPointBarChart('Jun', 30, Colors.lightGreenAccent),
+          MonthlyPointBarChart('Jul', 40, Colors.green),
+          MonthlyPointBarChart('Aug', 25, Colors.cyan),
+          MonthlyPointBarChart('Sep', 23, Colors.blue),
+          MonthlyPointBarChart('Oct', 85, Colors.indigo),
+          MonthlyPointBarChart('Nov', 30, Colors.deepPurple),
+          MonthlyPointBarChart('Dec', 55, Colors.purple),
+        ],
+        labelAccessorFn: (MonthlyPointBarChart row, _) =>
+            row.point != 0 ? '${row.point}' : ''),
   ];
 
   @override
   void initState() {
     _con.selectedIndex = 0;
+    chartIndex = 0;
     _con.newsList = [];
-
-    pieChartDisplayed = true;
     super.initState();
 
     // LIST VIEW OF CARDS
@@ -133,6 +132,8 @@ class _AdvisorViewState extends StateMVC {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context);
+
     print('testAdvisor');
     return Scaffold(
       appBar: CustomAppBar(),
@@ -174,291 +175,335 @@ class _AdvisorViewState extends StateMVC {
         ),
       ),
       body: _con.selectedIndex == 0
-          ? home()
+          ? home(screenSize)
           : _con.selectedIndex == 1
               ? prospect()
               : news(),
     );
   }
 
-  Widget home() {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: GradientColors.lightBlack,
-        ),
-      ),
-      child: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Column(
-            children: [
-              // maybe here
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Hello, Tasfique Enam',
-                    style: TextStyle(fontSize: FontConstants.fontMediumSize),
-                  ),
-                ),
-              ),
-
-              // CHART and BAR GRAPHS VIEW
-              Container(
-                width: MediaQuery.of(context).size.width,
-                //height: MediaQuery.of(context).size.height,
-                height: 500,
-                padding: EdgeInsets.all(20),
-                child: Stack(
-                  children: [
-                    //condition
-                    pieChartDisplayed == true
-                        //if
-                        ? Center(
-                            child: Column(children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                padding: EdgeInsets.all(15),
-                                child: PieChart(
-                                  dataMap: {
-                                    "Week 1": 5,
-                                    "Week 2": 3,
-                                    "Week 3": 2,
-                                    "Week 4": 2,
-                                  },
-                                  animationDuration:
-                                      Duration(milliseconds: 1500),
-                                  chartLegendSpacing: 20,
-                                  // chartRadius: MediaQuery.of(context).size.width / 2,
-                                  colorList: [
-                                    Colors.red,
-                                    Colors.green,
-                                    Colors.blue,
-                                    Colors.yellow,
-                                  ],
-                                  initialAngleInDegree: 0,
-                                  chartType: ChartType.disc,
-                                  //ringStrokeWidth: 50,
-                                  //centerText: "Performance",
-                                  legendOptions: LegendOptions(
-                                    showLegendsInRow: true,
-                                    legendPosition: LegendPosition.bottom,
-                                    showLegends: true,
-                                    // legendShape: _BoxShape.circle,
-                                    legendTextStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  chartValuesOptions: ChartValuesOptions(
-                                    chartValueStyle: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black,
-                                        backgroundColor: Colors.transparent),
-                                    showChartValueBackground: true,
-                                    showChartValues: true,
-                                    showChartValuesInPercentage: true,
-                                    showChartValuesOutside: false,
-                                  ),
+  Widget home(MediaQueryData screenSize) {
+    return FutureBuilder(
+      // TODO : fix this
+      future: null,
+      // future: _con.getNews(context),
+      builder: (context, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  checkHome = false;
+                });
+                _con.getNews(context);
+                setState(() {
+                  checkHome = true;
+                });
+              },
+              child: (checkHome)
+                  ? Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: GradientColors.lightBlack,
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Hello, Tasfique Enam',
+                                  style: TextStyle(
+                                      fontSize: FontConstants.fontMediumSize),
                                 ),
                               ),
-                              //for pie chart
-                              Container(
-                                padding: EdgeInsets.all(1),
-                                width: MediaQuery.of(context).size.width,
-                                alignment: Alignment.center,
-                                child: Text("Weekly Performance Achievement",
-                                    style: TextStyle(
-                                      fontSize: FontConstants.fontMediumSize,
-                                    )),
-                              )
-                            ]),
-                          )
-                        //else
-                        : Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                //need to remove maybe
-                                SizedBox(height: 5),
-                                Container(
-                                  padding: EdgeInsets.all(15),
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Container(
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              1.8,
-                                      child: charts.BarChart(
-                                        series,
-                                        animate: true,
-                                        vertical: false,
-                                        animationDuration:
-                                            Duration(milliseconds: 750),
-                                        //not sure what this is code is supposed to do below.
-                                        //defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
+                            ),
 
-                                        // barGroupingType: charts.BarGroupingType.stacked,
-                                        domainAxis: new charts.OrdinalAxisSpec(
-                                            renderSpec: new charts
-                                                    .SmallTickRendererSpec(
-
-                                                // Tick and Label styling here.
-                                                labelStyle:
-                                                    new charts.TextStyleSpec(
-                                                        fontSize:
-                                                            16, // size in Pts.
-                                                        color: charts
-                                                            .MaterialPalette
-                                                            .white),
-
-                                                // Change the line colors to match text color.
-                                                lineStyle:
-                                                    new charts.LineStyleSpec(
-                                                        color: charts
-                                                            .MaterialPalette
-                                                            .white))),
-                                        // Assign a custom style for the measure axis.
-                                        primaryMeasureAxis: new charts
-                                                .NumericAxisSpec(
-                                            renderSpec: new charts
-                                                    .GridlineRendererSpec(
-
-                                                // Tick and Label styling here. for 0 to 100
-                                                labelStyle:
-                                                    new charts.TextStyleSpec(
-                                                        fontSize:
-                                                            16, // size in Pts.
-                                                        color: charts
-                                                            .MaterialPalette
-                                                            .white),
-
-                                                // Change the line colors to match text color.
-                                                lineStyle:
-                                                    new charts.LineStyleSpec(
-                                                        color: charts
-                                                            .MaterialPalette
-                                                            .white))),
+                            // CHART and BAR GRAPHS VIEW
+                            Container(
+                              width: screenSize.size.width,
+                              height: screenSize.size.height * 0.6,
+                              // height: 500,
+                              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GestureDetector(
+                                      child: BouncingWidget(
+                                        scaleFactor: 1.5,
+                                        onPressed: () {
+                                          setState(() {
+                                            if (chartIndex == 0)
+                                              chartIndex = 2;
+                                            else
+                                              chartIndex -= 1;
+                                          });
+                                        },
+                                        child: Container(
+                                          child: Icon(
+                                            Icons.arrow_back_ios,
+                                            size: 30,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                //For bar chart
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  width: MediaQuery.of(context).size.width,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Monthly Performance Achievement",
-                                    style: TextStyle(
-                                      fontSize: FontConstants.fontMediumSize,
+                                  chartIndex == 0
+                                      ? Center(
+                                          child: Column(children: [
+                                            Container(
+                                              height:
+                                                  screenSize.size.height * 0.5,
+                                              width:
+                                                  screenSize.size.width * 0.9,
+                                              padding: EdgeInsets.all(10),
+                                              child: PieChart(
+                                                dataMap: {
+                                                  " Week 1 ": 5,
+                                                  " Week 2 ": 3,
+                                                  " Week 3 ": 2,
+                                                  " Week 4 ": 2,
+                                                },
+                                                animationDuration:
+                                                    Duration(milliseconds: 700),
+                                                chartLegendSpacing: 20,
+                                                // chartRadius:
+                                                //     MediaQuery.of(context).size.width / 2,
+                                                colorList: [
+                                                  Colors.red,
+                                                  Colors.green,
+                                                  Colors.blue,
+                                                  Colors.yellow,
+                                                ],
+                                                initialAngleInDegree: 0,
+                                                // chartType: ChartType.disc,
+                                                // ringStrokeWidth: 50,
+                                                // centerText: "Performance",
+                                                legendOptions: LegendOptions(
+                                                  showLegendsInRow: true,
+                                                  legendPosition:
+                                                      LegendPosition.bottom,
+                                                  showLegends: true,
+                                                  // legendShape: _BoxShape.circle,
+                                                  legendTextStyle: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      wordSpacing: 10,
+                                                      fontSize: 18),
+                                                ),
+                                                chartValuesOptions:
+                                                    ChartValuesOptions(
+                                                  chartValueStyle: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.black,
+                                                      backgroundColor:
+                                                          Colors.transparent),
+                                                  showChartValueBackground:
+                                                      true,
+                                                  showChartValues: true,
+                                                  showChartValuesInPercentage:
+                                                      false,
+                                                  // showChartValuesOutside: false,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  top: screenSize.size.height *
+                                                      0.02),
+                                              width: screenSize.size.width,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                  "Weekly Performance Achievement",
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                  )),
+                                            )
+                                          ]),
+                                        )
+                                      : chartIndex == 1
+                                          ? Center(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            15, 0, 15, 0),
+                                                    width:
+                                                        screenSize.size.width *
+                                                            0.9,
+                                                    child: Container(
+                                                      child: SizedBox(
+                                                        height: screenSize
+                                                                .size.height *
+                                                            0.5,
+                                                        child: charts.BarChart(
+                                                          series,
+                                                          animate: true,
+                                                          vertical: false,
+                                                          animationDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      700),
+                                                          //not sure what this is code is supposed to do below.
+                                                          // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
+                                                          barRendererDecorator:
+                                                              new charts.BarLabelDecorator<
+                                                                  String>(
+                                                            labelPosition: charts
+                                                                .BarLabelPosition
+                                                                .outside,
+                                                            labelPadding: 3,
+                                                            // insideLabelStyleSpec:
+                                                            //     charts.TextStyleSpec(
+                                                            //   fontSize: 20,
+                                                            //   color: charts.Color.white,
+                                                            // ),
+                                                            outsideLabelStyleSpec:
+                                                                new charts
+                                                                    .TextStyleSpec(
+                                                              fontSize: 12,
+                                                              color: charts
+                                                                  .Color.white,
+                                                            ),
+                                                          ),
+
+                                                          // barGroupingType: charts.BarGroupingType.stacked,
+                                                          domainAxis: new charts
+                                                              .OrdinalAxisSpec(
+                                                            renderSpec: new charts
+                                                                .SmallTickRendererSpec(
+                                                              labelStyle: new charts
+                                                                      .TextStyleSpec(
+                                                                  fontSize: 16,
+                                                                  color: charts
+                                                                      .MaterialPalette
+                                                                      .white),
+                                                              lineStyle: new charts
+                                                                      .LineStyleSpec(
+                                                                  color: charts
+                                                                      .MaterialPalette
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                          primaryMeasureAxis:
+                                                              new charts
+                                                                  .NumericAxisSpec(
+                                                            renderSpec: new charts
+                                                                .GridlineRendererSpec(
+                                                              labelStyle: new charts
+                                                                      .TextStyleSpec(
+                                                                  fontSize: 16,
+                                                                  color: charts
+                                                                      .MaterialPalette
+                                                                      .white),
+                                                              lineStyle: new charts
+                                                                      .LineStyleSpec(
+                                                                  color: charts
+                                                                      .MaterialPalette
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: screenSize
+                                                                .size.height *
+                                                            0.023),
+                                                    width:
+                                                        screenSize.size.width,
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                        "Monthly Performance Achievement",
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                        )),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : Center(),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: GestureDetector(
+                                      child: BouncingWidget(
+                                        scaleFactor: 1.5,
+                                        onPressed: () {
+                                          setState(() {
+                                            if (chartIndex == 2)
+                                              chartIndex = 0;
+                                            else
+                                              chartIndex += 1;
+                                          });
+                                        },
+                                        child: Container(
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 30,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (pieChartDisplayed) pieChartDisplayed = false;
-                          });
-                        },
-                        child: BouncingWidget(
-                          // duration: Duration(milliseconds: 100),
-                          scaleFactor: 1.5,
-                          onPressed: () {
-                            setState(() {
-                              if (pieChartDisplayed) pieChartDisplayed = false;
-                            });
-                          },
-                          child: Container(
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              size: 30,
-                              color: Colors.white,
+                            // BAR GRAPH OF POINTS TO GO AREA
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 15, 20, 20),
+                              child: new LinearPercentIndicator(
+                                width: screenSize.size.width - 40,
+                                animation: true,
+                                lineHeight: 30.0,
+                                animationDuration: 700,
+                                percent: 0.65,
+                                center: Text("35 points to go!",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+                                linearStrokeCap: LinearStrokeCap.butt,
+                                progressColor: Colors.yellowAccent,
+                              ),
                             ),
-                          ),
+                            // CARDS
+                            Container(
+                              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                              height: screenSize.size.height * 0.23,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: Prospect.prospectCardsForHome.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    width: screenSize.size.width * 0.5,
+                                    child: Prospect.prospectCardsForHome[index],
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (!pieChartDisplayed) pieChartDisplayed = true;
-                          });
-                        },
-                        child: BouncingWidget(
-                          // duration: Duration(milliseconds: 100),
-                          scaleFactor: 1.5,
-                          onPressed: () {
-                            setState(() {
-                              if (!pieChartDisplayed) pieChartDisplayed = true;
-                            });
-                          },
-                          child: Container(
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // BAR GRAPH OF POINTS TO GO AREA
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: new LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 40,
-                  animation: true,
-                  lineHeight: 30.0,
-                  animationDuration: 2000,
-                  percent: 0.65,
-                  center: Text("35 points to go!",
-                      style: TextStyle(
-                        color: Colors.black,
-                      )),
-                  linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: Colors.yellowAccent,
-                ),
-              ),
-
-              // CARDS
-              Container(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                height: MediaQuery.of(context).size.height / 4.5,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: Prospect.prospectCardsForHome.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: Prospect.prospectCardsForHome[index],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
