@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,34 @@ class _AdminPageState extends StateMVC {
   bool check2 = true;
   // int selectedIndex = 0;
   //
-  //
+
+  Future<void> saveTokenToDatabase(String token) async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('token', isEqualTo: token)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(element.id)
+            .update({'token': ''});
+      });
+    });
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'token': token,
+    });
+  }
+
+  _saveDeviceToken() async {
+    String token = await FirebaseMessaging.instance.getToken();
+    await saveTokenToDatabase(token);
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+    // String fcmToken = await _fcm.getToken();
+  }
 
   @override
   void initState() {
@@ -43,6 +71,7 @@ class _AdminPageState extends StateMVC {
     // _con.requestPasswordCount = 0;
     // _con.managers = [];
     _con.getRequestPasswordCount();
+    _saveDeviceToken();
     super.initState();
     // _con.getNews(context);
     // _con.getUser(context);

@@ -26,7 +26,7 @@ class _EditNewsState extends StateMVC<EditNews> {
   @override
   void initState() {
     _con.setToDefault();
-    _con.formKey = GlobalKey<FormState>();
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'news_edit');
     _con.nid = widget.oneNew.newsId;
     _con.titleController.text = widget.oneNew.title;
     _con.title = widget.oneNew.title;

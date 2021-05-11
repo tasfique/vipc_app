@@ -20,7 +20,7 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
 
   @override
   void initState() {
-    _con.formKey = GlobalKey<FormState>();
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'password_reset');
     _con.uid = widget.user.userId;
     _con.email = widget.user.email;
     _con.password = widget.user.password;

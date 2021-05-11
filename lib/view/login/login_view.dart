@@ -19,6 +19,7 @@ class _LoginViewState extends StateMVC {
 
   @override
   void initState() {
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'login');
     _con.isLoading = false;
     _passwordVisible = false;
     super.initState();

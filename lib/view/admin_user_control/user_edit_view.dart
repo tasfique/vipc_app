@@ -24,7 +24,7 @@ class _EditUserState extends StateMVC<EditUser> {
 
   @override
   void initState() {
-    _con.formKey = GlobalKey<FormState>();
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'user_edit');
     _con.uid = widget.user.userId;
     _con.type = widget.user.type;
     _con.assignManager = (widget.user.assignUnder == '' ||

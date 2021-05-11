@@ -14,7 +14,8 @@ class LoginController extends ControllerMVC {
 
   static LoginController get con => _this;
 
-  final formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey;
+  //  = GlobalKey<FormState>(debugLabel: 'login');
   final employeeIdController = TextEditingController();
   final userPwdController = TextEditingController();
   final auth = FirebaseAuth.instance;
@@ -22,7 +23,7 @@ class LoginController extends ControllerMVC {
 
   Future<void> loginUser(BuildContext context) async {
     FocusScope.of(context).unfocus();
-    final isValid = formKey.currentState.validate();
+    bool isValid = formKey.currentState.validate();
 
     if (isValid) {
       setState(() {
