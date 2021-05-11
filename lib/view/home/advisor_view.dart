@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/constants/font_constants.dart';
 import 'package:vipc_app/controller/home/advisor_controller.dart';
@@ -7,9 +8,11 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:pie_chart/pie_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
+import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/monitor/monitor_view.dart';
+import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/news/news_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
@@ -29,6 +32,7 @@ class _AdvisorViewState extends StateMVC {
 
   double responsiveFontSize = 18; // Default Font Size
   bool pieChartDisplayed;
+  bool check = true;
 
   var series = [
     charts.Series(
@@ -37,18 +41,18 @@ class _AdvisorViewState extends StateMVC {
       colorFn: (MonthlyPointBarChart clickData, _) => clickData.color,
       id: 'month',
       data: [
-        MonthlyPointBarChart('Jn', 30, Colors.pink),
-        MonthlyPointBarChart('Fb', 92, Colors.red),
-        MonthlyPointBarChart('Mc', 49, Colors.orange),
-        MonthlyPointBarChart('Ap', 30, Colors.orangeAccent),
-        MonthlyPointBarChart('My', 20, Colors.limeAccent),
-        MonthlyPointBarChart('Ju', 30, Colors.lightGreenAccent),
-        MonthlyPointBarChart('Jl', 40, Colors.green),
-        MonthlyPointBarChart('Au', 25, Colors.cyan),
-        MonthlyPointBarChart('Se', 23, Colors.blue),
-        MonthlyPointBarChart('Oc', 85, Colors.indigo),
-        MonthlyPointBarChart('Nv', 30, Colors.deepPurple),
-        MonthlyPointBarChart('Dc', 55, Colors.purple),
+        MonthlyPointBarChart('Jan', 30, Colors.pink),
+        MonthlyPointBarChart('Feb', 92, Colors.red),
+        MonthlyPointBarChart('Mar', 49, Colors.orange),
+        MonthlyPointBarChart('Apr', 30, Colors.orangeAccent),
+        MonthlyPointBarChart('May', 20, Colors.limeAccent),
+        MonthlyPointBarChart('Jun', 30, Colors.lightGreenAccent),
+        MonthlyPointBarChart('Jul', 40, Colors.green),
+        MonthlyPointBarChart('Aug', 25, Colors.cyan),
+        MonthlyPointBarChart('Sep', 23, Colors.blue),
+        MonthlyPointBarChart('Oct', 85, Colors.indigo),
+        MonthlyPointBarChart('Nov', 30, Colors.deepPurple),
+        MonthlyPointBarChart('Dec', 55, Colors.purple),
       ],
     ),
   ];
@@ -56,6 +60,8 @@ class _AdvisorViewState extends StateMVC {
   @override
   void initState() {
     _con.selectedIndex = 0;
+    _con.newsList = [];
+
     pieChartDisplayed = true;
     super.initState();
 
@@ -433,60 +439,6 @@ class _AdvisorViewState extends StateMVC {
                 ),
               ),
 
-              // THREE BUTTONS
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return ProspectView();
-                        }));
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(5),
-                        child: const Text('Prospect',
-                            style: TextStyle(
-                              fontSize: 17,
-                            )),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MonitorView();
-                        }));
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(5),
-                        child: const Text('Monitor',
-                            style: TextStyle(fontSize: 17)),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return NewsView();
-                        }));
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(5),
-                        child:
-                            const Text('News', style: TextStyle(fontSize: 17)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
               // CARDS
               Container(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -512,5 +464,135 @@ class _AdvisorViewState extends StateMVC {
 
   Widget prospect() {}
 
-  Widget news() {}
+  Widget news() {
+    return FutureBuilder(
+      future: _con.getNews(context),
+      builder: (context, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  check = false;
+                });
+                _con.getNews(context);
+                setState(() {
+                  check = true;
+                });
+              },
+              child: (check)
+                  ? Container(
+                      padding:
+                          EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: _con.newsList.length,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Company News",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: newsItemCard(
+                                        context, _con.newsList[index]),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child:
+                                    newsItemCard(context, _con.newsList[index]),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
+    );
+  }
+}
+
+Widget newsItemCard(BuildContext context, News oneNew) {
+  return Card(
+    color: Colors.amber[50],
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  oneNew.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  DateFormat('dd/MM/yyyy HH:mm')
+                      .format(DateTime.parse(oneNew.newsId)),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                oneNew.content,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              const SizedBox(width: 8),
+              TextButton(
+                child: const Text('Read more...'),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return NewsDetailsView(oneNew);
+                  }));
+                },
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }

@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:http/http.dart' as http;
 import 'package:vipc_app/model/member.dart';
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:vipc_app/model/news.dart';
 
 class AdvisorController extends ControllerMVC {
   factory AdvisorController() {
@@ -15,21 +18,37 @@ class AdvisorController extends ControllerMVC {
 
   static AdvisorController get con => _this;
   int selectedIndex;
+  List<News> newsList;
 
-  void onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+  Future<void> getNews(BuildContext context) async {
+    List<News> newsListTemp = [];
 
-  Future<Member> fetchMember() async {
-    final url = 'https://jsonplaceholder.typicode.com/users/1';
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final jsonBody = json.decode(response.body);
-      return Member.fromJson(jsonBody);
-    } else {
-      throw Exception("Failed to load member data");
+    try {
+      final news = await FirebaseFirestore.instance.collection("news").get();
+
+      news.docs.forEach((oneNew) {
+        if (oneNew.data()['images'] == null) {
+          newsListTemp.add(News(
+            newsId: oneNew.id,
+            title: oneNew.data()['title'],
+            content: oneNew.data()['content'],
+          ));
+        } else {
+          newsListTemp.add(News(
+            newsId: oneNew.id,
+            title: oneNew.data()['title'],
+            content: oneNew.data()['content'],
+            imageUrl: oneNew.data()['images'],
+          ));
+        }
+      });
+      newsList = newsListTemp;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
     }
   }
 }

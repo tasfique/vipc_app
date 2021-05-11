@@ -262,7 +262,7 @@ class _ManagerViewState extends StateMVC {
         ],
         currentIndex: _con.selectedIndex,
         selectedItemColor: Colors.amber,
-        onTap: _con.onItemTapped,
+        // onTap: _con.onItemTapped,
       ),
       body: _con.selectedIndex == 0
           ? Container(
