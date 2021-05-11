@@ -374,7 +374,6 @@ class _AdvisorViewState extends StateMVC {
                                                                 Duration(
                                                                     milliseconds:
                                                                         700),
-                                                            //not sure what this is code is supposed to do below.
                                                             // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
                                                             barRendererDecorator:
                                                                 new charts.BarLabelDecorator<
@@ -458,7 +457,13 @@ class _AdvisorViewState extends StateMVC {
                                                   ],
                                                 ),
                                               )
-                                            : Center(),
+                                            : Center(
+                                                child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(),
+                                                ],
+                                              )),
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: GestureDetector(
