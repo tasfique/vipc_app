@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/user/user_reset_password_controller.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 
 class ResetPassword extends StatefulWidget {
   final Usr user;
@@ -20,7 +19,7 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
 
   @override
   void initState() {
-    _con.formKey = GlobalKey<FormState>();
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'password_reset');
     _con.uid = widget.user.userId;
     _con.email = widget.user.email;
     _con.password = widget.user.password;
@@ -28,11 +27,11 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
     super.initState();
   }
 
-  // @override
-  void disposeMethod() async {
+  @override
+  void dispose() async {
     await _con.setToDefault();
     await _con.app.delete();
-    // super.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,7 +39,7 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        disposeMethod();
+        dispose();
         Navigator.pop(context, true);
         return;
       },
@@ -129,8 +128,8 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
             textInputAction: TextInputAction.next,
             style: TextStyle(color: Colors.white),
             validator: (value) {
-              if (value.isEmpty || value.length < 8) {
-                return 'Please enter password with at least 8 characters long.';
+              if (value.isEmpty || value.length < 6) {
+                return 'Please enter password with at least 6 characters long.';
               }
               return null;
             },

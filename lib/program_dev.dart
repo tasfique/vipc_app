@@ -1,18 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vipc_app/view/admin/admin_home_view.dart';
 import 'package:vipc_app/view/home/home_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:vipc_app/view/search/admin_search_view.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.max,
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.apps.toList().clear();
   await Firebase.initializeApp();
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
   runApp(MyApp());
 }
 
@@ -43,11 +60,101 @@ class MyApp extends StatelessWidget {
             displayColor: Colors.amberAccent,
           ),
         ),
-        home: VipC());
+        home: VipC(null));
   }
 }
 
-class VipC extends StatelessWidget {
+class VipC extends StatefulWidget {
+  final RemoteMessage message;
+  VipC(this.message);
+
+  @override
+  _VipCState createState() => _VipCState();
+}
+
+class _VipCState extends State<VipC> {
+  static int _count = 0;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      if (widget.message != null && _count == 0) {
+        _count++;
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            content: ListTile(
+                title: Text(
+                  widget.message.notification.title,
+                  style: TextStyle(fontSize: 18),
+                ),
+                subtitle: Text(widget.message.notification.body,
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
+            actions: [
+              TextButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        ).then((value) => _count = 0);
+      }
+    });
+
+    if (_count == 0) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        _count++;
+        if (_count == 1) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: ListTile(
+                  title: Text(
+                    message.notification.title,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  subtitle: Text(message.notification.body,
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold))),
+              actions: [
+                TextButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            ),
+          ).then((value) {
+            Future.delayed(Duration(milliseconds: 100), () {
+              _count = 0;
+            });
+          });
+        }
+        _count++;
+      });
+    }
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage message) async {
+        await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => VipC(message)));
+      });
+    });
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+        await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => VipC(message)));
+      });
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // return MultiProvider(

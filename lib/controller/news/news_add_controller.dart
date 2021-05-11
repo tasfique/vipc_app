@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class NewsAddController extends ControllerMVC {
   factory NewsAddController() {
@@ -19,6 +21,8 @@ class NewsAddController extends ControllerMVC {
 
   static NewsAddController get con => _this;
 
+  final String severToken =
+      'AAAAQ2vv-_M:APA91bGWibt_2dMmTc7p32PD17hEt4aRzJlEKCUX62817BxxVYtPB2uSErpXiGECayd03rlLg2HqgGYMB9N6ugO5kyGnbPdVDskgHhNmmmTXIVNCzp8l9sjpnPiGE_NKCjHpcbhi--Df';
   GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: 'news_add');
   final titleController = TextEditingController();
   final contentController = TextEditingController();
@@ -161,6 +165,37 @@ class NewsAddController extends ControllerMVC {
           addArticleSuccess = true;
           isLoading = false;
         });
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .where("type", whereIn: ["Manager", "Advisor"])
+            .get()
+            .then((value) {
+              value.docs.forEach((element) async {
+                if (element.data()['token'] != null &&
+                    element.data()['token'] != '')
+                  await http.post('https://fcm.googleapis.com/fcm/send',
+                      headers: <String, String>{
+                        'Content-Type': 'application/json',
+                        'Authorization': 'key=$severToken',
+                      },
+                      body: jsonEncode(
+                        <String, dynamic>{
+                          'notification': <String, dynamic>{
+                            'title': titleController.text,
+                            'body':
+                                '${contentController.text.substring(0, 20)}...\nCheck News Page to read more.',
+                          },
+                          'priority': 'high',
+                          'data': <String, dynamic>{
+                            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                            'status': 'done'
+                          },
+                          'to': element.data()['token'],
+                        },
+                      ));
+              });
+            });
       } catch (err) {
         setState(() {
           addArticleSuccess = false;

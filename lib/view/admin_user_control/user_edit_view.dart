@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/user/user_edit_controller.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
 
 class EditUser extends StatefulWidget {
   final Usr user;
@@ -24,7 +21,7 @@ class _EditUserState extends StateMVC<EditUser> {
 
   @override
   void initState() {
-    _con.formKey = GlobalKey<FormState>();
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'user_edit');
     _con.uid = widget.user.userId;
     _con.type = widget.user.type;
     _con.assignManager = (widget.user.assignUnder == '' ||
@@ -40,11 +37,11 @@ class _EditUserState extends StateMVC<EditUser> {
     super.initState();
   }
 
-  // @override
-  void disposeMethod() async {
+  @override
+  void dispose() async {
     await _con.setToDefault();
     await _con.app.delete();
-    // super.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,7 +49,7 @@ class _EditUserState extends StateMVC<EditUser> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        disposeMethod();
+        dispose();
         Navigator.pop(context, true);
         return false;
       },
@@ -491,8 +488,8 @@ class _EditUserState extends StateMVC<EditUser> {
   //           textInputAction: TextInputAction.next,
   //           style: TextStyle(color: Colors.white),
   //           // validator: (value) {
-  //           //   if (value.isEmpty || value.length < 8) {
-  //           //     return 'Please enter password with at least 8 characters long.';
+  //           //   if (value.isEmpty || value.length < 6) {
+  //           //     return 'Please enter password with at least 6 characters long.';
   //           //   }
   //           //   return null;
   //           // },

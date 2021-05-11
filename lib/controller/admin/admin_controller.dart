@@ -1,13 +1,10 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:provider/provider.dart';
-import 'package:vipc_app/view/admin/admin_home_view.dart';
+import 'package:http/http.dart' as http;
 
 class AdminController extends ControllerMVC {
   factory AdminController() {
@@ -32,6 +29,8 @@ class AdminController extends ControllerMVC {
   bool isLoading;
   bool requestSuccess;
   int requestPasswordCount;
+  final String severToken =
+      'AAAAQ2vv-_M:APA91bGWibt_2dMmTc7p32PD17hEt4aRzJlEKCUX62817BxxVYtPB2uSErpXiGECayd03rlLg2HqgGYMB9N6ugO5kyGnbPdVDskgHhNmmmTXIVNCzp8l9sjpnPiGE_NKCjHpcbhi--Df';
 
   void clean() {
     isValid = false;
@@ -65,6 +64,36 @@ class AdminController extends ControllerMVC {
             isLoading = false;
             requestSuccess = true;
           });
+
+          String token = '';
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('type', isEqualTo: 'Admin')
+              .get()
+              .then((value) {
+            token = value.docs[0]['token'];
+          });
+
+          await http.post('https://fcm.googleapis.com/fcm/send',
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+                'Authorization': 'key=$severToken',
+              },
+              body: jsonEncode(
+                <String, dynamic>{
+                  'notification': <String, dynamic>{
+                    'title': 'Request To Change Password',
+                    'body':
+                        'Employee Name: ${userData.docs.first.data()['fullName']}\nEmployee ID: ${empNoController.text}\nRequest to change their password.',
+                  },
+                  'priority': 'high',
+                  'data': <String, dynamic>{
+                    'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                    'status': 'done'
+                  },
+                  'to': token,
+                },
+              ));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/user/signup_controller.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
 
 class AddUser extends StatefulWidget {
   @override
@@ -25,10 +23,10 @@ class _AddUserState extends StateMVC {
     super.initState();
   }
 
-  // @override
-  void disposeMethod() async {
+  @override
+  void dispose() async {
     await _con.app.delete();
-    // super.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,7 +34,7 @@ class _AddUserState extends StateMVC {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        disposeMethod();
+        dispose();
         Navigator.pop(context, true);
         return false;
       },
@@ -492,8 +490,8 @@ class _AddUserState extends StateMVC {
             textInputAction: TextInputAction.next,
             style: TextStyle(color: Colors.white),
             validator: (value) {
-              if (value.isEmpty || value.length < 8) {
-                return 'Please enter password with at least 8 characters long.';
+              if (value.isEmpty || value.length < 6) {
+                return 'Please enter password with at least 6 characters long.';
               }
               return null;
             },

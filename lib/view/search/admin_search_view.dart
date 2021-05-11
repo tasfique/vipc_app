@@ -23,10 +23,10 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
   List<DocumentSnapshot> documentList = [];
   bool check = false;
 
-  // @override
-  void disposeMethod() {
+  @override
+  void dispose() {
     _con.getRequestPasswordCount();
-    // super.dispose();
+    super.dispose();
   }
 
   Future<void> searchData() async {
@@ -70,7 +70,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
     return WillPopScope(
       onWillPop: () {
         _searchQueryController.clear();
-        disposeMethod();
+        dispose();
         Navigator.of(context).pop(true);
         return;
       },
@@ -81,7 +81,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               _searchQueryController.clear();
-              disposeMethod();
+              dispose();
               Navigator.of(context).pop(true);
             },
           ),
@@ -102,7 +102,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                 if (_searchQueryController == null ||
                     _searchQueryController.text.isEmpty) {
                   _searchQueryController.clear();
-                  disposeMethod();
+                  dispose();
                   Navigator.pop(context);
                   return;
                 }

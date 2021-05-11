@@ -1,13 +1,8 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/news/news_add_controller.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/admin/admin_home_view.dart';
 
 class AddNews extends StatefulWidget {
   @override
@@ -415,9 +410,6 @@ class MessageHandler extends StatefulWidget {
 }
 
 class _MessageHandlerState extends State<MessageHandler> {
-  final FirebaseStorage _db = FirebaseStorage.instance;
-  final FirebaseMessaging messaging = FirebaseMessaging();
-
   @override
   void initState() {
     super.initState();

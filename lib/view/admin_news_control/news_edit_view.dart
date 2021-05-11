@@ -4,9 +4,6 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/news/news_edit_controller.dart';
 import 'package:vipc_app/model/news.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/admin/admin_home_view.dart';
 
 class EditNews extends StatefulWidget {
   final News oneNew;
@@ -26,7 +23,7 @@ class _EditNewsState extends StateMVC<EditNews> {
   @override
   void initState() {
     _con.setToDefault();
-    _con.formKey = GlobalKey<FormState>();
+    _con.formKey = GlobalKey<FormState>(debugLabel: 'news_edit');
     _con.nid = widget.oneNew.newsId;
     _con.titleController.text = widget.oneNew.title;
     _con.title = widget.oneNew.title;
