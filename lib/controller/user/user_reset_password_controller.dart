@@ -85,7 +85,7 @@ class UserResetPasswordController extends ControllerMVC {
           ..recipients.add(email)
           ..subject = 'New Password for VIPC App'
           ..html =
-              "<h1>Hey there,</h1>\n<p>Your new password: ${userPwdController.text}</p>\n<p>Best Regards,</p>";
+              "<h1>Hey there,</h1>\n<p>Your new VIPC password: ${userPwdController.text}</p>\n<p>Best Regards,</p>";
 
         await send(message, smtpServer);
 
