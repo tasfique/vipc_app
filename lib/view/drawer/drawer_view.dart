@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vipc_app/view/login/login_view.dart';
@@ -122,9 +123,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   actions: <Widget>[
                     TextButton(
                       child: Text('Close'),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.of(context).pop();
+                        String userId = FirebaseAuth.instance.currentUser.uid;
                         FirebaseAuth.instance.signOut();
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(userId)
+                            .update({'token': ''});
+
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) {
                         //   return LoginView();

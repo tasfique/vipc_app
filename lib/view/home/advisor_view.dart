@@ -772,6 +772,15 @@ class _AdvisorViewState extends StateMVC {
                                     )
                                   ],
                                 );
+                              } else if (index ==
+                                  Prospect.prospectCards.length - 1) {
+                                return Padding(
+                                  padding: EdgeInsets.only(top: 15, bottom: 45),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Prospect.prospectCards[index],
+                                  ),
+                                );
                               } else {
                                 return Padding(
                                   padding: EdgeInsets.only(top: 15),
@@ -790,8 +799,7 @@ class _AdvisorViewState extends StateMVC {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddProspectStateless()));
+                                        builder: (context) => AddProspect()));
                               },
                               child: Icon(
                                 Icons.add,

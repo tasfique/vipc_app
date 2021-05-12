@@ -42,7 +42,7 @@ class AdvisorController extends ControllerMVC {
           ));
         }
       });
-      newsList = newsListTemp;
+      newsList = newsListTemp.reversed.toList();
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

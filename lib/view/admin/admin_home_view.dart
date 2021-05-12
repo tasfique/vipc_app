@@ -42,10 +42,11 @@ class _AdminPageState extends StateMVC {
         .get()
         .then((value) {
       value.docs.forEach((element) async {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(element.id)
-            .update({'token': ''});
+        if (element.id != userId)
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(element.id)
+              .update({'token': ''});
       });
     });
 
@@ -354,7 +355,7 @@ class _AdminPageState extends StateMVC {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 10),
+                                  padding: EdgeInsets.only(left: 25),
                                   child: Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(

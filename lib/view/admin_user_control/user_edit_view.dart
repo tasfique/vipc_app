@@ -39,9 +39,9 @@ class _EditUserState extends StateMVC<EditUser> {
 
   @override
   void dispose() async {
+    super.dispose();
     await _con.setToDefault();
     await _con.app.delete();
-    super.dispose();
   }
 
   @override

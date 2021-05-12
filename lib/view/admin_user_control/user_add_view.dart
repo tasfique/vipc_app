@@ -25,8 +25,8 @@ class _AddUserState extends StateMVC {
 
   @override
   void dispose() async {
-    await _con.app.delete();
     super.dispose();
+    await _con.app.delete();
   }
 
   @override

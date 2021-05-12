@@ -243,8 +243,8 @@ class _ProspectViewState extends StateMVC {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddProspectStateless()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddProspect()));
         },
         child: Icon(
           Icons.add,
