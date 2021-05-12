@@ -84,7 +84,7 @@ class AdminController extends ControllerMVC {
                   'notification': <String, dynamic>{
                     'title': 'Request To Change Password',
                     'body':
-                        'Employee Name: ${userData.docs.first.data()['fullName']}\nEmployee ID: ${empNoController.text}\nRequest to change their password.',
+                        'User Name: ${userData.docs.first.data()['fullName']}\nUser ID: ${empNoController.text}\nRequest to change their password.',
                   },
                   'priority': 'high',
                   'data': <String, dynamic>{
@@ -97,7 +97,7 @@ class AdminController extends ControllerMVC {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('Employee ID does not exist.'),
+                content: Text('User ID does not exist.'),
                 backgroundColor: Theme.of(context).errorColor),
           );
           setState(() {

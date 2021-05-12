@@ -201,7 +201,7 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                     ),
                   ),
                   Text(
-                    'Employee ID: ${oneUser.empID}',
+                    'User ID: ${oneUser.empID}',
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.grey[600],

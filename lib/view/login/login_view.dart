@@ -85,7 +85,7 @@ class _LoginViewState extends StateMVC {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'EmployeeID',
+          'UserID',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -117,7 +117,7 @@ class _LoginViewState extends StateMVC {
             textCapitalization: TextCapitalization.none,
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter employee ID.';
+                return 'Please enter user ID.';
               }
               return null;
             },
@@ -131,7 +131,7 @@ class _LoginViewState extends StateMVC {
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 6, 0, 0),
-              hintText: 'Enter your employeeID.',
+              hintText: 'Enter your userID.',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),

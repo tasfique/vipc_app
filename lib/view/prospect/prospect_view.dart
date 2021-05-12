@@ -14,7 +14,6 @@ class ProspectView extends StatefulWidget {
   ProspectView({key}) : super(key: key);
   @override
   _ProspectViewState createState() => _ProspectViewState();
-  String dropdownValue = 'Sort by Time';
 }
 
 //This class is declared for the dropdown menu
@@ -31,6 +30,7 @@ class _ProspectViewState extends StateMVC {
   }
 
   ProspectController _con;
+
   String dropdownValue = 'Sort by Time';
   @override
   Widget build(BuildContext context) {

@@ -126,7 +126,7 @@ class _EditUserState extends StateMVC<EditUser> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Employee ID (Uneditable)',
+          'User ID (Uneditable)',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

@@ -85,7 +85,7 @@ class _ForgotPasswordViewState extends StateMVC {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Employee ID',
+          'User ID',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class _ForgotPasswordViewState extends StateMVC {
           height: 60.0,
           child: TextFormField(
             validator: (value) {
-              if (value.isEmpty) return 'Please enter employee ID';
+              if (value.isEmpty) return 'Please enter user ID';
               return null;
             },
             controller: _con.empNoController,
@@ -126,7 +126,7 @@ class _ForgotPasswordViewState extends StateMVC {
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: 'Your employee ID (Agent Code).',
+              hintText: 'Your user ID (Agent Code).',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),

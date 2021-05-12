@@ -175,7 +175,7 @@ class SignupController extends ControllerMVC {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('Employee ID already exists.'),
+                content: Text('User ID already exists.'),
                 backgroundColor: Theme.of(context).errorColor),
           );
           setState(() {
