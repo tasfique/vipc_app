@@ -49,9 +49,9 @@ class _EditUserState extends StateMVC<EditUser> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        dispose();
-        Navigator.pop(context, true);
-        return false;
+        // dispose();
+        Navigator.pop(context, false);
+        return;
       },
       child: Scaffold(
         // appBar: CustomAppBar(),
@@ -722,7 +722,7 @@ class _EditUserState extends StateMVC<EditUser> {
         ),
         onPressed: () {
           // await _con.setToDefault();
-          Navigator.of(context).pop(true);
+          Navigator.of(context).pop(false);
         },
         child: Text(
           'Cancel',

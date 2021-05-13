@@ -29,9 +29,9 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
 
   @override
   void dispose() async {
+    super.dispose();
     await _con.setToDefault();
     await _con.app.delete();
-    super.dispose();
   }
 
   @override
@@ -39,8 +39,8 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        dispose();
-        Navigator.pop(context, true);
+        // dispose();
+        Navigator.pop(context, false);
         return;
       },
       child: Scaffold(
@@ -48,7 +48,7 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
           title: Text('Reset Password'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(context).pop(false),
           ),
         ),
         body: GestureDetector(
@@ -312,7 +312,7 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
         ),
         onPressed: () {
           // await _con.setToDefault();
-          Navigator.of(context).pop(true);
+          Navigator.of(context).pop(false);
         },
         child: Text(
           'Cancel',

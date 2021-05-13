@@ -69,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ProspectView();
+                // return ProspectView();
               }));
             },
           ),

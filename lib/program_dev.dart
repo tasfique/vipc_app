@@ -189,7 +189,7 @@ class _VipCState extends State<VipC> {
                 if (user['type'] == 'Admin') {
                   return AdminPage();
                 } else if (user['type'] == 'Manager') {
-                  return ManagerView();
+                  // return ManagerView();
                 } else if (user['type'] == 'Advisor') {
                   return AdvisorView();
                 }

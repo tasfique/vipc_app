@@ -581,7 +581,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ProspectView();
+                    // return ProspectView();
                   }));
                 },
               )
@@ -625,7 +625,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ProspectView();
+                    // return ProspectView();
                   }));
                 },
               )
@@ -660,7 +660,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
       onTap: () {
         Navigator.of(context).pop();
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProspectView();
+          // return ProspectView();
         }));
       },
       child: Container(

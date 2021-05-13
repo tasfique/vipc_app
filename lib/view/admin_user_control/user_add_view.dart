@@ -34,16 +34,16 @@ class _AddUserState extends StateMVC {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        dispose();
-        Navigator.pop(context, true);
-        return false;
+        // dispose();
+        Navigator.pop(context, false);
+        return;
       },
       child: Scaffold(
         appBar: AppBar(
           title: Text('Add User'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(context).pop(false),
           ),
         ),
         // appBar: CustomAppBar(),
@@ -677,7 +677,7 @@ class _AddUserState extends StateMVC {
           primary: Colors.amber[300],
         ),
         onPressed: () {
-          Navigator.of(context).pop(true);
+          Navigator.of(context).pop(false);
         },
         child: Text(
           'Cancel',

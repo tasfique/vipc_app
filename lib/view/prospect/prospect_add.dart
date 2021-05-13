@@ -31,9 +31,8 @@ class _AddProspectState extends StateMVC {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
-      onWillPop: () async {
-        dispose();
-        Navigator.pop(context);
+      onWillPop: () {
+        Navigator.pop(context, false);
         return;
       },
       child: Scaffold(
@@ -41,7 +40,7 @@ class _AddProspectState extends StateMVC {
           title: Text('Add Prospect'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).pop(false),
           ),
         ),
         body: GestureDetector(
@@ -428,7 +427,7 @@ class _AddProspectState extends StateMVC {
                     child: Text('Close'),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                   )
                 ],
@@ -473,7 +472,7 @@ class _AddProspectState extends StateMVC {
           primary: Colors.amber[300],
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(false);
         },
         child: Text(
           'Cancel',

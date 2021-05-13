@@ -75,19 +75,28 @@ class ProspectAddController extends ControllerMVC {
             setSearchParam(usernameController.text.trim());
 
         String userId = FirebaseAuth.instance.currentUser.uid;
+        String time = DateTime.now().toIso8601String().toString();
 
-        await FirebaseFirestore.instance.collection('prospect').add({
+        await FirebaseFirestore.instance
+            .collection('prospect')
+            .doc(userId)
+            .collection('prospects')
+            .add({
           'prospectName': usernameController.text.trim(),
           'phone': phoneController.text.trim(),
           'email': emailController.text.trim(),
           'type': selectedType,
           'memo': memoController.text.trim(),
-          'timeCreated': FieldValue.serverTimestamp(),
+          'lastUpdate': time,
+          'steps': {
+            'length': 1,
+            '0': time,
+          }
         }).then((value) async {
           await FirebaseFirestore.instance
               .collection('search')
               .doc('userSearch')
-              .collection('search')
+              .collection(userId)
               .doc(value.id)
               .set({
             'prospectName': usernameController.text.trim(),
@@ -95,6 +104,7 @@ class ProspectAddController extends ControllerMVC {
             'searchCase': caseSearchListSaveToFireBase.toList()
           });
         });
+
         setState(() {
           isLoading = false;
           addSuccess = true;

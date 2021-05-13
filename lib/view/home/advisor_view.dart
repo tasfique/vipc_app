@@ -35,7 +35,6 @@ class _AdvisorViewState extends StateMVC {
   bool check = true;
   bool checkHome = true;
   bool checkProspect = true;
-  String dropdownValue = 'Sort by Time';
 
   var series = [
     charts.Series(
@@ -68,197 +67,197 @@ class _AdvisorViewState extends StateMVC {
     _con.newsList = [];
     super.initState();
 
-    // LIST VIEW OF CARDS
-    Prospect.prospectCardsForHome.clear();
-    for (int i = 0; i < Prospect.prospectNames.length; i++) {
-      Prospect.prospectCardsForHome.add(
-        Card(
-          color: Colors.amber[50],
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: ListTile(
-                    title: Text(
-                      Prospect.prospectNames[i],
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    subtitle: Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text(
-                        "Meeting at " +
-                            Prospect.prospectSchedules[i]
-                                .toString()
-                                .substring(11, 16) +
-                            "\n" +
-                            Prospect.prospectLocations[i],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      const SizedBox(width: 8),
-                      TextButton(
-                        child: const Text('More Info..'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ProspectView();
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
+    // // LIST VIEW OF CARDS
+    // Prospect.prospectCardsForHome.clear();
+    // for (int i = 0; i < Prospect.prospectNames.length; i++) {
+    //   Prospect.prospectCardsForHome.add(
+    //     Card(
+    //       color: Colors.amber[50],
+    //       child: Padding(
+    //         padding: EdgeInsets.all(8.0),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: <Widget>[
+    //             Container(
+    //               child: ListTile(
+    //                 title: Text(
+    //                   Prospect.prospectNames[i],
+    //                   style: TextStyle(
+    //                     fontSize: 18,
+    //                   ),
+    //                 ),
+    //                 subtitle: Padding(
+    //                   padding: EdgeInsets.only(top: 10),
+    //                   child: Text(
+    //                     "Meeting at " +
+    //                         Prospect.prospectSchedules[i]
+    //                             .toString()
+    //                             .substring(11, 16) +
+    //                         "\n" +
+    //                         Prospect.prospectLocations[i],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             Container(
+    //               child: Row(
+    //                 mainAxisAlignment: MainAxisAlignment.end,
+    //                 children: <Widget>[
+    //                   const SizedBox(width: 8),
+    //                   TextButton(
+    //                     child: const Text('More Info..'),
+    //                     onPressed: () {
+    //                       Navigator.push(
+    //                         context,
+    //                         MaterialPageRoute(
+    //                           builder: (context) {
+    //                             return ProspectView();
+    //                           },
+    //                         ),
+    //                       );
+    //                     },
+    //                   ),
+    //                   const SizedBox(width: 8),
+    //                 ],
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
 
-    // Prospect
-    Prospect.prospectCards.clear();
-    for (int i = 0; i < Prospect.prospectNames.length; i++) {
-      Prospect.prospectCards.add(
-        Card(
-          //Prospect Card background color
-          color: Colors.amber[50],
-          //
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Text(
-                          Prospect.prospectNames[i],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ButtonBar(
-                      children: <Widget>[
-                        TextButton(
-                          child: const Icon(
-                            Icons.edit,
-                            size: 30,
-                            color: Colors.brown,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditProspectStateless()));
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Text(
-                          Prospect.prospectTypes[i],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Text(
-                          Prospect.prospectSteps[i],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 30, top: 30),
-                        child: Text(
-                          "Meeting at " +
-                              Prospect.prospectSchedules[i]
-                                  .toString()
-                                  .substring(11, 16) +
-                              "\n" +
-                              Prospect.prospectLocations[i],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                // ButtonBar(
-                //   children: <Widget>[
-                //     FlatButton(
-                //       child: const Icon(
-                //         Icons.edit,
-                //         size: 30,
-                //       ),
-                //       onPressed: () {
-                //         Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //                 builder: (context) => EditProspectStateless()));
-                //       },
-                //     ),
-                //   ],
-                // ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
+    // // Prospect
+    // Prospect.prospectCards.clear();
+    // for (int i = 0; i < Prospect.prospectNames.length; i++) {
+    //   Prospect.prospectCards.add(
+    //     Card(
+    //       //Prospect Card background color
+    //       color: Colors.amber[50],
+    //       //
+    //       child: Padding(
+    //         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: <Widget>[
+    //             Row(
+    //               children: [
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: Container(
+    //                     padding: EdgeInsets.only(left: 10, top: 5),
+    //                     child: Text(
+    //                       Prospect.prospectNames[i],
+    //                       overflow: TextOverflow.ellipsis,
+    //                       maxLines: 1,
+    //                       style: TextStyle(
+    //                         fontSize: 20,
+    //                         color: Colors.black,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 ButtonBar(
+    //                   children: <Widget>[
+    //                     TextButton(
+    //                       child: const Icon(
+    //                         Icons.edit,
+    //                         size: 30,
+    //                         color: Colors.brown,
+    //                       ),
+    //                       onPressed: () {
+    //                         Navigator.push(
+    //                             context,
+    //                             MaterialPageRoute(
+    //                                 builder: (context) =>
+    //                                     EditProspectStateless()));
+    //                       },
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ],
+    //             ),
+    //             Row(
+    //               children: [
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: Container(
+    //                     padding: EdgeInsets.only(left: 10, top: 5),
+    //                     child: Text(
+    //                       Prospect.prospectTypes[i],
+    //                       overflow: TextOverflow.ellipsis,
+    //                       maxLines: 1,
+    //                       style: TextStyle(
+    //                         fontSize: 20,
+    //                         color: Colors.black54,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //             Row(
+    //               children: [
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: Container(
+    //                     padding: EdgeInsets.only(left: 10, top: 5),
+    //                     child: Text(
+    //                       Prospect.prospectSteps[i],
+    //                       overflow: TextOverflow.ellipsis,
+    //                       maxLines: 1,
+    //                       style: TextStyle(
+    //                         fontSize: 18,
+    //                         color: Colors.black,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: Container(
+    //                     padding: EdgeInsets.only(left: 30, top: 30),
+    //                     child: Text(
+    //                       "Meeting at " +
+    //                           Prospect.prospectSchedules[i]
+    //                               .toString()
+    //                               .substring(11, 16) +
+    //                           "\n" +
+    //                           Prospect.prospectLocations[i],
+    //                       overflow: TextOverflow.ellipsis,
+    //                       maxLines: 3,
+    //                       style: TextStyle(
+    //                         fontSize: 18,
+    //                         color: Colors.black,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //             // ButtonBar(
+    //             //   children: <Widget>[
+    //             //     FlatButton(
+    //             //       child: const Icon(
+    //             //         Icons.edit,
+    //             //         size: 30,
+    //             //       ),
+    //             //       onPressed: () {
+    //             //         Navigator.push(
+    //             //             context,
+    //             //             MaterialPageRoute(
+    //             //                 builder: (context) => EditProspectStateless()));
+    //             //       },
+    //             //     ),
+    //             //   ],
+    //             // ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
   }
 
   void dispose() {
@@ -653,21 +652,22 @@ class _AdvisorViewState extends StateMVC {
                               ),
                             ),
                             // CARDS
-                            Container(
-                              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                              height: screenSize.size.height * 0.23,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: Prospect.prospectCardsForHome.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    width: screenSize.size.width * 0.5,
-                                    child: Prospect.prospectCardsForHome[index],
-                                  );
-                                },
-                              ),
-                            ),
+                            // TODO: fix this
+                            // Container(
+                            //   padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                            //   height: screenSize.size.height * 0.23,
+                            //   child: ListView.builder(
+                            //     scrollDirection: Axis.horizontal,
+                            //     itemCount: Prospect.prospectCardsForHome.length,
+                            //     itemBuilder: (context, index) {
+                            //       return Container(
+                            //         alignment: Alignment.center,
+                            //         width: screenSize.size.width * 0.5,
+                            //         child: Prospect.prospectCardsForHome[index],
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -681,9 +681,7 @@ class _AdvisorViewState extends StateMVC {
 
   Widget prospect() {
     return FutureBuilder(
-      // TODO fix this
-      future: null,
-      // future: _con.getNews(context),
+      future: _con.getProspect(context),
       builder: (context, snapshot) => snapshot.connectionState ==
               ConnectionState.waiting
           ? Center(child: CircularProgressIndicator())
@@ -706,7 +704,7 @@ class _AdvisorViewState extends StateMVC {
                         children: [
                           ListView.builder(
                             scrollDirection: Axis.vertical,
-                            itemCount: Prospect.prospectCards.length,
+                            itemCount: _con.prospectList.length,
                             itemBuilder: (context, index) {
                               if (index == 0) {
                                 return Column(
@@ -731,7 +729,7 @@ class _AdvisorViewState extends StateMVC {
                                         Padding(
                                           padding: EdgeInsets.only(right: 10),
                                           child: DropdownButton<String>(
-                                            value: dropdownValue,
+                                            value: _con.dropdownValue,
                                             icon:
                                                 const Icon(Icons.sort_rounded),
                                             iconSize: 24,
@@ -746,7 +744,7 @@ class _AdvisorViewState extends StateMVC {
                                             ),
                                             onChanged: (String newValue) {
                                               setState(() {
-                                                dropdownValue = newValue;
+                                                _con.dropdownValue = newValue;
                                               });
                                             },
                                             items: <String>[
@@ -767,18 +765,20 @@ class _AdvisorViewState extends StateMVC {
                                       padding: EdgeInsets.only(top: 15),
                                       child: Container(
                                         alignment: Alignment.center,
-                                        child: Prospect.prospectCards[index],
+                                        child: prospectItemCard(
+                                            _con.prospectList[index]),
                                       ),
                                     )
                                   ],
                                 );
                               } else if (index ==
-                                  Prospect.prospectCards.length - 1) {
+                                  _con.prospectList.length - 1) {
                                 return Padding(
                                   padding: EdgeInsets.only(top: 15, bottom: 45),
                                   child: Container(
                                     alignment: Alignment.center,
-                                    child: Prospect.prospectCards[index],
+                                    child: prospectItemCard(
+                                        _con.prospectList[index]),
                                   ),
                                 );
                               } else {
@@ -786,7 +786,8 @@ class _AdvisorViewState extends StateMVC {
                                   padding: EdgeInsets.only(top: 15),
                                   child: Container(
                                     alignment: Alignment.center,
-                                    child: Prospect.prospectCards[index],
+                                    child: prospectItemCard(
+                                        _con.prospectList[index]),
                                   ),
                                 );
                               }
@@ -795,11 +796,20 @@ class _AdvisorViewState extends StateMVC {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: FloatingActionButton(
-                              onPressed: () {
-                                Navigator.push(
+                              onPressed: () async {
+                                final pushP = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => AddProspect()));
+                                if (pushP) {
+                                  setState(() {
+                                    checkProspect = false;
+                                  });
+                                  await _con.getProspect(context);
+                                  setState(() {
+                                    checkProspect = true;
+                                  });
+                                }
                               },
                               child: Icon(
                                 Icons.add,
@@ -817,129 +827,131 @@ class _AdvisorViewState extends StateMVC {
     );
   }
 
-  // Widget prospectItemCard() {
-  //   return Card(
-  //     color: Colors.amber[50],
-  //     child: Padding(
-  //       padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: <Widget>[
-  //           Row(
-  //             children: [
-  //               Expanded(
-  //                 flex: 1,
-  //                 child: Container(
-  //                   padding: EdgeInsets.only(left: 10, top: 5),
-  //                   child: Text(
-  //                     Prospect.prospectNames[i],
-  //                     overflow: TextOverflow.ellipsis,
-  //                     maxLines: 1,
-  //                     style: TextStyle(
-  //                       fontSize: 20,
-  //                       color: Colors.black,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //               ButtonBar(
-  //                 children: <Widget>[
-  //                   TextButton(
-  //                     child: const Icon(
-  //                       Icons.edit,
-  //                       size: 30,
-  //                       color: Colors.brown,
-  //                     ),
-  //                     onPressed: () {
-  //                       Navigator.push(
-  //                           context,
-  //                           MaterialPageRoute(
-  //                               builder: (context) => EditProspectStateless()));
-  //                     },
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //           Row(
-  //             children: [
-  //               Expanded(
-  //                 flex: 1,
-  //                 child: Container(
-  //                   padding: EdgeInsets.only(left: 10, top: 5),
-  //                   child: Text(
-  //                     Prospect.prospectTypes[i],
-  //                     overflow: TextOverflow.ellipsis,
-  //                     maxLines: 1,
-  //                     style: TextStyle(
-  //                       fontSize: 20,
-  //                       color: Colors.black54,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           Row(
-  //             children: [
-  //               Expanded(
-  //                 flex: 1,
-  //                 child: Container(
-  //                   padding: EdgeInsets.only(left: 10, top: 5),
-  //                   child: Text(
-  //                     Prospect.prospectSteps[i],
-  //                     overflow: TextOverflow.ellipsis,
-  //                     maxLines: 1,
-  //                     style: TextStyle(
-  //                       fontSize: 18,
-  //                       color: Colors.black,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //               Expanded(
-  //                 flex: 1,
-  //                 child: Container(
-  //                   padding: EdgeInsets.only(left: 30, top: 30),
-  //                   child: Text(
-  //                     "Meeting at " +
-  //                         Prospect.prospectSchedules[i]
-  //                             .toString()
-  //                             .substring(11, 16) +
-  //                         "\n" +
-  //                         Prospect.prospectLocations[i],
-  //                     overflow: TextOverflow.ellipsis,
-  //                     maxLines: 3,
-  //                     style: TextStyle(
-  //                       fontSize: 18,
-  //                       color: Colors.black,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           // ButtonBar(
-  //           //   children: <Widget>[
-  //           //     FlatButton(
-  //           //       child: const Icon(
-  //           //         Icons.edit,
-  //           //         size: 30,
-  //           //       ),
-  //           //       onPressed: () {
-  //           //         Navigator.push(
-  //           //             context,
-  //           //             MaterialPageRoute(
-  //           //                 builder: (context) => EditProspectStateless()));
-  //           //       },
-  //           //     ),
-  //           //   ],
-  //           // ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget prospectItemCard(Prospect oneProspect) {
+    return Card(
+      color: Colors.amber[50],
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10, top: 5),
+                    child: Text(
+                      oneProspect.prospectName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                ButtonBar(
+                  children: <Widget>[
+                    TextButton(
+                      child: const Icon(
+                        Icons.edit,
+                        size: 30,
+                        color: Colors.brown,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProspectStateless()));
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10, top: 5),
+                    child: Text(
+                      oneProspect.type,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10, top: 5),
+                    child: Text(
+                      'Step ${oneProspect.step['length']}',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 30, top: 30),
+                    child: Text(
+                      "Meeting at "
+                      // +
+                      // Prospect.prospectSchedules[i]
+                      //     .toString()
+                      //     .substring(11, 16) +
+                      // "\n" +
+                      // Prospect.prospectLocations[i]
+                      ,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // ButtonBar(
+            //   children: <Widget>[
+            //     FlatButton(
+            //       child: const Icon(
+            //         Icons.edit,
+            //         size: 30,
+            //       ),
+            //       onPressed: () {
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (context) => EditProspectStateless()));
+            //       },
+            //     ),
+            //   ],
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget news() {
     return FutureBuilder(
