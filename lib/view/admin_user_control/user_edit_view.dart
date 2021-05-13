@@ -59,7 +59,7 @@ class _EditUserState extends StateMVC<EditUser> {
           title: Text('Edit User'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(context).pop(false),
           ),
         ),
         // drawer: CustomDrawer(),

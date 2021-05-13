@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-class ProspectController extends ControllerMVC {
-  factory ProspectController() {
-    if (_this == null) _this = ProspectController._();
+class ProspectEditController extends ControllerMVC {
+  factory ProspectEditController() {
+    if (_this == null) _this = ProspectEditController._();
     return _this;
   }
-  static ProspectController _this;
-  ProspectController._();
+  static ProspectEditController _this;
+  ProspectEditController._();
 
-  static ProspectController get con => _this;
-
+  static ProspectEditController get con => _this;
+  GlobalKey<FormState> formKey =
+      GlobalKey<FormState>(debugLabel: 'prospect_edit');
   int selectedIndex = 0;
 
   DateTime selectedDate = DateTime.now();

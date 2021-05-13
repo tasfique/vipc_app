@@ -1,47 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/prospect/prospect_controller.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:vipc_app/view/prospect/prospect_view.dart';
+import 'package:vipc_app/controller/prospect/prospect_edit_controller.dart';
+import 'package:vipc_app/model/prospect.dart';
 
-String selectedType;
-String selectedStep;
-//String List to contain all the Prospects Positions
-List<String> types = ["Suspect", "Cold", "Hot"];
-//String List to contain all the steps for Prospects.
-List<String> steps = [
-  "Step 1 Appointment",
-  "Step 2 Open Case",
-  "Step 3 Presentation",
-  "Step 4 Closing",
-  "Step 5 Sales"
-];
-
-class EditProspectStateless extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(),
-      drawer: CustomDrawer(),
-      body: Center(
-        child: EditProspect(),
-      ),
-    );
-  }
-}
+enum Choices { edit, update }
 
 class EditProspect extends StatefulWidget {
+  final Prospect prospect;
+
+  EditProspect(this.prospect);
   @override
   _EditProspectState createState() => _EditProspectState();
 }
 
 class _EditProspectState extends StateMVC<EditProspect> {
-  _EditProspectState() : super(ProspectController()) {
-    _con = ProspectController.con;
+  _EditProspectState() : super(ProspectEditController()) {
+    _con = ProspectEditController.con;
   }
+  ProspectEditController _con;
 
-  ProspectController _con;
+  String selectedType;
+  String selectedStep;
+  List<String> types = ["Cold", "Warm", "Hot"];
+  List<String> steps = [
+    "Step 1 Make Appointment",
+    "Step 2 Open Case",
+    "Step 3 Presentation",
+    'Step 4 Follow Up',
+    'Step 5 Close',
+    "Step 6 Referral/Servicing",
+  ];
+  Choices _choice = Choices.edit;
 
   @override
   void initState() {
@@ -52,50 +41,122 @@ class _EditProspectState extends StateMVC<EditProspect> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "Edit Prospect",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+    final screenSize = MediaQuery.of(context);
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, false);
+        return;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Edit Prospect'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+        ),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(15),
+                child: Form(
+                  key: _con.formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: screenSize.size.width * 0.36,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Edit Prospect",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: screenSize.size.width * 0.5,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: const Text(
+                                    'Edit Current Step',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  leading: Radio<Choices>(
+                                    value: Choices.edit,
+                                    groupValue: _choice,
+                                    onChanged: (Choices value) {
+                                      setState(() {
+                                        _choice = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text(
+                                    'Update New Step',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  leading: Radio<Choices>(
+                                    value: Choices.update,
+                                    groupValue: _choice,
+                                    onChanged: (Choices value) {
+                                      setState(() {
+                                        _choice = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      _buildProspectNameTextField(),
+                      SizedBox(height: 15),
+                      _buildProspectPhoneNoTextField(),
+                      SizedBox(height: 15),
+                      _buildProspectTypeDropdownList(),
+                      SizedBox(height: 20),
+                      _buildStepDropdownList(),
+                      SizedBox(height: 20),
+                      _buildPlaceTextField(),
+                      SizedBox(height: 20),
+                      _buildDatePicker(),
+                      SizedBox(height: 20),
+                      _buildTime(),
+                      SizedBox(height: 20),
+                      _buildMemoTextFormField(),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildDeleteBtn(screenSize),
+                          _buildCancelBtn(screenSize),
+                          _buildSaveBtn(screenSize)
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            _buildProspectNameTextField(),
-            SizedBox(height: 15),
-            _buildProspectPhoneNoTextField(),
-            SizedBox(height: 15),
-            _buildProspectTypeDropdownList(),
-            SizedBox(height: 30),
-            _buildStepDropdownList(),
-            SizedBox(height: 30),
-            _buildPlaceTextField(),
-            SizedBox(height: 30),
-            _buildDatePicker(),
-            SizedBox(height: 30),
-            _buildTime(),
-            SizedBox(height: 30),
-            _buildMemoTextFormField(),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildDeleteBtn(),
-                _buildCancelBtn(),
-                _buildSaveBtn(),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -565,7 +626,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
     );
   }
 
-  Widget _buildSaveBtn() {
+  Widget _buildSaveBtn(MediaQueryData screenSize) {
     return GestureDetector(
       onTap: () {
         print("Meeting Date: ${_con.dateController.text.substring(0, 10)}");
@@ -611,7 +672,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
     );
   }
 
-  Widget _buildDeleteBtn() {
+  Widget _buildDeleteBtn(MediaQueryData screenSize) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -655,30 +716,29 @@ class _EditProspectState extends StateMVC<EditProspect> {
     );
   }
 
-  Widget _buildCancelBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          // return ProspectView();
-        }));
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 25.0),
-        child: Container(
+  Widget _buildCancelBtn(MediaQueryData screenSize) {
+    return Container(
+      width: screenSize.size.width * 0.25,
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 5.0,
           padding: EdgeInsets.all(15.0),
-          decoration: BoxDecoration(
-            color: Colors.amber[300],
-            borderRadius: BorderRadius.circular(30),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
-          child: Text(
-            'Cancel',
-            style: TextStyle(
-              color: Colors.black,
-              letterSpacing: 1.5,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
+          primary: Colors.amber[300],
+        ),
+        onPressed: () {
+          Navigator.of(context).pop(false);
+        },
+        child: Text(
+          'Cancel',
+          style: TextStyle(
+            color: Colors.black,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

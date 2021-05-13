@@ -6,17 +6,18 @@ class Prospect {
   String phoneNo;
   String email;
   String type;
-  Map<String, dynamic> step;
+  Map<String, dynamic> steps;
   String lastUpdate;
-  String memo;
+  int lastStep;
 
-  Prospect(
-      {@required this.prospectId,
-      @required this.prospectName,
-      @required this.phoneNo,
-      @required this.email,
-      @required this.type,
-      @required this.step,
-      @required this.lastUpdate,
-      @required this.memo});
+  Prospect({
+    @required this.prospectId,
+    @required this.prospectName,
+    @required this.phoneNo,
+    @required this.email,
+    @required this.type,
+    @required this.steps,
+    @required this.lastUpdate,
+    @required this.lastStep,
+  });
 }

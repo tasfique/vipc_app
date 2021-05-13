@@ -86,11 +86,17 @@ class ProspectAddController extends ControllerMVC {
           'phone': phoneController.text.trim(),
           'email': emailController.text.trim(),
           'type': selectedType,
-          'memo': memoController.text.trim(),
           'lastUpdate': time,
+          'lastStep': 0,
           'steps': {
             'length': 1,
-            '0': time,
+            '0Time': time,
+            '0': 'New Prospect',
+            '0Point': 1,
+            // '0meetingPlace': '',
+            // '0meetingDate': '',
+            // '0meetingTime': '',
+            '0memo': memoController.text.trim(),
           }
         }).then((value) async {
           await FirebaseFirestore.instance

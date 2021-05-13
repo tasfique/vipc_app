@@ -74,20 +74,19 @@ class AdvisorController extends ControllerMVC {
             .collection("prospect")
             .doc(userId)
             .collection('prospects')
-            .orderBy('steps.length', descending: true)
+            .orderBy('lastStep', descending: true)
             .get();
 
       prospects.docs.forEach((oneProspect) {
         newsProspectListTemp.add(Prospect(
-          prospectId: oneProspect.id,
-          prospectName: oneProspect.data()['prospectName'],
-          phoneNo: oneProspect.data()['phone'],
-          email: oneProspect.data()['email'],
-          type: oneProspect.data()['type'],
-          step: oneProspect.data()['steps'],
-          lastUpdate: oneProspect.data()['lastUpdate'],
-          memo: oneProspect.data()['memo'],
-        ));
+            prospectId: oneProspect.id,
+            prospectName: oneProspect.data()['prospectName'],
+            phoneNo: oneProspect.data()['phone'],
+            email: oneProspect.data()['email'],
+            type: oneProspect.data()['type'],
+            steps: oneProspect.data()['steps'],
+            lastUpdate: oneProspect.data()['lastUpdate'],
+            lastStep: oneProspect.data()['lastStep']));
       });
       prospectList = newsProspectListTemp;
     } catch (error) {

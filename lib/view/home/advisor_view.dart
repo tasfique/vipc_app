@@ -828,6 +828,8 @@ class _AdvisorViewState extends StateMVC {
   }
 
   Widget prospectItemCard(Prospect oneProspect) {
+    int intValue = oneProspect.steps['length'] - 1;
+    String neededValue = oneProspect.steps['$intValue'];
     return Card(
       color: Colors.amber[50],
       child: Padding(
@@ -840,11 +842,11 @@ class _AdvisorViewState extends StateMVC {
                 Expanded(
                   flex: 1,
                   child: Container(
-                    padding: EdgeInsets.only(left: 10, top: 5),
+                    padding: EdgeInsets.only(left: 10),
                     child: Text(
                       oneProspect.prospectName,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      // overflow: TextOverflow.ellipsis,
+                      // maxLines: 1,
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -852,22 +854,27 @@ class _AdvisorViewState extends StateMVC {
                     ),
                   ),
                 ),
-                ButtonBar(
-                  children: <Widget>[
-                    TextButton(
-                      child: const Icon(
-                        Icons.edit,
-                        size: 30,
-                        color: Colors.brown,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditProspectStateless()));
-                      },
-                    ),
-                  ],
+                TextButton(
+                  child: const Icon(
+                    Icons.edit,
+                    size: 30,
+                    color: Colors.brown,
+                  ),
+                  onPressed: () async {
+                    final pushPage2 = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditProspect(oneProspect)));
+                    if (pushPage2) {
+                      setState(() {
+                        checkProspect = false;
+                      });
+                      _con.getProspect(context);
+                      setState(() {
+                        checkProspect = true;
+                      });
+                    }
+                  },
                 ),
               ],
             ),
@@ -897,9 +904,9 @@ class _AdvisorViewState extends StateMVC {
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
-                      'Step ${oneProspect.step['length']}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      neededValue,
+                      // overflow: TextOverflow.ellipsis,
+                      // maxLines: 2,
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
