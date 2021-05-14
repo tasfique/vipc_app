@@ -216,7 +216,7 @@ class _EditUserState extends StateMVC<EditUser> {
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
               hintText: widget.user.email,
               hintStyle: TextStyle(
-                color: Colors.white,
+                color: Colors.white70,
               ),
             ),
           ),
@@ -275,7 +275,7 @@ class _EditUserState extends StateMVC<EditUser> {
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
               hintText: widget.user.fullName,
               hintStyle: TextStyle(
-                color: Colors.white,
+                color: Colors.white70,
               ),
             ),
           ),

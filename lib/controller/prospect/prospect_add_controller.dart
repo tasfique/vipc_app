@@ -93,9 +93,9 @@ class ProspectAddController extends ControllerMVC {
             '0Time': time,
             '0': 'New Prospect',
             '0Point': 1,
-            // '0meetingPlace': '',
-            // '0meetingDate': '',
-            // '0meetingTime': '',
+            '0meetingPlace': '',
+            '0meetingDate': '',
+            '0meetingTime': '',
             '0memo': memoController.text.trim(),
           }
         }).then((value) async {
