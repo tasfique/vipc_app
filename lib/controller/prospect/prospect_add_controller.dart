@@ -83,6 +83,7 @@ class ProspectAddController extends ControllerMVC {
             .collection('prospects')
             .add({
           'prospectName': usernameController.text.trim(),
+          'done': 0,
           'phone': phoneController.text.trim(),
           'email': emailController.text.trim(),
           'type': selectedType,

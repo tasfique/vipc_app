@@ -9,6 +9,7 @@ class Prospect {
   Map<String, dynamic> steps;
   String lastUpdate;
   int lastStep;
+  int done;
 
   Prospect({
     @required this.prospectId,
@@ -19,5 +20,6 @@ class Prospect {
     @required this.steps,
     @required this.lastUpdate,
     @required this.lastStep,
+    @required this.done,
   });
 }

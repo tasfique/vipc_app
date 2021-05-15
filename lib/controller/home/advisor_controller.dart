@@ -78,7 +78,8 @@ class AdvisorController extends ControllerMVC {
             .get();
 
       prospects.docs.forEach((oneProspect) {
-        newsProspectListTemp.add(Prospect(
+        if (oneProspect.data()['done'] == 0)
+          newsProspectListTemp.add(Prospect(
             prospectId: oneProspect.id,
             prospectName: oneProspect.data()['prospectName'],
             phoneNo: oneProspect.data()['phone'],
@@ -86,7 +87,9 @@ class AdvisorController extends ControllerMVC {
             type: oneProspect.data()['type'],
             steps: oneProspect.data()['steps'],
             lastUpdate: oneProspect.data()['lastUpdate'],
-            lastStep: oneProspect.data()['lastStep']));
+            lastStep: oneProspect.data()['lastStep'],
+            done: oneProspect.data()['done'],
+          ));
       });
       prospectList = newsProspectListTemp;
     } catch (error) {

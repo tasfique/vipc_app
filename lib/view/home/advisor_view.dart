@@ -774,7 +774,7 @@ class _AdvisorViewState extends StateMVC {
                               } else if (index ==
                                   _con.prospectList.length - 1) {
                                 return Padding(
-                                  padding: EdgeInsets.only(top: 15, bottom: 45),
+                                  padding: EdgeInsets.only(top: 15, bottom: 52),
                                   child: Container(
                                     alignment: Alignment.center,
                                     child: prospectItemCard(
@@ -794,7 +794,8 @@ class _AdvisorViewState extends StateMVC {
                             },
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(
+                                right: 8, left: 8, bottom: 8),
                             child: FloatingActionButton(
                               onPressed: () async {
                                 final pushP = await Navigator.push(
@@ -829,132 +830,180 @@ class _AdvisorViewState extends StateMVC {
 
   Widget prospectItemCard(Prospect oneProspect) {
     int intValue = oneProspect.steps['length'] - 1;
-    String neededValue = oneProspect.steps['$intValue'];
-    return Card(
-      color: Colors.amber[50],
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      oneProspect.prospectName,
-                      // overflow: TextOverflow.ellipsis,
-                      // maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
+    // String neededValue = oneProspect.steps['$intValue'];
+    return GestureDetector(
+      onTap: () async {
+        final pushPage3 = await Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ProspectView(oneProspect)));
+        if (pushPage3) {
+          setState(() {
+            checkProspect = false;
+          });
+          _con.getProspect(context);
+          setState(() {
+            checkProspect = true;
+          });
+        }
+      },
+      child: Card(
+        color: Colors.amber[50],
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        oneProspect.prospectName,
+                        // overflow: TextOverflow.ellipsis,
+                        // maxLines: 1,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                TextButton(
-                  child: const Icon(
-                    Icons.edit,
-                    size: 30,
-                    color: Colors.brown,
+                  TextButton(
+                    child: const Icon(
+                      Icons.edit,
+                      size: 30,
+                      color: Colors.brown,
+                    ),
+                    onPressed: () async {
+                      final pushPage2 = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProspect(oneProspect)));
+                      if (pushPage2) {
+                        setState(() {
+                          checkProspect = false;
+                        });
+                        _con.getProspect(context);
+                        setState(() {
+                          checkProspect = true;
+                        });
+                      }
+                    },
                   ),
-                  onPressed: () async {
-                    final pushPage2 = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EditProspect(oneProspect)));
-                    if (pushPage2) {
-                      setState(() {
-                        checkProspect = false;
-                      });
-                      _con.getProspect(context);
-                      setState(() {
-                        checkProspect = true;
-                      });
-                    }
-                  },
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
+                ],
+              ),
+              Row(
+                children: [
+                  // Expanded(
+                  // flex: 1,
+                  // child:
+                  Container(
                     padding: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
                       oneProspect.type,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      // overflow: TextOverflow.ellipsis,
+                      // maxLines: 1,
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black54,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10, top: 5),
-                    child: Text(
-                      neededValue,
-                      // overflow: TextOverflow.ellipsis,
-                      // maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
+                  // ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 50),
+                      child: Text(
+                        oneProspect.steps['${intValue}meetingPlace'] == ''
+                            ? ''
+                            : 'Meeting at ${oneProspect.steps["${intValue}meetingPlace"]}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                        // overflow: TextOverflow.ellipsis,
+                        // maxLines: 2,
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 30, top: 30),
-                    child: Text(
-                      "Meeting at "
-                      // +
-                      // Prospect.prospectSchedules[i]
-                      //     .toString()
-                      //     .substring(11, 16) +
-                      // "\n" +
-                      // Prospect.prospectLocations[i]
-                      ,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10, top: 5),
+                      child: Text(
+                        oneProspect.steps['$intValue'],
+                        // overflow: TextOverflow.ellipsis,
+                        // maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            // ButtonBar(
-            //   children: <Widget>[
-            //     FlatButton(
-            //       child: const Icon(
-            //         Icons.edit,
-            //         size: 30,
-            //       ),
-            //       onPressed: () {
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) => EditProspectStateless()));
-            //       },
-            //     ),
-            //   ],
-            // ),
-          ],
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        intValue == 0
+                            ? 'Created at ' +
+                                DateFormat('dd/MM/yyyy HH:mm').format(
+                                    DateTime.parse(oneProspect.lastUpdate))
+                            : DateFormat('HH:mm').format(DateTime.parse(
+                                        oneProspect.lastUpdate)) !=
+                                    '00:00'
+                                ? 'Date\n' +
+                                    DateFormat('dd/MM/yyyy HH:mm').format(
+                                        DateTime.parse(oneProspect.lastUpdate))
+                                : 'Date\n' +
+                                    DateFormat('dd/MM/yyyy').format(
+                                        DateTime.parse(oneProspect.lastUpdate))
+
+                        //     DateFormat('dd/MM/yyyy HH:mm')
+                        // .format(DateTime.parse(oneNew.newsId))
+                        // +
+                        // Prospect.prospectSchedules[i]
+                        //     .toString()
+                        //     .substring(11, 16) +
+                        // "\n" +
+                        // Prospect.prospectLocations[i]
+                        ,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // ButtonBar(
+              //   children: <Widget>[
+              //     FlatButton(
+              //       child: const Icon(
+              //         Icons.edit,
+              //         size: 30,
+              //       ),
+              //       onPressed: () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => EditProspectStateless()));
+              //       },
+              //     ),
+              //   ],
+              // ),
+            ],
+          ),
         ),
       ),
     );

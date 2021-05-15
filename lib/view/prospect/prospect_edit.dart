@@ -36,6 +36,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
     _con.start();
     _con.prospect = widget.prospect;
     _con.length = widget.prospect.steps['length'] - 1;
+    print('${_con.length + 1}');
     if (_con.prospect.lastStep > 0)
       steps.removeRange(0, _con.prospect.lastStep);
   }
@@ -134,13 +135,18 @@ class _EditProspectState extends StateMVC<EditProspect> {
                           )
                         ],
                       ),
-                      _buildProspectNameTextField(),
-                      SizedBox(height: 15),
-                      _buildProspectPhoneNoTextField(),
-                      SizedBox(height: 15),
-                      _buildProspectEmailTextField(),
-                      SizedBox(height: 15),
-                      _buildProspectTypeDropdownList(),
+                      _con.choice == Choices.edit
+                          ? _buildProspectNameTextField()
+                          : SizedBox(),
+                      _con.choice == Choices.edit
+                          ? _buildProspectPhoneNoTextField()
+                          : SizedBox(),
+                      _con.choice == Choices.edit
+                          ? _buildProspectEmailTextField()
+                          : SizedBox(),
+                      _con.choice == Choices.edit
+                          ? _buildProspectTypeDropdownList()
+                          : SizedBox(),
                       _con.choice == Choices.update
                           ? _buildStepDropdownList()
                           : SizedBox(),
@@ -229,6 +235,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             ),
           ),
         ),
+        SizedBox(height: 15),
       ],
     );
   }
@@ -288,6 +295,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             ),
           ),
         ),
+        SizedBox(height: 15),
       ],
     );
   }
@@ -351,6 +359,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             ),
           ),
         ),
+        SizedBox(height: 15),
       ],
     );
   }
@@ -426,6 +435,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             }).toList(),
           ),
         ),
+        SizedBox(height: 15),
       ],
     );
   }
@@ -434,7 +444,6 @@ class _EditProspectState extends StateMVC<EditProspect> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 15),
         Container(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -479,8 +488,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             },
             hint: Container(
               child: Text(
-                // TODO fix here
-                "Select The Step Number",
+                "Select Step Number",
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -549,8 +557,10 @@ class _EditProspectState extends StateMVC<EditProspect> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText:
-                  widget.prospect.steps['${_con.length}meetingPlace'] == null ||
+              hintText: _con.choice == Choices.update
+                  ? "Enter Meetup Location"
+                  : widget.prospect.steps['${_con.length}meetingPlace'] ==
+                              null ||
                           widget.prospect.steps['${_con.length}meetingPlace']
                               .isEmpty
                       ? "Enter Meetup Location"
@@ -595,9 +605,12 @@ class _EditProspectState extends StateMVC<EditProspect> {
           child: TextFormField(
             readOnly: true,
             validator: (_) {
-              if (_con.dateController.text.isEmpty &&
-                  _con.timeController.text.isNotEmpty &&
-                  widget.prospect.steps['${_con.length}meetingDate'] == '')
+              if ((_con.dateController.text.isEmpty &&
+                      widget.prospect.steps['${_con.length}meetingDate'] ==
+                          '' &&
+                      _con.choice == Choices.edit) ||
+                  (_con.dateController.text.isEmpty &&
+                      _con.choice == Choices.update))
                 return 'Please choose a meeting date.';
               return null;
             },
@@ -614,17 +627,21 @@ class _EditProspectState extends StateMVC<EditProspect> {
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: (widget.prospect.steps['${_con.length}meetingDate'] ==
-                              null ||
-                          widget.prospect.steps['${_con.length}meetingDate']
-                              .isEmpty) &&
-                      (_con.dateController.text == "" ||
-                          _con.dateController.text == null)
+              hintText: _con.choice == Choices.update &&
+                      _con.dateController.text == ''
                   ? "Select Meeting Date"
-                  : _con.dateController.text.isEmpty
-                      ? DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                          widget.prospect.steps['${_con.length}meetingDate']))
-                      : _con.dateController.text.substring(0, 10),
+                  : (widget.prospect.steps['${_con.length}meetingDate'] ==
+                                  null ||
+                              widget.prospect.steps['${_con.length}meetingDate']
+                                  .isEmpty) &&
+                          (_con.dateController.text == "" ||
+                              _con.dateController.text == null)
+                      ? "Select Meeting Date"
+                      : _con.dateController.text.isEmpty
+                          ? DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                              widget
+                                  .prospect.steps['${_con.length}meetingDate']))
+                          : _con.dateController.text.substring(0, 10),
               hintStyle: TextStyle(
                 color: Colors.white,
               ),
@@ -765,7 +782,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             if (pickedTime != null) {
               setState(() {
                 _con.timeController.text =
-                    "${pickedTime.hour}:${pickedTime.minute == 0 ? "00" : pickedTime.minute}";
+                    "${pickedTime.hour < 10 ? "0${pickedTime.hour}" : pickedTime.hour}:${pickedTime.minute == 0 ? "00" : pickedTime.minute}";
               });
             }
           },
@@ -794,18 +811,23 @@ class _EditProspectState extends StateMVC<EditProspect> {
                 ),
                 Container(
                   child: Text(
-                    (widget.prospect.steps['${_con.length}meetingTime'] ==
-                                    null ||
-                                widget
-                                    .prospect
-                                    .steps['${_con.length}meetingTime']
-                                    .isEmpty) &&
-                            (_con.timeController.text == "" ||
-                                _con.timeController.text == null)
+                    _con.choice == Choices.update &&
+                            _con.timeController.text == ''
                         ? "Select Meeting Date"
-                        : _con.timeController.text.isEmpty
-                            ? widget.prospect.steps['${_con.length}meetingTime']
-                            : _con.timeController.text,
+                        : (widget.prospect.steps['${_con.length}meetingTime'] ==
+                                        null ||
+                                    widget
+                                        .prospect
+                                        .steps['${_con.length}meetingTime']
+                                        .isEmpty) &&
+                                (_con.timeController.text == "" ||
+                                    _con.timeController.text == null)
+                            ? "Select Meeting Date"
+                            : _con.timeController.text.isEmpty
+                                ? widget
+                                    .prospect.steps['${_con.length}meetingTime']
+                                : _con.timeController.text,
+                    style: TextStyle(fontSize: 15),
                   ),
                 ),
               ],
@@ -820,7 +842,9 @@ class _EditProspectState extends StateMVC<EditProspect> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 20),
+        _con.choice == Choices.edit && _con.length == 0
+            ? SizedBox(height: 5)
+            : SizedBox(height: 20),
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
@@ -846,10 +870,12 @@ class _EditProspectState extends StateMVC<EditProspect> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.fromLTRB(15, 7, 0, 7),
-              hintText: widget.prospect.steps['${_con.length}memo'] == null ||
-                      widget.prospect.steps['${_con.length}memo'].isEmpty
+              hintText: _con.choice == Choices.update
                   ? 'Memo . . .'
-                  : widget.prospect.steps['${_con.length}memo'],
+                  : widget.prospect.steps['${_con.length}memo'] == null ||
+                          widget.prospect.steps['${_con.length}memo'].isEmpty
+                      ? 'Memo . . .'
+                      : widget.prospect.steps['${_con.length}memo'],
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -945,7 +971,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
                 TextButton(
                   child: Text('Yes'),
                   onPressed: () async {
-                    // await _con.deleteProspect(context);
+                    await _con.deleteProspect(context);
                     Navigator.of(context).pop();
                     Navigator.of(context).pop(true);
                   },

@@ -35,6 +35,7 @@ class ProspectEditController extends ControllerMVC {
   String selectedStep;
   Prospect prospect;
   int length;
+  String userId;
 
   void start() async {
     editSuccess = false;
@@ -50,6 +51,7 @@ class ProspectEditController extends ControllerMVC {
     dateController.clear();
     timeController.clear();
     memoController.clear();
+    userId = FirebaseAuth.instance.currentUser.uid;
     app = await Firebase.initializeApp(
         name: 'Third', options: Firebase.app().options);
   }
@@ -86,26 +88,57 @@ class ProspectEditController extends ControllerMVC {
         isLoading = true;
       });
       try {
-        String userId = FirebaseAuth.instance.currentUser.uid;
+        var time;
 
         if (choice == Choices.edit) {
-          var time;
-          if (timeController.text.isNotEmpty && dateController.text.isEmpty) {
-            TimeOfDay t = TimeOfDay(
-                hour: int.parse(timeController.text.substring(0, 2)),
-                minute:
-                    int.parse(timeController.text.substring(3, 5).toString()));
-            final now = DateTime.parse(prospect.steps['${length}meetingDate']);
-
-            time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
-          } else if (timeController.text.isNotEmpty &&
-              dateController.text.isNotEmpty) {
-            TimeOfDay t = TimeOfDay(
-                hour: int.parse(timeController.text.substring(0, 2)),
-                minute:
-                    int.parse(timeController.text.substring(3, 5).toString()));
-            final now = DateTime.parse(dateController.text);
-            time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+          if (length != 0) {
+            if (timeController.text.isNotEmpty && dateController.text.isEmpty) {
+              TimeOfDay t = TimeOfDay(
+                  hour: int.parse(timeController.text.substring(0, 2)),
+                  minute: int.parse(timeController.text.substring(3, 5)));
+              final now =
+                  DateTime.parse(prospect.steps['${length}meetingDate']);
+              time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+            } else if (timeController.text.isNotEmpty &&
+                dateController.text.isNotEmpty) {
+              TimeOfDay t = TimeOfDay(
+                  hour: int.parse(timeController.text.substring(0, 2)),
+                  minute: int.parse(timeController.text.substring(3, 5)));
+              final now = DateTime.parse(dateController.text);
+              time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+            } else if (timeController.text.isEmpty &&
+                dateController.text.isEmpty &&
+                prospect.steps['${length}meetingTime'] == '') {
+              final now =
+                  DateTime.parse(prospect.steps['${length}meetingDate']);
+              time = DateTime(now.year, now.month, now.day, 0, 0);
+            } else if (timeController.text.isEmpty &&
+                dateController.text.isEmpty &&
+                prospect.steps['${length}meetingTime'] != '') {
+              TimeOfDay t = TimeOfDay(
+                  hour: int.parse(
+                      prospect.steps['${length}meetingTime'].substring(0, 2)),
+                  minute: int.parse(
+                      prospect.steps['${length}meetingTime'].substring(3, 5)));
+              final now =
+                  DateTime.parse(prospect.steps['${length}meetingDate']);
+              time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+            } else if (timeController.text.isEmpty &&
+                dateController.text.isNotEmpty &&
+                prospect.steps['${length}meetingTime'] == '') {
+              final now = DateTime.parse(dateController.text);
+              time = DateTime(now.year, now.month, now.day, 0, 0);
+            } else if (timeController.text.isEmpty &&
+                dateController.text.isNotEmpty &&
+                prospect.steps['${length}meetingTime'] != '') {
+              TimeOfDay t = TimeOfDay(
+                  hour: int.parse(
+                      prospect.steps['${length}meetingTime'].substring(0, 2)),
+                  minute: int.parse(
+                      prospect.steps['${length}meetingTime'].substring(3, 5)));
+              final now = DateTime.parse(dateController.text);
+              time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+            }
           }
 
           await FirebaseFirestore.instance
@@ -129,6 +162,8 @@ class ProspectEditController extends ControllerMVC {
             'type': (selectedType != null && selectedType != prospect.type)
                 ? selectedType
                 : prospect.type,
+            'lastUpdate':
+                length != 0 ? time.toIso8601String() : prospect.lastUpdate,
             'steps.${length}meetingPlace': (placeController.text.isNotEmpty &&
                     placeController.text !=
                         prospect.steps['${length}meetingPlace'] &&
@@ -148,8 +183,7 @@ class ProspectEditController extends ControllerMVC {
                 ? timeController.text
                 : prospect.steps['${length}meetingTime'],
             'steps.${length}memo': (memoController.text.isNotEmpty &&
-                    memoController.text != prospect.steps['${length}memo'] &&
-                    length != 0)
+                    memoController.text != prospect.steps['${length}memo'])
                 ? memoController.text
                 : prospect.steps['${length}memo'],
           }).then((_) async {
@@ -172,24 +206,40 @@ class ProspectEditController extends ControllerMVC {
             }
           });
         } else if (choice == Choices.update) {
-          var time = DateTime.now();
-          if (timeController.text.isNotEmpty && dateController.text.isEmpty) {
+          if (timeController.text.isNotEmpty) {
             TimeOfDay t = TimeOfDay(
                 hour: int.parse(timeController.text.substring(0, 2)),
-                minute:
-                    int.parse(timeController.text.substring(3, 5).toString()));
-            final now = DateTime.parse(prospect.steps['${length}meetingDate']);
-            time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
-          } else if (timeController.text.isNotEmpty &&
-              dateController.text.isNotEmpty) {
-            TimeOfDay t = TimeOfDay(
-                hour: int.parse(timeController.text.substring(0, 2)),
-                minute:
-                    int.parse(timeController.text.substring(3, 5).toString()));
+                minute: int.parse(timeController.text.substring(3, 5)));
             final now = DateTime.parse(dateController.text);
             time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+          } else if (timeController.text.isEmpty) {
+            final now = DateTime.parse(dateController.text);
+            time = DateTime(now.year, now.month, now.day, 0, 0);
           }
-          var step = int.parse(selectedStep.substring(5, 6));
+
+          int step = int.parse(selectedStep.substring(5, 6));
+          int point;
+
+          switch (step) {
+            case 1:
+              point = 2;
+              break;
+            case 2:
+              point = 2;
+              break;
+            case 3:
+              point = 1;
+              break;
+            case 4:
+              point = 4;
+              break;
+            case 5:
+              point = 5;
+              break;
+            case 6:
+              point = 1;
+              break;
+          }
 
           await FirebaseFirestore.instance
               .collection('prospect')
@@ -197,64 +247,18 @@ class ProspectEditController extends ControllerMVC {
               .collection('prospects')
               .doc(prospect.prospectId)
               .update({
-            'prospectName': (nameController.text.isNotEmpty &&
-                    nameController.text != prospect.prospectName)
-                ? nameController.text
-                : prospect.prospectName,
-            'phone': (phoneController.text.isNotEmpty &&
-                    phoneController.text != prospect.phoneNo)
-                ? phoneController.text
-                : prospect.phoneNo,
-            'email': (emailController.text.isNotEmpty &&
-                    emailController.text != prospect.email)
-                ? emailController.text
-                : prospect.email,
-            'type': (selectedType != null && selectedType != prospect.type)
-                ? selectedType
-                : prospect.type,
+            'steps.${length + 1}': selectedStep,
             'lastUpdate': time.toIso8601String(),
             'lastStep': step,
-            'steps.${length}meetingPlace': (placeController.text.isNotEmpty &&
-                    placeController.text !=
-                        prospect.steps['${length}meetingPlace'] &&
-                    length != 0)
-                ? placeController.text
-                : prospect.steps['${length}meetingPlace'],
-            'steps.${length}meetingDate': (dateController.text.isNotEmpty &&
-                    dateController.text !=
-                        prospect.steps['${length}meetingDate'] &&
-                    length != 0)
-                ? dateController.text
-                : prospect.steps['${length}meetingDate'],
-            'steps.${length}meetingTime': (timeController.text.isNotEmpty &&
-                    timeController.text !=
-                        prospect.steps['${length}meetingTime'] &&
-                    length != 0)
-                ? timeController.text
-                : prospect.steps['${length}meetingTime'],
-            'steps.${length}memo': (memoController.text.isNotEmpty &&
-                    memoController.text != prospect.steps['${length}memo'] &&
-                    length != 0)
-                ? memoController.text
-                : prospect.steps['${length}memo'],
-          }).then((_) async {
-            if (nameController.text.isNotEmpty) {
-              List<String> caseSearchListSaveToFireBase =
-                  setSearchParam(nameController.text.trim());
-              await FirebaseFirestore.instance
-                  .collection('search')
-                  .doc('userSearch')
-                  .collection(userId)
-                  .doc(prospect.prospectId)
-                  .update({
-                'prospectName': nameController.text.trim(),
-                'phone': (phoneController.text.isNotEmpty &&
-                        phoneController.text != prospect.phoneNo)
-                    ? phoneController.text.trim()
-                    : prospect.phoneNo,
-                'searchCase': caseSearchListSaveToFireBase.toList()
-              });
-            }
+            'steps.length': length + 2,
+            'steps.${length + 1}Point': point,
+            'steps.${length + 1}meetingPlace':
+                placeController.text.isNotEmpty ? placeController.text : '',
+            'steps.${length + 1}meetingDate': dateController.text,
+            'steps.${length + 1}meetingTime':
+                timeController.text.isNotEmpty ? timeController.text : '',
+            'steps.${length + 1}memo':
+                memoController.text.isNotEmpty ? memoController.text : '',
           });
         }
 
@@ -273,6 +277,31 @@ class ProspectEditController extends ControllerMVC {
               backgroundColor: Theme.of(context).errorColor),
         );
       }
+    }
+  }
+
+  Future<void> deleteProspect(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('prospect')
+          .doc(userId)
+          .collection('prospects')
+          .doc(prospect.prospectId)
+          .delete()
+          .then((_) async {
+        await FirebaseFirestore.instance
+            .collection('search')
+            .doc('userSearch')
+            .collection(userId)
+            .doc(prospect.prospectId)
+            .delete();
+      });
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(err.message),
+            backgroundColor: Theme.of(context).errorColor),
+      );
     }
   }
 }
