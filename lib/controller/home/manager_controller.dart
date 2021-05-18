@@ -23,6 +23,7 @@ class ManagerController extends ControllerMVC {
   List<News> newsList;
   List<Prospect> prospectList;
   String dropdownValue = 'Sort by Time';
+  String sort = 'up';
 
   Future<void> getNews(BuildContext context) async {
     List<News> newsListTemp = [];
@@ -67,14 +68,14 @@ class ManagerController extends ControllerMVC {
             .collection("prospect")
             .doc(userId)
             .collection('prospects')
-            .orderBy('lastUpdate', descending: true)
+            .orderBy('lastUpdate', descending: sort != 'up')
             .get();
       else if (dropdownValue == 'Sort by Step')
         prospects = await FirebaseFirestore.instance
             .collection("prospect")
             .doc(userId)
             .collection('prospects')
-            .orderBy('lastStep', descending: true)
+            .orderBy('lastStep', descending: sort != 'up')
             .get();
 
       prospects.docs.forEach((oneProspect) {

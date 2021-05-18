@@ -316,7 +316,7 @@ class _AddProspectState extends StateMVC {
             ),
             validator: (value) {
               if (value == null || value == 'Select') {
-                return 'Please select an prospect type.';
+                return 'Please select a prospect type.';
               }
               return null;
             },
