@@ -75,7 +75,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
         return;
       },
       child: Scaffold(
-        drawer: null,
+        // drawer: null,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
