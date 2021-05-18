@@ -8,6 +8,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:pie_chart/pie_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
+import 'package:vipc_app/model/line_graph.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
@@ -17,6 +18,9 @@ import 'package:vipc_app/view/prospect/prospect_add.dart';
 import 'package:vipc_app/view/prospect/prospect_edit.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
+// for line graph
+import 'dart:math';
+//import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AdvisorView extends StatefulWidget {
   AdvisorView({key}) : super(key: key);
@@ -59,6 +63,25 @@ class _AdvisorViewState extends StateMVC {
         labelAccessorFn: (MonthlyPointBarChart row, _) =>
             row.point != 0 ? '${row.point}' : ''),
   ];
+
+//for line graph
+  var series2 = [
+    charts.Series(
+        domainFn: (YearlyPointLineGraph clickData, _) => clickData.time,
+        measureFn: (YearlyPointLineGraph clickData, _) => clickData.point,
+        colorFn: (YearlyPointLineGraph clickData, _) => clickData.color,
+        id: 'time',
+        data: [
+          YearlyPointLineGraph(new DateTime(2017, 01, 01), 30, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2018, 01, 01), 100, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2019, 01, 01), 80, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2020, 01, 01), 50, Colors.yellow),
+        ],
+        labelAccessorFn: (YearlyPointLineGraph row, _) =>
+            row.point != 0 ? '${row.point}' : ''),
+  ];
+
+  //code for line graph.
 
   @override
   void initState() {
@@ -419,6 +442,7 @@ class _AdvisorViewState extends StateMVC {
                                                 width:
                                                     screenSize.size.width * 0.9,
                                                 padding: EdgeInsets.all(10),
+                                                //Pie chart here.
                                                 child: PieChart(
                                                   dataMap: {
                                                     " Week 1 ": 5,
@@ -426,6 +450,7 @@ class _AdvisorViewState extends StateMVC {
                                                     " Week 3 ": 2,
                                                     " Week 4 ": 2,
                                                   },
+
                                                   animationDuration: Duration(
                                                       milliseconds: 700),
                                                   chartLegendSpacing: 20,
@@ -503,6 +528,7 @@ class _AdvisorViewState extends StateMVC {
                                                           height: screenSize
                                                                   .size.height *
                                                               0.5,
+                                                          //Barchart here
                                                           child:
                                                               charts.BarChart(
                                                             series,
@@ -601,9 +627,82 @@ class _AdvisorViewState extends StateMVC {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Container(
-                                                    child: Text(
-                                                        'hello line graph here'),
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            15, 0, 15, 0),
+                                                    width:
+                                                        screenSize.size.width *
+                                                            0.9,
+                                                    child: Container(
+                                                      child: SizedBox(
+                                                        height: screenSize
+                                                                .size.height *
+                                                            0.5,
+                                                        //Barchart here
+                                                        child: charts
+                                                            .TimeSeriesChart(
+                                                          series2,
+                                                          animate: true,
+                                                          animationDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      700),
+                                                          dateTimeFactory:
+                                                              const charts
+                                                                  .LocalDateTimeFactory(),
+                                                          // domainAxis: new charts
+                                                          //     .OrdinalAxisSpec(
+                                                          //   renderSpec: new charts
+                                                          //       .SmallTickRendererSpec(
+                                                          //     labelStyle: new charts
+                                                          //             .TextStyleSpec(
+                                                          //         fontSize: 16,
+                                                          //         color: charts
+                                                          //             .MaterialPalette
+                                                          //             .white),
+                                                          //     lineStyle: new charts
+                                                          //             .LineStyleSpec(
+                                                          //         color: charts
+                                                          //             .MaterialPalette
+                                                          //             .white),
+                                                          //   ),
+                                                          // ),
+                                                          primaryMeasureAxis:
+                                                              new charts
+                                                                  .NumericAxisSpec(
+                                                            renderSpec: new charts
+                                                                .GridlineRendererSpec(
+                                                              labelStyle: new charts
+                                                                      .TextStyleSpec(
+                                                                  fontSize: 16,
+                                                                  color: charts
+                                                                      .MaterialPalette
+                                                                      .white),
+                                                              lineStyle: new charts
+                                                                      .LineStyleSpec(
+                                                                  color: charts
+                                                                      .MaterialPalette
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: screenSize
+                                                                .size.height *
+                                                            0.023),
+                                                    width:
+                                                        screenSize.size.width,
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                        "Yearly Performance Achievement",
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                        )),
+                                                  )
                                                 ],
                                               )),
                                     Align(
