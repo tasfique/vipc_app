@@ -31,7 +31,6 @@ class _ManagerViewState extends StateMVC {
   }
   ManagerController _con;
 
-  double responsiveFontSize = 18; // Default Font Size
   int chartIndex;
   bool check = true;
   bool checkHome = true;
@@ -268,7 +267,7 @@ class _ManagerViewState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
-    print('testAdvisor');
+    print('testManager');
     return Scaffold(
       appBar: CustomAppBar(),
       drawer: CustomDrawer(),
