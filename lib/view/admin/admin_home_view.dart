@@ -278,7 +278,7 @@ class _AdminPageState extends StateMVC {
                         child: Icon(
                           Icons.edit,
                           size: 30,
-                          color: Colors.black,
+                          color: Colors.brown,
                         ),
                       ),
                     ),
@@ -442,6 +442,7 @@ class _AdminPageState extends StateMVC {
                       child: Icon(
                         Icons.edit,
                         size: 30,
+                        color: Colors.brown,
                       ),
                     ),
                   ),
