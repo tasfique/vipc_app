@@ -18,6 +18,7 @@ class AdminController extends ControllerMVC {
 
   int selectedIndex = 0;
   // int selectedNewsIndex = 0;
+  Usr adminDetail;
   List<Usr> userList;
   List<Usr> userListRequestPassword;
   List<News> newsList;
@@ -37,6 +38,22 @@ class AdminController extends ControllerMVC {
     isLoading = false;
     requestSuccess = false;
     empNoController.clear();
+  }
+
+  Future<void> getAdminDetail() async {
+    final admin = await FirebaseFirestore.instance
+        .collection("users")
+        .where("type", isEqualTo: 'Admin')
+        .get();
+
+    adminDetail = Usr(
+        userId: admin.docs.first.id,
+        empID: admin.docs.first.data()['empID'],
+        email: admin.docs.first.data()['email'],
+        fullName: admin.docs.first.data()['fullName'],
+        type: admin.docs.first.data()['type'],
+        assignUnder: admin.docs.first.data()['assignUnder'],
+        password: admin.docs.first.data()['password']);
   }
 
   Future<void> requestChangePassword(BuildContext context) async {

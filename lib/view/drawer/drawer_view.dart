@@ -119,10 +119,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 context: context,
                 builder: (_) => new AlertDialog(
                   title: new Text("VIPC Message"),
-                  content: new Text("Successfully logged out!"),
+                  content: new Text("Do you want to log out?"),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Close'),
+                      child: Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Yes'),
                       onPressed: () async {
                         Navigator.of(context).pop();
                         String userId = FirebaseAuth.instance.currentUser.uid;
@@ -131,11 +137,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             .collection('users')
                             .doc(userId)
                             .update({'token': ''});
-
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //   return LoginView();
-                        // }));
                       },
                     )
                   ],

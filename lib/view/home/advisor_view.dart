@@ -34,7 +34,7 @@ class _AdvisorViewState extends StateMVC {
   }
   AdvisorController _con;
 
-  double responsiveFontSize = 18; // Default Font Size
+  // double responsiveFontSize = 18; // Default Font Size
   int chartIndex;
   bool check = true;
   bool checkHome = true;

@@ -9,11 +9,11 @@ import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
 import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/admin_news_control/news_upload_view.dart';
 import 'package:vipc_app/view/admin_user_control/user_edit_view.dart';
 import 'package:vipc_app/view/admin_user_control/user_add_view.dart';
+import 'package:vipc_app/view/search/admin_search_view.dart';
 
 class AdminPage extends StatefulWidget {
   AdminPage({key}) : super(key: key);
@@ -64,13 +64,13 @@ class _AdminPageState extends StateMVC {
 
   @override
   void initState() {
-    //
     _con.userList = [];
     _con.newsList = [];
     // _con.requestPasswordCount = 0;
     // _con.managers = [];
     _con.getRequestPasswordCount();
     _saveDeviceToken();
+    _con.getAdminDetail();
     super.initState();
     // _con.getNews(context);
     // _con.getUser(context);
@@ -85,7 +85,7 @@ class _AdminPageState extends StateMVC {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AdminAppBar(),
-      drawer: CustomDrawer(),
+      drawer: _drawer(),
       body: _con.selectedIndex == 0 ? newsContainer() : userListContainer(),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -278,7 +278,7 @@ class _AdminPageState extends StateMVC {
                         child: Icon(
                           Icons.edit,
                           size: 30,
-                          color: Colors.black,
+                          color: Colors.brown,
                         ),
                       ),
                     ),
@@ -442,6 +442,7 @@ class _AdminPageState extends StateMVC {
                       child: Icon(
                         Icons.edit,
                         size: 30,
+                        color: Colors.brown,
                       ),
                     ),
                   ),
@@ -485,6 +486,118 @@ class _AdminPageState extends StateMVC {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _drawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: Text(_con.adminDetail.fullName),
+            decoration: BoxDecoration(
+              color: Colors.amber,
+            ),
+            accountEmail: Text(
+              _con.adminDetail.email,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Image.asset(
+                ('assets/images/logo.png'),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text(
+              'Home',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Search',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminSearchView()));
+            },
+          ),
+          ListTile(
+            title: Text(
+              'News',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              setState(() {
+                _con.selectedIndex = 0;
+              });
+            },
+          ),
+          ListTile(
+            title: Text(
+              'User',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              setState(() {
+                _con.selectedIndex = 1;
+              });
+            },
+          ),
+          ListTile(
+            title: Text('Logout'),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (_) => new AlertDialog(
+                  title: new Text("VIPC Message"),
+                  content: new Text("Do you want to log out?"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Yes'),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        String userId = FirebaseAuth.instance.currentUser.uid;
+                        FirebaseAuth.instance.signOut();
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(userId)
+                            .update({'token': ''});
+                      },
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
