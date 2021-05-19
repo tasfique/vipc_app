@@ -21,15 +21,13 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
   @override
   void initState() {
     _con.userListRequestPassword = [];
-
     super.initState();
   }
 
   @override
-  void dispose() {
-    _con.getRequestPasswordCount();
-
+  void dispose() async {
     super.dispose();
+    await _con.getRequestPasswordCount();
   }
 
   @override

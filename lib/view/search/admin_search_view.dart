@@ -24,9 +24,9 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
   bool check = false;
 
   @override
-  void dispose() {
-    _con.getRequestPasswordCount();
+  void dispose() async {
     super.dispose();
+    await _con.getRequestPasswordCount();
   }
 
   Future<void> searchData() async {
