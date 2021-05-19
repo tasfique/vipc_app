@@ -827,35 +827,59 @@ class _AdvisorViewState extends StateMVC {
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(right: 10),
-                                          child: DropdownButton<String>(
-                                            value: _con.dropdownValue,
-                                            icon:
-                                                const Icon(Icons.sort_rounded),
-                                            iconSize: 24,
-                                            dropdownColor: Colors.grey[800],
-                                            iconEnabledColor: Colors.white,
-                                            elevation: 16,
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                            underline: Container(
-                                              height: 2,
-                                              color: Colors.white,
-                                            ),
-                                            onChanged: (String newValue) {
-                                              setState(() {
-                                                _con.dropdownValue = newValue;
-                                              });
-                                            },
-                                            items: <String>[
-                                              'Sort by Time',
-                                              'Sort by Step',
-                                            ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                  highlightColor: Colors.white,
+                                                  color: Colors.white,
+                                                  iconSize: 25,
+                                                  icon: Icon(
+                                                      _con.sort == 'up'
+                                                          ? Icons.arrow_upward
+                                                          : Icons
+                                                              .arrow_downward,
+                                                      color: Colors.white),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      if (_con.sort == 'up')
+                                                        _con.sort = 'down';
+                                                      else
+                                                        _con.sort = 'up';
+                                                    });
+                                                  }),
+                                              DropdownButton<String>(
+                                                value: _con.dropdownValue,
+                                                icon: const Icon(
+                                                    Icons.sort_rounded),
+                                                iconSize: 24,
+                                                dropdownColor: Colors.grey[800],
+                                                iconEnabledColor: Colors.white,
+                                                elevation: 16,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                underline: Container(
+                                                  height: 2,
+                                                  color: Colors.white,
+                                                ),
+                                                onChanged: (String newValue) {
+                                                  setState(() {
+                                                    _con.dropdownValue =
+                                                        newValue;
+                                                  });
+                                                },
+                                                items: <String>[
+                                                  'Sort by Time',
+                                                  'Sort by Step',
+                                                ].map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
