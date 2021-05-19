@@ -88,6 +88,7 @@ class _AdvisorViewState extends StateMVC {
     _con.selectedIndex = 0;
     chartIndex = 0;
     _con.newsList = [];
+    _con.getProspect(context);
     super.initState();
 
     // // LIST VIEW OF CARDS
@@ -751,22 +752,30 @@ class _AdvisorViewState extends StateMVC {
                               ),
                             ),
                             // CARDS
-                            // TODO: fix this
-                            // Container(
-                            //   padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                            //   height: screenSize.size.height * 0.23,
-                            //   child: ListView.builder(
-                            //     scrollDirection: Axis.horizontal,
-                            //     itemCount: Prospect.prospectCardsForHome.length,
-                            //     itemBuilder: (context, index) {
-                            //       return Container(
-                            //         alignment: Alignment.center,
-                            //         width: screenSize.size.width * 0.5,
-                            //         child: Prospect.prospectCardsForHome[index],
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
+                            FutureBuilder(
+                              future: _con.getProspectCard(context),
+                              builder: (context, snapshot) => snapshot
+                                          .connectionState ==
+                                      ConnectionState.waiting
+                                  ? Center(child: CircularProgressIndicator())
+                                  : Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                      height: screenSize.size.height * 0.23,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: _con.prospectCardList.length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            width: screenSize.size.width * 0.5,
+                                            child: prospectCard(
+                                                _con.prospectCardList[index]),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                            ),
                           ],
                         ),
                       ),
@@ -775,6 +784,67 @@ class _AdvisorViewState extends StateMVC {
                       child: CircularProgressIndicator(),
                     ),
             ),
+    );
+  }
+
+  Widget prospectCard(Prospect oneProspect) {
+    int intValue = oneProspect.steps['length'] - 1;
+
+    return Card(
+      color: Colors.amber[50],
+      child: Padding(
+        padding: EdgeInsets.only(top: 8.0, right: 8, left: 8, bottom: 3),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                oneProspect.prospectName,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              subtitle: Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  (DateFormat('HH:mm').format(
+                                  DateTime.parse(oneProspect.lastUpdate)) !=
+                              '00:00'
+                          ? DateFormat('dd/MM/yyyy HH:mm')
+                              .format(DateTime.parse(oneProspect.lastUpdate))
+                          : DateFormat('dd/MM/yyyy')
+                              .format(DateTime.parse(oneProspect.lastUpdate))) +
+                      (oneProspect.steps['${intValue}meetingPlace'] == ''
+                          ? '\n\n'
+                          : '\nMeeting at ${oneProspect.steps["${intValue}meetingPlace"]}\n'),
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              ),
+            ),
+            TextButton(
+              child: const Text('More Info..'),
+              onPressed: () async {
+                final pushPage4 = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProspectView(oneProspect)));
+                if (pushPage4) {
+                  setState(() {
+                    checkProspect = false;
+                  });
+                  _con.getProspectCard(context);
+                  setState(() {
+                    checkProspect = true;
+                  });
+                }
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 

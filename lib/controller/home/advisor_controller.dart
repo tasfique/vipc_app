@@ -22,6 +22,8 @@ class AdvisorController extends ControllerMVC {
   int selectedIndex;
   List<News> newsList;
   List<Prospect> prospectList;
+  List<Prospect> prospectCardList;
+
   String dropdownValue = 'Sort by Time';
   String sort = 'up';
 
@@ -93,6 +95,49 @@ class AdvisorController extends ControllerMVC {
           ));
       });
       prospectList = newsProspectListTemp;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+  }
+
+  Future<void> getProspectCard(BuildContext context) async {
+    List<Prospect> newsProspectListTemp = [];
+    DateTime present = DateTime.now();
+    DateTime time;
+
+    try {
+      String userId = FirebaseAuth.instance.currentUser.uid;
+      var prospects;
+      prospects = await FirebaseFirestore.instance
+          .collection("prospect")
+          .doc(userId)
+          .collection('prospects')
+          .orderBy('lastUpdate', descending: false)
+          .get();
+
+      prospects.docs.forEach((oneProspect) {
+        if (oneProspect.data()['done'] == 0 &&
+            oneProspect.data()['lastStep'] != 0) {
+          time = DateTime.parse(oneProspect.data()['lastUpdate']);
+          if (time.difference(present).inSeconds > 0)
+            newsProspectListTemp.add(Prospect(
+              prospectId: oneProspect.id,
+              prospectName: oneProspect.data()['prospectName'],
+              phoneNo: oneProspect.data()['phone'],
+              email: oneProspect.data()['email'],
+              type: oneProspect.data()['type'],
+              steps: oneProspect.data()['steps'],
+              lastUpdate: oneProspect.data()['lastUpdate'],
+              lastStep: oneProspect.data()['lastStep'],
+              done: oneProspect.data()['done'],
+            ));
+        }
+      });
+      prospectCardList = newsProspectListTemp;
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
