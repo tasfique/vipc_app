@@ -85,7 +85,12 @@ class _AdminPageState extends StateMVC {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AdminAppBar(),
-      drawer: _drawer(),
+      drawer: FutureBuilder(
+          future: _con.getNews(context),
+          builder: (context, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? Center(child: CircularProgressIndicator())
+                  : _drawer()),
       body: _con.selectedIndex == 0 ? newsContainer() : userListContainer(),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
