@@ -23,6 +23,7 @@ class AdvisorController extends ControllerMVC {
   List<News> newsList;
   List<Prospect> prospectList;
   List<Prospect> prospectCardList;
+  List<int> monthlyPoint = [];
 
   String dropdownValue = 'Sort by Time';
   String sort = 'up';
@@ -138,6 +139,81 @@ class AdvisorController extends ControllerMVC {
         }
       });
       prospectCardList = newsProspectListTemp;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+  }
+
+  Future<void> getMonthlyPoint(BuildContext context) async {
+    // List<Prospect> newsProspectListTemp = [];
+    DateTime present = DateTime.now();
+    int currentYear = present.year;
+    int currentMonth = present.month;
+    print(currentMonth);
+    // for (int i = 0; i < 12; i++) monthlyPoint.add(0);
+// monthlyPoint = 0
+
+    try {
+      String userId = FirebaseAuth.instance.currentUser.uid;
+      var prospects;
+      prospects = await FirebaseFirestore.instance
+          .collection("prospect")
+          .doc(userId)
+          .collection('prospects')
+          .get();
+
+      for (int i = 0; i < 12; i++) {
+        monthlyPoint[i] = 0;
+      }
+
+      TimeOfDay t;
+      var now;
+      var time;
+      prospects.docs.forEach((oneProspect) {
+        // time = DateTime.parse(oneProspect.data()['lastUpdate']);
+        // if (time.difference(present).inSeconds > 0)
+        //   newsProspectListTemp.add(Prospect(
+        //     prospectId: oneProspect.id,
+        //     prospectName: oneProspect.data()['prospectName'],
+        //     phoneNo: oneProspect.data()['phone'],
+        //     email: oneProspect.data()['email'],
+        //     type: oneProspect.data()['type'],
+        //     steps: oneProspect.data()['steps'],
+        //     lastUpdate: oneProspect.data()['lastUpdate'],
+        //     lastStep: oneProspect.data()['lastStep'],
+        //     done: oneProspect.data()['done'],
+        //   ));
+        // print(oneProspect.data()['steps']['length']);
+
+        DateTime createdTime =
+            DateTime.parse(oneProspect.data()['steps']['0Time']);
+        if (createdTime.difference(present).inSeconds <= 0 &&
+            createdTime.year == currentYear)
+          monthlyPoint[createdTime.month - 1]++;
+        for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
+          if (oneProspect.data()['steps']['${i}meetingTime'] != '')
+            t = TimeOfDay(
+                hour: int.parse(oneProspect
+                    .data()['steps']['${i}meetingTime']
+                    .substring(0, 2)),
+                minute: int.parse(oneProspect
+                    .data()['steps']['${i}meetingTime']
+                    .substring(3, 5)));
+          else
+            t = TimeOfDay(hour: 0, minute: 0);
+          now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
+          time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+          if (time.difference(present).inSeconds <= 0 &&
+              now.year == currentYear &&
+              now.month <= currentMonth)
+            monthlyPoint[now.month - 1] +=
+                oneProspect.data()['steps']['${i}Point'];
+        }
+      });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
