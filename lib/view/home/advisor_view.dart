@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/constants/font_constants.dart';
 import 'package:vipc_app/controller/home/advisor_controller.dart';
@@ -40,7 +41,8 @@ class _AdvisorViewState extends StateMVC {
   bool check = true;
   bool checkHome = true;
   bool checkProspect = true;
-  var series;
+  var series, series2;
+  DateTime fromDate, toDate;
 
   Future<void> declare() async {
     await _con.getMonthlyPoint(context);
@@ -73,24 +75,28 @@ class _AdvisorViewState extends StateMVC {
     ];
   }
 
-//for line graph
-  var series2 = [
-    charts.Series(
+  Future<void> declareLineGraph() async {
+    // await _con.getRangePoint(context);
+    //for line graph
+    series2 = [
+      charts.Series(
         domainFn: (YearlyPointLineGraph clickData, _) => clickData.time,
         measureFn: (YearlyPointLineGraph clickData, _) => clickData.point,
         colorFn: (YearlyPointLineGraph clickData, _) => clickData.color,
         id: 'time',
         data: [
-          YearlyPointLineGraph(new DateTime(2017, 01, 01), 30, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2018, 01, 01), 100, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2019, 01, 01), 80, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2020, 01, 01), 50, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 04, 4), 30, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 06, 01), 100, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 05, 9), 80, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 06, 10), 50, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
+          YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
         ],
-        labelAccessorFn: (YearlyPointLineGraph row, _) =>
-            row.point != 0 ? '${row.point}' : ''),
-  ];
-
-  //code for line graph.
+      )
+    ];
+  }
 
   @override
   void initState() {
@@ -353,164 +359,469 @@ class _AdvisorViewState extends StateMVC {
       // TODO : fix this
       future: null,
       // future: _con.getNews(context),
-      builder: (context, snapshot) =>
-          snapshot.connectionState == ConnectionState.waiting
-              ? Center(child: CircularProgressIndicator())
-              : RefreshIndicator(
-                  onRefresh: () async {
-                    setState(() {
-                      checkHome = false;
-                    });
-                    _con.getNews(context);
-                    setState(() {
-                      checkHome = true;
-                    });
-                  },
-                  child: (checkHome)
-                      ? Container(
-                          height: double.infinity,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: GradientColors.lightBlack,
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(15),
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Hello, Tasfique Enam',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        // fontSize: FontConstants.fontMediumSize
-                                      ),
-                                    ),
+      builder: (context, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  checkHome = false;
+                });
+                _con.getNews(context);
+                setState(() {
+                  checkHome = true;
+                });
+              },
+              child: (checkHome)
+                  ? Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: GradientColors.lightBlack,
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Hello, Tasfique Enam',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    // fontSize: FontConstants.fontMediumSize
                                   ),
                                 ),
-                                // CHART and BAR GRAPHS VIEW
-                                GestureDetector(
-                                  onHorizontalDragEnd:
-                                      (DragEndDetails details) {
-                                    if (details.primaryVelocity > 0) {
-                                      setState(() {
-                                        if (chartIndex == 0)
-                                          chartIndex = 2;
-                                        else
-                                          chartIndex -= 1;
-                                      });
-                                    } else if (details.primaryVelocity < 0) {
-                                      setState(() {
-                                        if (chartIndex == 2)
-                                          chartIndex = 0;
-                                        else
-                                          chartIndex += 1;
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    width: screenSize.size.width,
-                                    height: screenSize.size.height * 0.6,
-                                    // height: 500,
-                                    padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-                                    child: Stack(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: GestureDetector(
-                                            child: BouncingWidget(
-                                              scaleFactor: 1.5,
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (chartIndex == 0)
-                                                    chartIndex = 2;
-                                                  else
-                                                    chartIndex -= 1;
-                                                });
-                                              },
-                                              child: Container(
-                                                child: Icon(
-                                                  Icons.arrow_back_ios,
-                                                  size: 30,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
+                              ),
+                            ),
+                            // CHART and BAR GRAPHS VIEW
+                            GestureDetector(
+                              onHorizontalDragEnd: (DragEndDetails details) {
+                                if (details.primaryVelocity > 0) {
+                                  setState(() {
+                                    if (chartIndex == 0)
+                                      chartIndex = 2;
+                                    else
+                                      chartIndex -= 1;
+                                  });
+                                } else if (details.primaryVelocity < 0) {
+                                  setState(() {
+                                    if (chartIndex == 2)
+                                      chartIndex = 0;
+                                    else
+                                      chartIndex += 1;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: screenSize.size.width,
+                                height: screenSize.size.height * 0.6,
+                                // height: 500,
+                                padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: GestureDetector(
+                                        child: BouncingWidget(
+                                          scaleFactor: 1.5,
+                                          onPressed: () {
+                                            setState(() {
+                                              if (chartIndex == 0)
+                                                chartIndex = 2;
+                                              else
+                                                chartIndex -= 1;
+                                            });
+                                          },
+                                          child: Container(
+                                            child: Icon(
+                                              Icons.arrow_back_ios,
+                                              size: 30,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ),
-                                        chartIndex == 0
-                                            ? Center(
-                                                child: Column(children: [
-                                                  Container(
-                                                    height:
+                                      ),
+                                    ),
+                                    chartIndex == 0
+                                        ? Center(
+                                            child: Column(children: [
+                                              Container(
+                                                height: screenSize.size.height *
+                                                    0.5,
+                                                width:
+                                                    screenSize.size.width * 0.9,
+                                                padding: EdgeInsets.all(10),
+                                                //Pie chart here.
+                                                child: PieChart(
+                                                  dataMap: {
+                                                    " Week 1 ": 5,
+                                                    " Week 2 ": 3,
+                                                    " Week 3 ": 2,
+                                                    " Week 4 ": 2,
+                                                  },
+
+                                                  animationDuration: Duration(
+                                                      milliseconds: 700),
+                                                  chartLegendSpacing: 20,
+                                                  // chartRadius:
+                                                  //     MediaQuery.of(context).size.width / 2,
+                                                  colorList: [
+                                                    Colors.red,
+                                                    Colors.green,
+                                                    Colors.blue,
+                                                    Colors.yellow,
+                                                  ],
+                                                  initialAngleInDegree: 0,
+                                                  // chartType: ChartType.disc,
+                                                  // ringStrokeWidth: 50,
+                                                  // centerText: "Performance",
+                                                  legendOptions: LegendOptions(
+                                                    showLegendsInRow: true,
+                                                    legendPosition:
+                                                        LegendPosition.bottom,
+                                                    showLegends: true,
+                                                    // legendShape: _BoxShape.circle,
+                                                    legendTextStyle: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        wordSpacing: 10,
+                                                        fontSize: 18),
+                                                  ),
+                                                  chartValuesOptions:
+                                                      ChartValuesOptions(
+                                                    chartValueStyle: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.black,
+                                                        backgroundColor:
+                                                            Colors.transparent),
+                                                    showChartValueBackground:
+                                                        true,
+                                                    showChartValues: true,
+                                                    showChartValuesInPercentage:
+                                                        false,
+                                                    // showChartValuesOutside: false,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    top:
                                                         screenSize.size.height *
-                                                            0.5,
+                                                            0.02),
+                                                width: screenSize.size.width,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                    "Weekly Performance Achievement",
+                                                    // TODO: replace this Weekly performance achievment for May 2021"
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                    )),
+                                              )
+                                            ]),
+                                          )
+                                        : chartIndex == 1
+                                            ? FutureBuilder(
+                                                future: declare(),
+                                                builder: (context, snapshot) =>
+                                                    snapshot.connectionState ==
+                                                            ConnectionState
+                                                                .waiting
+                                                        ? Center(
+                                                            child:
+                                                                CircularProgressIndicator())
+                                                        : Center(
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Container(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          15,
+                                                                          0,
+                                                                          15,
+                                                                          0),
+                                                                  width: screenSize
+                                                                          .size
+                                                                          .width *
+                                                                      0.9,
+                                                                  child:
+                                                                      Container(
+                                                                    child:
+                                                                        SizedBox(
+                                                                      height: screenSize
+                                                                              .size
+                                                                              .height *
+                                                                          0.5,
+                                                                      //Barchart here
+                                                                      child: charts
+                                                                          .BarChart(
+                                                                        series,
+                                                                        animate:
+                                                                            true,
+                                                                        vertical:
+                                                                            false,
+                                                                        animationDuration:
+                                                                            Duration(milliseconds: 700),
+                                                                        // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
+                                                                        barRendererDecorator:
+                                                                            new charts.BarLabelDecorator<String>(
+                                                                          labelPosition: charts
+                                                                              .BarLabelPosition
+                                                                              .inside,
+                                                                          // labelPadding: 0,
+                                                                          labelAnchor: charts
+                                                                              .BarLabelAnchor
+                                                                              .end,
+
+                                                                          insideLabelStyleSpec:
+                                                                              charts.TextStyleSpec(
+                                                                            fontSize:
+                                                                                18,
+                                                                            color:
+                                                                                charts.Color.black,
+                                                                          ),
+                                                                          // outsideLabelStyleSpec: new charts.TextStyleSpec(
+                                                                          //   fontSize: 12,
+                                                                          //   color: charts.Color.white,
+                                                                          // ),
+                                                                        ),
+                                                                        selectionModels: [
+                                                                          new charts.SelectionModelConfig(changedListener:
+                                                                              (charts.SelectionModel model) {
+                                                                            // print(model.selectedSeries[0].measureFn(model.selectedDatum[0].index));
+                                                                            // print(model.selectedSeries[0].domainFn(model.selectedDatum[0].index));
+                                                                            // print(model.selectedDatum[0].index);
+                                                                            if (model.selectedSeries[0].measureFn(model.selectedDatum[0].index) !=
+                                                                                0)
+                                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index)));
+                                                                          })
+                                                                        ],
+                                                                        domainAxis:
+                                                                            new charts.OrdinalAxisSpec(
+                                                                          renderSpec:
+                                                                              new charts.SmallTickRendererSpec(
+                                                                            labelStyle:
+                                                                                new charts.TextStyleSpec(fontSize: 16, color: charts.MaterialPalette.white),
+                                                                            lineStyle:
+                                                                                new charts.LineStyleSpec(color: charts.MaterialPalette.white),
+                                                                          ),
+                                                                        ),
+                                                                        primaryMeasureAxis:
+                                                                            new charts.NumericAxisSpec(
+                                                                          renderSpec:
+                                                                              new charts.GridlineRendererSpec(
+                                                                            labelStyle:
+                                                                                new charts.TextStyleSpec(fontSize: 16, color: charts.MaterialPalette.white),
+                                                                            lineStyle:
+                                                                                new charts.LineStyleSpec(color: charts.MaterialPalette.white),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding: EdgeInsets.only(
+                                                                      top: screenSize
+                                                                              .size
+                                                                              .height *
+                                                                          0.023),
+                                                                  width:
+                                                                      screenSize
+                                                                          .size
+                                                                          .width,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  child: Text(
+                                                                      "Monthly Performance Achievement",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            20,
+                                                                      )),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                              )
+                                            : Center(
+                                                // TODO: line graph
+                                                child: Column(
+                                                // mainAxisSize: MainAxisSize.min,
+                                                // crossAxisAlignment:
+                                                //     CrossAxisAlignment.start,
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        'From:',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                          child: fromDate ==
+                                                                  null
+                                                              ? Icon(Icons
+                                                                  .date_range)
+                                                              : Text(DateFormat(
+                                                                      'yMMMM')
+                                                                  .format(
+                                                                      fromDate)
+                                                                  .toString()),
+                                                          // icon: Icon(Icons.add),
+                                                          onPressed: () {
+                                                            showMonthPicker(
+                                                              context: context,
+                                                              firstDate: _con
+                                                                  .minimumDate,
+                                                              lastDate: DateTime
+                                                                  .now(),
+                                                              initialDate:
+                                                                  DateTime
+                                                                      .now(),
+                                                              locale:
+                                                                  Locale("en"),
+                                                            ).then((date) {
+                                                              if (date !=
+                                                                  null) {
+                                                                setState(() {
+                                                                  fromDate =
+                                                                      date;
+                                                                });
+                                                              }
+                                                            });
+                                                          }),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        'To:',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                          child: toDate == null
+                                                              ? Icon(Icons
+                                                                  .date_range)
+                                                              : Text(DateFormat(
+                                                                      'yMMMM')
+                                                                  .format(
+                                                                      toDate)
+                                                                  .toString()),
+                                                          // icon: Icon(Icons.add),
+                                                          onPressed: () {
+                                                            showMonthPicker(
+                                                              context: context,
+                                                              firstDate: fromDate ==
+                                                                      null
+                                                                  ? _con
+                                                                      .minimumDate
+                                                                  : fromDate,
+                                                              lastDate: DateTime
+                                                                  .now(),
+                                                              initialDate:
+                                                                  DateTime
+                                                                      .now(),
+                                                              locale:
+                                                                  Locale("en"),
+                                                            ).then((date) {
+                                                              if (date !=
+                                                                  null) {
+                                                                setState(() {
+                                                                  toDate = date;
+                                                                });
+                                                              }
+                                                            });
+                                                          }),
+                                                    ],
+                                                  ),
+
+                                                  // TODO line graph
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            15, 0, 15, 0),
                                                     width:
                                                         screenSize.size.width *
                                                             0.9,
-                                                    padding: EdgeInsets.all(10),
-                                                    //Pie chart here.
-                                                    child: PieChart(
-                                                      dataMap: {
-                                                        " Week 1 ": 5,
-                                                        " Week 2 ": 3,
-                                                        " Week 3 ": 2,
-                                                        " Week 4 ": 2,
-                                                      },
-
-                                                      animationDuration:
-                                                          Duration(
-                                                              milliseconds:
-                                                                  700),
-                                                      chartLegendSpacing: 20,
-                                                      // chartRadius:
-                                                      //     MediaQuery.of(context).size.width / 2,
-                                                      colorList: [
-                                                        Colors.red,
-                                                        Colors.green,
-                                                        Colors.blue,
-                                                        Colors.yellow,
-                                                      ],
-                                                      initialAngleInDegree: 0,
-                                                      // chartType: ChartType.disc,
-                                                      // ringStrokeWidth: 50,
-                                                      // centerText: "Performance",
-                                                      legendOptions:
-                                                          LegendOptions(
-                                                        showLegendsInRow: true,
-                                                        legendPosition:
-                                                            LegendPosition
-                                                                .bottom,
-                                                        showLegends: true,
-                                                        // legendShape: _BoxShape.circle,
-                                                        legendTextStyle:
-                                                            TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                wordSpacing: 10,
-                                                                fontSize: 18),
-                                                      ),
-                                                      chartValuesOptions:
-                                                          ChartValuesOptions(
-                                                        chartValueStyle: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.black,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent),
-                                                        showChartValueBackground:
-                                                            true,
-                                                        showChartValues: true,
-                                                        showChartValuesInPercentage:
-                                                            false,
-                                                        // showChartValuesOutside: false,
+                                                    child: Container(
+                                                      child: SizedBox(
+                                                        height: screenSize
+                                                                .size.height *
+                                                            0.45,
+                                                        //line graph here
+                                                        child: fromDate ==
+                                                                    null &&
+                                                                toDate == null
+                                                            ? FutureBuilder(
+                                                                future:
+                                                                    declareLineGraph(),
+                                                                builder: (context, snapshot) => snapshot
+                                                                            .connectionState ==
+                                                                        ConnectionState
+                                                                            .waiting
+                                                                    ? Center(
+                                                                        child:
+                                                                            CircularProgressIndicator())
+                                                                    : Center(
+                                                                        child: charts.TimeSeriesChart(
+                                                                            series2,
+                                                                            animate:
+                                                                                true,
+                                                                            animationDuration:
+                                                                                Duration(milliseconds: 700),
+                                                                            defaultRenderer: charts.LineRendererConfig(
+                                                                              includePoints: true,
+                                                                              includeLine: true,
+                                                                            ),
+                                                                            dateTimeFactory: const charts.LocalDateTimeFactory(),
+                                                                            domainAxis: new charts.DateTimeAxisSpec(
+                                                                              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                                                                                month: new charts.TimeFormatterSpec(
+                                                                                  format: 'MMM',
+                                                                                  transitionFormat: 'MMM yyyy',
+                                                                                ),
+                                                                              ),
+                                                                              renderSpec: charts.SmallTickRendererSpec(
+                                                                                axisLineStyle: charts.LineStyleSpec(
+                                                                                  thickness: 2,
+                                                                                ),
+                                                                                labelRotation: 30,
+                                                                                tickLengthPx: 4,
+                                                                                minimumPaddingBetweenLabelsPx: 0,
+                                                                                labelStyle: new charts.TextStyleSpec(fontSize: 10, color: charts.MaterialPalette.white),
+                                                                                lineStyle: new charts.LineStyleSpec(color: charts.MaterialPalette.white),
+                                                                              ),
+                                                                            ),
+                                                                            primaryMeasureAxis: new charts.NumericAxisSpec(
+                                                                                renderSpec: charts.GridlineRendererSpec(
+                                                                                    labelStyle: new charts.TextStyleSpec(fontSize: 16, color: charts.MaterialPalette.white),
+                                                                                    lineStyle: charts.LineStyleSpec(
+                                                                                      color: charts.MaterialPalette.white,
+                                                                                      dashPattern: [4, 4],
+                                                                                    ))))))
+                                                            : SizedBox(),
                                                       ),
                                                     ),
                                                   ),
@@ -518,297 +829,96 @@ class _AdvisorViewState extends StateMVC {
                                                     padding: EdgeInsets.only(
                                                         top: screenSize
                                                                 .size.height *
-                                                            0.02),
+                                                            0.04),
                                                     width:
                                                         screenSize.size.width,
                                                     alignment: Alignment.center,
                                                     child: Text(
-                                                        "Weekly Performance Achievement",
-                                                        // TODO: replace this Weekly performance achievment for May 2021"
+                                                        "Performance Achievement In Range",
                                                         style: TextStyle(
                                                           fontSize: 20,
                                                         )),
                                                   )
-                                                ]),
-                                              )
-                                            : chartIndex == 1
-                                                ? FutureBuilder(
-                                                    future: declare(),
-                                                    builder: (context,
-                                                            snapshot) =>
-                                                        snapshot.connectionState ==
-                                                                ConnectionState
-                                                                    .waiting
-                                                            ? Center(
-                                                                child:
-                                                                    CircularProgressIndicator())
-                                                            : Center(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    Container(
-                                                                      padding: EdgeInsets
-                                                                          .fromLTRB(
-                                                                              15,
-                                                                              0,
-                                                                              15,
-                                                                              0),
-                                                                      width: screenSize
-                                                                              .size
-                                                                              .width *
-                                                                          0.9,
-                                                                      child:
-                                                                          Container(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          height:
-                                                                              screenSize.size.height * 0.5,
-                                                                          //Barchart here
-                                                                          child:
-                                                                              charts.BarChart(
-                                                                            series,
-                                                                            animate:
-                                                                                true,
-                                                                            vertical:
-                                                                                false,
-                                                                            animationDuration:
-                                                                                Duration(milliseconds: 700),
-                                                                            // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
-                                                                            barRendererDecorator:
-                                                                                new charts.BarLabelDecorator<String>(
-                                                                              labelPosition: charts.BarLabelPosition.inside,
-                                                                              // labelPadding: 0,
-                                                                              labelAnchor: charts.BarLabelAnchor.end,
-
-                                                                              insideLabelStyleSpec: charts.TextStyleSpec(
-                                                                                fontSize: 18,
-                                                                                color: charts.Color.black,
-                                                                              ),
-                                                                              // outsideLabelStyleSpec: new charts.TextStyleSpec(
-                                                                              //   fontSize: 12,
-                                                                              //   color: charts.Color.white,
-                                                                              // ),
-                                                                            ),
-                                                                            selectionModels: [
-                                                                              new charts.SelectionModelConfig(changedListener: (charts.SelectionModel model) {
-                                                                                print(model.selectedSeries[0].measureFn(model.selectedDatum[0].index));
-                                                                                print(model.selectedSeries[0].domainFn(model.selectedDatum[0].index));
-                                                                                print(model.selectedDatum[0].index);
-                                                                                if (model.selectedSeries[0].measureFn(model.selectedDatum[0].index) != 0) Navigator.push(context, MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index)));
-                                                                              })
-                                                                            ],
-                                                                            domainAxis:
-                                                                                new charts.OrdinalAxisSpec(
-                                                                              renderSpec: new charts.SmallTickRendererSpec(
-                                                                                labelStyle: new charts.TextStyleSpec(fontSize: 16, color: charts.MaterialPalette.white),
-                                                                                lineStyle: new charts.LineStyleSpec(color: charts.MaterialPalette.white),
-                                                                              ),
-                                                                            ),
-                                                                            primaryMeasureAxis:
-                                                                                new charts.NumericAxisSpec(
-                                                                              renderSpec: new charts.GridlineRendererSpec(
-                                                                                labelStyle: new charts.TextStyleSpec(fontSize: 16, color: charts.MaterialPalette.white),
-                                                                                lineStyle: new charts.LineStyleSpec(color: charts.MaterialPalette.white),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      padding: EdgeInsets.only(
-                                                                          top: screenSize.size.height *
-                                                                              0.023),
-                                                                      width: screenSize
-                                                                          .size
-                                                                          .width,
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      child: Text(
-                                                                          "Monthly Performance Achievement",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                20,
-                                                                          )),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                  )
-                                                : Center(
-                                                    // TODO: line graph
-                                                    child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            EdgeInsets.fromLTRB(
-                                                                15, 0, 15, 0),
-                                                        width: screenSize
-                                                                .size.width *
-                                                            0.9,
-                                                        child: Container(
-                                                          child: SizedBox(
-                                                            height: screenSize
-                                                                    .size
-                                                                    .height *
-                                                                0.5,
-                                                            //Barchart here
-                                                            child: charts
-                                                                .TimeSeriesChart(
-                                                              series2,
-                                                              animate: true,
-                                                              animationDuration:
-                                                                  Duration(
-                                                                      milliseconds:
-                                                                          700),
-                                                              dateTimeFactory:
-                                                                  const charts
-                                                                      .LocalDateTimeFactory(),
-                                                              // domainAxis: new charts
-                                                              //     .OrdinalAxisSpec(
-                                                              //   renderSpec: new charts
-                                                              //       .SmallTickRendererSpec(
-                                                              //     labelStyle: new charts
-                                                              //             .TextStyleSpec(
-                                                              //         fontSize: 16,
-                                                              //         color: charts
-                                                              //             .MaterialPalette
-                                                              //             .white),
-                                                              //     lineStyle: new charts
-                                                              //             .LineStyleSpec(
-                                                              //         color: charts
-                                                              //             .MaterialPalette
-                                                              //             .white),
-                                                              //   ),
-                                                              // ),
-                                                              primaryMeasureAxis:
-                                                                  new charts
-                                                                      .NumericAxisSpec(
-                                                                renderSpec:
-                                                                    new charts
-                                                                        .GridlineRendererSpec(
-                                                                  labelStyle: new charts
-                                                                          .TextStyleSpec(
-                                                                      fontSize:
-                                                                          16,
-                                                                      color: charts
-                                                                          .MaterialPalette
-                                                                          .white),
-                                                                  lineStyle: new charts
-                                                                          .LineStyleSpec(
-                                                                      color: charts
-                                                                          .MaterialPalette
-                                                                          .white),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.only(
-                                                            top: screenSize.size
-                                                                    .height *
-                                                                0.023),
-                                                        width: screenSize
-                                                            .size.width,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                            "Yearly Performance Achievement",
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                            )),
-                                                      )
-                                                    ],
-                                                  )),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: GestureDetector(
-                                            child: BouncingWidget(
-                                              scaleFactor: 1.5,
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (chartIndex == 2)
-                                                    chartIndex = 0;
-                                                  else
-                                                    chartIndex += 1;
-                                                });
-                                              },
-                                              child: Container(
-                                                child: Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: 30,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
+                                                ],
+                                              )),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: GestureDetector(
+                                        child: BouncingWidget(
+                                          scaleFactor: 1.5,
+                                          onPressed: () {
+                                            setState(() {
+                                              if (chartIndex == 2)
+                                                chartIndex = 0;
+                                              else
+                                                chartIndex += 1;
+                                            });
+                                          },
+                                          child: Container(
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 30,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                                // BAR GRAPH OF POINTS TO GO AREA
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(20, 15, 20, 20),
-                                  child: new LinearPercentIndicator(
-                                    width: screenSize.size.width - 40,
-                                    animation: true,
-                                    lineHeight: 30.0,
-                                    animationDuration: 700,
-                                    percent: 0.65,
-                                    center: Text("35 points to go!",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
-                                        )),
-                                    linearStrokeCap: LinearStrokeCap.butt,
-                                    progressColor: Colors.yellowAccent,
-                                  ),
-                                ),
-                                // CARDS
-                                FutureBuilder(
-                                  future: _con.getProspectCard(context),
-                                  builder: (context, snapshot) => snapshot
-                                              .connectionState ==
-                                          ConnectionState.waiting
-                                      ? Center(
-                                          child: CircularProgressIndicator())
-                                      : Container(
-                                          padding:
-                                              EdgeInsets.fromLTRB(16, 0, 16, 0),
-                                          height: screenSize.size.height * 0.23,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                _con.prospectCardList.length,
-                                            itemBuilder: (context, index) {
-                                              return Container(
-                                                alignment: Alignment.center,
-                                                width:
-                                                    screenSize.size.width * 0.5,
-                                                child: prospectCard(_con
-                                                    .prospectCardList[index]),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        )
-                      : Center(
-                          child: CircularProgressIndicator(),
+                            // BAR GRAPH OF POINTS TO GO AREA
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 15, 20, 20),
+                              child: new LinearPercentIndicator(
+                                width: screenSize.size.width - 40,
+                                animation: true,
+                                lineHeight: 30.0,
+                                animationDuration: 700,
+                                percent: 0.65,
+                                center: Text("35 points to go!",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+                                linearStrokeCap: LinearStrokeCap.butt,
+                                progressColor: Colors.yellowAccent,
+                              ),
+                            ),
+                            // CARDS
+                            FutureBuilder(
+                              future: _con.getProspectCard(context),
+                              builder: (context, snapshot) => snapshot
+                                          .connectionState ==
+                                      ConnectionState.waiting
+                                  ? Center(child: CircularProgressIndicator())
+                                  : Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                      height: screenSize.size.height * 0.23,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: _con.prospectCardList.length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            width: screenSize.size.width * 0.5,
+                                            child: prospectCard(
+                                                _con.prospectCardList[index]),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                            ),
+                          ],
                         ),
-                ),
+                      ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
     );
   }
 

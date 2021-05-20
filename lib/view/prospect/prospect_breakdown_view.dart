@@ -58,7 +58,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       "Step 6 Referral/Servicing": []
     };
 
-    print('refresh');
     try {
       String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects = await FirebaseFirestore.instance

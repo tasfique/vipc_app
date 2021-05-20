@@ -24,6 +24,7 @@ class AdvisorController extends ControllerMVC {
   List<Prospect> prospectList;
   List<Prospect> prospectCardList;
   List<int> monthlyPoint = [];
+  DateTime minimumDate;
 
   String dropdownValue = 'Sort by Time';
   String sort = 'up';
@@ -62,7 +63,7 @@ class AdvisorController extends ControllerMVC {
 
   Future<void> getProspect(BuildContext context) async {
     List<Prospect> newsProspectListTemp = [];
-
+    minimumDate = DateTime.now();
     try {
       String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
@@ -82,6 +83,12 @@ class AdvisorController extends ControllerMVC {
             .get();
 
       prospects.docs.forEach((oneProspect) {
+        if (DateTime.parse(oneProspect.data()['steps']['0Time'])
+                .difference(minimumDate)
+                .inSeconds <=
+            0)
+          minimumDate = DateTime.parse(oneProspect.data()['steps']['0Time']);
+
         if (oneProspect.data()['done'] == 0)
           newsProspectListTemp.add(Prospect(
             prospectId: oneProspect.id,
