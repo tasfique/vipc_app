@@ -42,7 +42,6 @@ class _AdvisorViewState extends StateMVC {
   bool checkHome = true;
   bool checkProspect = true;
   var series, series2;
-  DateTime fromDate, toDate;
 
   Future<void> declare() async {
     await _con.getMonthlyPoint(context);
@@ -76,8 +75,17 @@ class _AdvisorViewState extends StateMVC {
   }
 
   Future<void> declareLineGraph() async {
-    // await _con.getRangePoint(context);
-    //for line graph
+    await _con.getRangePoint(context);
+    // print('ahaha');
+    // for (int i = 0; i <= _con.numIndex; i++) {
+    //   print(_con.rangeTime[i]);
+    //   String bb = DateFormat('MM/yyyy').format(DateTime(
+    //       _con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0));
+    //   print(bb);
+    //   print(_con.rangePoint['05/2021']);
+    //   print(_con.rangePoint[
+    //       '${DateFormat('MM/yyyy').format(DateTime(_con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0))}']);
+    // }
     series2 = [
       charts.Series(
         domainFn: (YearlyPointLineGraph clickData, _) => clickData.time,
@@ -85,25 +93,63 @@ class _AdvisorViewState extends StateMVC {
         colorFn: (YearlyPointLineGraph clickData, _) => clickData.color,
         id: 'time',
         data: [
-          YearlyPointLineGraph(new DateTime(2012, 04, 4), 30, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2012, 06, 01), 100, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2012, 05, 9), 80, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2012, 06, 10), 50, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
-          YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
+          for (int i = 0; i <= _con.numIndex; i++)
+            YearlyPointLineGraph(
+                _con.rangeTime[i],
+                _con.rangePoint[
+                    '${DateFormat('MM/yyyy').format(DateTime(_con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0))}'],
+                Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 04, 4), 30, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 06, 01), 100, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 05, 9), 80, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 06, 10), 50, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
+          // YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
         ],
       )
     ];
   }
 
+  void test() {
+//     // Current date and time of system
+//     String date = DateTime.now().toString();
+
+// // This will generate the time and date for first day of month
+//     String firstDay = date.substring(0, 8) + '01' + date.substring(10);
+
+// // week day for the first day of the month
+//     int weekDay = DateTime.parse(firstDay).weekday;
+
+    DateTime testDate =
+        // DateTime.now();
+        DateTime.parse('2021-05-29 18:01:59.268220');
+
+    int weekOfMonth;
+
+//  If your calender starts from Monday
+    // weekDay--;
+    weekOfMonth = ((testDate.day) / 7).ceil();
+    print('Week of the month: $weekOfMonth');
+    // weekDay++;
+
+// If your calender starts from sunday
+    // if (weekDay == 7) {
+    //   weekDay = 0;
+    // }
+    // weekOfMonth = ((testDate.day + weekDay) / 7).ceil();
+    // print('Week of the month: $weekOfMonth');
+  }
+
   @override
   void initState() {
+    test();
     _con.selectedIndex = 0;
     chartIndex = 0;
     _con.newsList = [];
     _con.getProspect(context);
+    for (int i = 0; i < 4; i++) _con.weeklyPoint.add(0.0);
     for (int i = 0; i < 12; i++) _con.monthlyPoint.add(0);
     super.initState();
     // // LIST VIEW OF CARDS
@@ -356,9 +402,7 @@ class _AdvisorViewState extends StateMVC {
 
   Widget home(MediaQueryData screenSize) {
     return FutureBuilder(
-      // TODO : fix this
       future: null,
-      // future: _con.getNews(context),
       builder: (context, snapshot) => snapshot.connectionState ==
               ConnectionState.waiting
           ? Center(child: CircularProgressIndicator())
@@ -450,82 +494,143 @@ class _AdvisorViewState extends StateMVC {
                                       ),
                                     ),
                                     chartIndex == 0
-                                        ? Center(
-                                            child: Column(children: [
-                                              Container(
-                                                height: screenSize.size.height *
-                                                    0.5,
-                                                width:
-                                                    screenSize.size.width * 0.9,
-                                                padding: EdgeInsets.all(10),
-                                                //Pie chart here.
-                                                child: PieChart(
-                                                  dataMap: {
-                                                    " Week 1 ": 5,
-                                                    " Week 2 ": 3,
-                                                    " Week 3 ": 2,
-                                                    " Week 4 ": 2,
-                                                  },
+                                        ? FutureBuilder(
+                                            future:
+                                                _con.getWeeklyPoint(context),
+                                            builder: (context, snapshot) =>
+                                                snapshot.connectionState ==
+                                                        ConnectionState.waiting
+                                                    ? Center(
+                                                        child:
+                                                            CircularProgressIndicator())
+                                                    : Center(
+                                                        child: Column(
+                                                            children: [
+                                                              Container(
+                                                                height: screenSize
+                                                                        .size
+                                                                        .height *
+                                                                    0.5,
+                                                                width: screenSize
+                                                                        .size
+                                                                        .width *
+                                                                    0.9,
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10),
+                                                                //Pie chart here.
+                                                                child: PieChart(
+                                                                  dataMap: {
+                                                                    "01-07 " +
+                                                                        DateFormat('MMMM')
+                                                                            .format(DateTime.now()): _con
+                                                                        .weeklyPoint[0],
+                                                                    "08-14 " +
+                                                                        DateFormat('MMMM')
+                                                                            .format(DateTime.now()): _con
+                                                                        .weeklyPoint[1],
+                                                                    "15-21 " +
+                                                                        DateFormat('MMMM')
+                                                                            .format(DateTime.now()): _con
+                                                                        .weeklyPoint[2],
+                                                                    "22-" +
+                                                                        DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
+                                                                            .day
+                                                                            .toString() +
+                                                                        ' ' +
+                                                                        DateFormat('MMMM')
+                                                                            .format(DateTime.now()): _con
+                                                                        .weeklyPoint[3],
+                                                                  },
 
-                                                  animationDuration: Duration(
-                                                      milliseconds: 700),
-                                                  chartLegendSpacing: 20,
-                                                  // chartRadius:
-                                                  //     MediaQuery.of(context).size.width / 2,
-                                                  colorList: [
-                                                    Colors.red,
-                                                    Colors.green,
-                                                    Colors.blue,
-                                                    Colors.yellow,
-                                                  ],
-                                                  initialAngleInDegree: 0,
-                                                  // chartType: ChartType.disc,
-                                                  // ringStrokeWidth: 50,
-                                                  // centerText: "Performance",
-                                                  legendOptions: LegendOptions(
-                                                    showLegendsInRow: true,
-                                                    legendPosition:
-                                                        LegendPosition.bottom,
-                                                    showLegends: true,
-                                                    // legendShape: _BoxShape.circle,
-                                                    legendTextStyle: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        wordSpacing: 10,
-                                                        fontSize: 18),
-                                                  ),
-                                                  chartValuesOptions:
-                                                      ChartValuesOptions(
-                                                    chartValueStyle: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.black,
-                                                        backgroundColor:
-                                                            Colors.transparent),
-                                                    showChartValueBackground:
-                                                        true,
-                                                    showChartValues: true,
-                                                    showChartValuesInPercentage:
-                                                        false,
-                                                    // showChartValuesOutside: false,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.only(
-                                                    top:
-                                                        screenSize.size.height *
-                                                            0.02),
-                                                width: screenSize.size.width,
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                    "Weekly Performance Achievement",
-                                                    // TODO: replace this Weekly performance achievment for May 2021"
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                    )),
-                                              )
-                                            ]),
-                                          )
+                                                                  animationDuration:
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              700),
+                                                                  chartLegendSpacing:
+                                                                      20,
+                                                                  // chartRadius:
+                                                                  //     MediaQuery.of(context).size.width / 2,
+                                                                  colorList: [
+                                                                    Colors.red,
+                                                                    Colors
+                                                                        .green,
+                                                                    Colors.blue,
+                                                                    Colors
+                                                                        .yellow,
+                                                                  ],
+                                                                  initialAngleInDegree:
+                                                                      0,
+                                                                  // chartType: ChartType.disc,
+                                                                  // ringStrokeWidth: 50,
+                                                                  // centerText: "Performance",
+                                                                  legendOptions:
+                                                                      LegendOptions(
+                                                                    showLegendsInRow:
+                                                                        true,
+                                                                    legendPosition:
+                                                                        LegendPosition
+                                                                            .bottom,
+                                                                    showLegends:
+                                                                        true,
+                                                                    // legendShape: _BoxShape.circle,
+                                                                    legendTextStyle: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        wordSpacing:
+                                                                            10,
+                                                                        fontSize:
+                                                                            18),
+                                                                  ),
+                                                                  chartValuesOptions:
+                                                                      ChartValuesOptions(
+                                                                    chartValueStyle: TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        backgroundColor:
+                                                                            Colors.transparent),
+                                                                    showChartValueBackground:
+                                                                        true,
+                                                                    showChartValues:
+                                                                        true,
+                                                                    showChartValuesInPercentage:
+                                                                        false,
+                                                                    // showChartValuesOutside: false,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                padding: EdgeInsets.only(
+                                                                    top: screenSize
+                                                                            .size
+                                                                            .height *
+                                                                        0.02),
+                                                                width:
+                                                                    screenSize
+                                                                        .size
+                                                                        .width,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                    "Weekly Performance Achievement\nFor " +
+                                                                        DateFormat('yMMMM').format(DateTime
+                                                                            .now()),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          20,
+                                                                    )),
+                                                              )
+                                                            ]),
+                                                      ))
                                         : chartIndex == 1
                                             ? FutureBuilder(
                                                 future: declare(),
@@ -655,13 +760,7 @@ class _AdvisorViewState extends StateMVC {
                                                           ),
                                               )
                                             : Center(
-                                                // TODO: line graph
                                                 child: Column(
-                                                // mainAxisSize: MainAxisSize.min,
-                                                // crossAxisAlignment:
-                                                //     CrossAxisAlignment.start,
-                                                // mainAxisAlignment:
-                                                //     MainAxisAlignment.start,
                                                 children: [
                                                   Row(
                                                     mainAxisAlignment:
@@ -677,14 +776,14 @@ class _AdvisorViewState extends StateMVC {
                                                         ),
                                                       ),
                                                       TextButton(
-                                                          child: fromDate ==
+                                                          child: _con.fromDate ==
                                                                   null
                                                               ? Icon(Icons
                                                                   .date_range)
                                                               : Text(DateFormat(
                                                                       'yMMMM')
-                                                                  .format(
-                                                                      fromDate)
+                                                                  .format(_con
+                                                                      .fromDate)
                                                                   .toString()),
                                                           // icon: Icon(Icons.add),
                                                           onPressed: () {
@@ -692,8 +791,13 @@ class _AdvisorViewState extends StateMVC {
                                                               context: context,
                                                               firstDate: _con
                                                                   .minimumDate,
-                                                              lastDate: DateTime
-                                                                  .now(),
+                                                              lastDate:
+                                                                  _con.toDate ==
+                                                                          null
+                                                                      ? DateTime
+                                                                          .now()
+                                                                      : _con
+                                                                          .toDate,
                                                               initialDate:
                                                                   DateTime
                                                                       .now(),
@@ -703,7 +807,7 @@ class _AdvisorViewState extends StateMVC {
                                                               if (date !=
                                                                   null) {
                                                                 setState(() {
-                                                                  fromDate =
+                                                                  _con.fromDate =
                                                                       date;
                                                                 });
                                                               }
@@ -721,23 +825,26 @@ class _AdvisorViewState extends StateMVC {
                                                         ),
                                                       ),
                                                       TextButton(
-                                                          child: toDate == null
+                                                          child: _con.toDate ==
+                                                                  null
                                                               ? Icon(Icons
                                                                   .date_range)
                                                               : Text(DateFormat(
                                                                       'yMMMM')
-                                                                  .format(
-                                                                      toDate)
+                                                                  .format(_con
+                                                                      .toDate)
                                                                   .toString()),
                                                           // icon: Icon(Icons.add),
                                                           onPressed: () {
                                                             showMonthPicker(
                                                               context: context,
-                                                              firstDate: fromDate ==
+                                                              firstDate: _con
+                                                                          .fromDate ==
                                                                       null
                                                                   ? _con
                                                                       .minimumDate
-                                                                  : fromDate,
+                                                                  : _con
+                                                                      .fromDate,
                                                               lastDate: DateTime
                                                                   .now(),
                                                               initialDate:
@@ -749,15 +856,14 @@ class _AdvisorViewState extends StateMVC {
                                                               if (date !=
                                                                   null) {
                                                                 setState(() {
-                                                                  toDate = date;
+                                                                  _con.toDate =
+                                                                      date;
                                                                 });
                                                               }
                                                             });
                                                           }),
                                                     ],
                                                   ),
-
-                                                  // TODO line graph
                                                   Container(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
@@ -771,9 +877,10 @@ class _AdvisorViewState extends StateMVC {
                                                                 .size.height *
                                                             0.45,
                                                         //line graph here
-                                                        child: fromDate ==
+                                                        child: _con.fromDate !=
                                                                     null &&
-                                                                toDate == null
+                                                                _con.toDate !=
+                                                                    null
                                                             ? FutureBuilder(
                                                                 future:
                                                                     declareLineGraph(),
@@ -798,8 +905,9 @@ class _AdvisorViewState extends StateMVC {
                                                                             dateTimeFactory: const charts.LocalDateTimeFactory(),
                                                                             domainAxis: new charts.DateTimeAxisSpec(
                                                                               tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                                                                                day: new charts.TimeFormatterSpec(format: 'd', transitionFormat: 'MMM yyyy'),
                                                                                 month: new charts.TimeFormatterSpec(
-                                                                                  format: 'MMM',
+                                                                                  format: 'M',
                                                                                   transitionFormat: 'MMM yyyy',
                                                                                 ),
                                                                               ),
@@ -869,23 +977,128 @@ class _AdvisorViewState extends StateMVC {
                               ),
                             ),
                             // BAR GRAPH OF POINTS TO GO AREA
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 15, 20, 20),
-                              child: new LinearPercentIndicator(
-                                width: screenSize.size.width - 40,
-                                animation: true,
-                                lineHeight: 30.0,
-                                animationDuration: 700,
-                                percent: 0.65,
-                                center: Text("35 points to go!",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-                                linearStrokeCap: LinearStrokeCap.butt,
-                                progressColor: Colors.yellowAccent,
-                              ),
-                            ),
+                            chartIndex == 0
+                                ? Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(30, 15, 30, 20),
+                                    child: FutureBuilder(
+                                      future: _con.getWeeklyPoint(context),
+                                      builder: (context, snapshot) => snapshot
+                                                  .connectionState ==
+                                              ConnectionState.waiting
+                                          ? SizedBox()
+                                          : LinearPercentIndicator(
+                                              width: screenSize.size.width - 60,
+                                              animation: true,
+                                              lineHeight: 30.0,
+                                              animationDuration: 700,
+                                              percent: _con.currentWeekPoint <
+                                                      50
+                                                  ? _con.currentWeekPoint / 50.0
+                                                  : _con.currentWeekPoint == 50
+                                                      ? 1.0
+                                                      : _con.currentWeekPoint >
+                                                                  50 &&
+                                                              _con.currentWeekPoint <
+                                                                  100
+                                                          ? _con.currentWeekPoint /
+                                                              100.0
+                                                          : 1.0,
+                                              center: Text(
+                                                  _con.currentWeekPoint < 50
+                                                      ? (50 - _con.currentWeekPoint)
+                                                              .toString() +
+                                                          ' More Points To Pass'
+                                                      : _con.currentWeekPoint ==
+                                                              50
+                                                          ? 'Congratulation! You Passed.'
+                                                          : _con.currentWeekPoint >
+                                                                      50 &&
+                                                                  _con.currentWeekPoint <
+                                                                      100
+                                                              ? (100 - _con.currentWeekPoint)
+                                                                      .toString() +
+                                                                  ' More Points To Reach Standard'
+                                                              : 'Standard',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                              linearStrokeCap:
+                                                  LinearStrokeCap.roundAll,
+                                              progressColor:
+                                                  Colors.yellowAccent,
+                                            ),
+                                    ),
+                                  )
+                                : chartIndex == 1
+                                    ? Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(30, 15, 30, 20),
+                                        child: FutureBuilder(
+                                          future: _con
+                                              .getCurrentMonthPoint(context),
+                                          builder: (context, snapshot) =>
+                                              snapshot.connectionState ==
+                                                      ConnectionState.waiting
+                                                  ? SizedBox()
+                                                  : LinearPercentIndicator(
+                                                      width: screenSize
+                                                              .size.width -
+                                                          60,
+                                                      animation: true,
+                                                      lineHeight: 30.0,
+                                                      animationDuration: 700,
+                                                      percent: _con
+                                                                  .currentMonthPoint <
+                                                              100
+                                                          ? _con.currentMonthPoint /
+                                                              100.0
+                                                          : _con.currentMonthPoint ==
+                                                                  100
+                                                              ? 1.0
+                                                              : _con.currentMonthPoint >
+                                                                          100 &&
+                                                                      _con.currentMonthPoint <
+                                                                          200
+                                                                  ? _con.currentMonthPoint /
+                                                                      200.0
+                                                                  : 1.0,
+                                                      // _con.currentMonthPoint >=
+                                                      //         200
+                                                      //     ? 1.0
+                                                      //     : 1.0,
+                                                      center: Text(
+                                                          _con.currentMonthPoint <
+                                                                  100
+                                                              ? (100 - _con.currentMonthPoint)
+                                                                      .toString() +
+                                                                  ' More Points To Pass'
+                                                              : _con.currentMonthPoint ==
+                                                                      100
+                                                                  ? 'Congratulation! You Passed.'
+                                                                  : _con.currentMonthPoint >
+                                                                              100 &&
+                                                                          _con.currentMonthPoint <
+                                                                              200
+                                                                      ? (200 - _con.currentMonthPoint)
+                                                                              .toString() +
+                                                                          ' More Points To Reach Standard'
+                                                                      : 'Standard',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          )),
+                                                      linearStrokeCap:
+                                                          LinearStrokeCap
+                                                              .roundAll,
+                                                      progressColor:
+                                                          Colors.yellowAccent,
+                                                    ),
+                                        ),
+                                      )
+                                    : SizedBox(),
                             // CARDS
                             FutureBuilder(
                               future: _con.getProspectCard(context),

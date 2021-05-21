@@ -207,6 +207,22 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                               fontSize: 22,
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'KPI Summary: ' +
+                                (widget.totalPoint < 100
+                                    ? 'Failed (Total Point < 100)'
+                                    : 100 <= widget.totalPoint &&
+                                            widget.totalPoint <= 200
+                                        ? 'Passed (Total Point > 100)'
+                                        : 'Standard (Total Point > 200)'),
+                            style: TextStyle(
+                              color: Colors.amber,
+                              fontSize: 15,
+                            ),
+                          ),
                           ListView.builder(
                               shrinkWrap: true,
                               // scrollDirection: Axis.vertical,
