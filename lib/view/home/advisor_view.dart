@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -15,6 +16,7 @@ import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/model/prospect.dart';
+import 'package:vipc_app/view/notifications/advisor_notification_view.dart';
 import 'package:vipc_app/view/prospect/prospect_add.dart';
 import 'package:vipc_app/view/prospect/prospect_breakdown_view.dart';
 import 'package:vipc_app/view/prospect/prospect_edit.dart';
@@ -22,6 +24,8 @@ import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 // for line graph
 import 'dart:math';
+
+import 'package:vipc_app/view/search/advisor_search_view.dart';
 //import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AdvisorView extends StatefulWidget {
@@ -112,237 +116,18 @@ class _AdvisorViewState extends StateMVC {
     ];
   }
 
-  void test() {
-//     // Current date and time of system
-//     String date = DateTime.now().toString();
-
-// // This will generate the time and date for first day of month
-//     String firstDay = date.substring(0, 8) + '01' + date.substring(10);
-
-// // week day for the first day of the month
-//     int weekDay = DateTime.parse(firstDay).weekday;
-
-    DateTime testDate =
-        // DateTime.now();
-        DateTime.parse('2021-05-29 18:01:59.268220');
-
-    int weekOfMonth;
-
-//  If your calender starts from Monday
-    // weekDay--;
-    weekOfMonth = ((testDate.day) / 7).ceil();
-    print('Week of the month: $weekOfMonth');
-    // weekDay++;
-
-// If your calender starts from sunday
-    // if (weekDay == 7) {
-    //   weekDay = 0;
-    // }
-    // weekOfMonth = ((testDate.day + weekDay) / 7).ceil();
-    // print('Week of the month: $weekOfMonth');
-  }
-
   @override
   void initState() {
-    test();
     _con.selectedIndex = 0;
     chartIndex = 0;
     _con.newsList = [];
-    _con.getProspect(context);
+    _con.userId = FirebaseAuth.instance.currentUser.uid;
+    // _con.getProspect(context);
+    // _con.getTodayMeeting(context);
+    // _con.getMeetingCount(context);
     for (int i = 0; i < 4; i++) _con.weeklyPoint.add(0.0);
     for (int i = 0; i < 12; i++) _con.monthlyPoint.add(0);
     super.initState();
-    // // LIST VIEW OF CARDS
-    // Prospect.prospectCardsForHome.clear();
-    // for (int i = 0; i < Prospect.prospectNames.length; i++) {
-    //   Prospect.prospectCardsForHome.add(
-    //     Card(
-    //       color: Colors.amber[50],
-    //       child: Padding(
-    //         padding: EdgeInsets.all(8.0),
-    //         child: Column(
-    //           mainAxisSize: MainAxisSize.min,
-    //           children: <Widget>[
-    //             Container(
-    //               child: ListTile(
-    //                 title: Text(
-    //                   Prospect.prospectNames[i],
-    //                   style: TextStyle(
-    //                     fontSize: 18,
-    //                   ),
-    //                 ),
-    //                 subtitle: Padding(
-    //                   padding: EdgeInsets.only(top: 10),
-    //                   child: Text(
-    //                     "Meeting at " +
-    //                         Prospect.prospectSchedules[i]
-    //                             .toString()
-    //                             .substring(11, 16) +
-    //                         "\n" +
-    //                         Prospect.prospectLocations[i],
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //             Container(
-    //               child: Row(
-    //                 mainAxisAlignment: MainAxisAlignment.end,
-    //                 children: <Widget>[
-    //                   const SizedBox(width: 8),
-    //                   TextButton(
-    //                     child: const Text('More Info..'),
-    //                     onPressed: () {
-    //                       Navigator.push(
-    //                         context,
-    //                         MaterialPageRoute(
-    //                           builder: (context) {
-    //                             return ProspectView();
-    //                           },
-    //                         ),
-    //                       );
-    //                     },
-    //                   ),
-    //                   const SizedBox(width: 8),
-    //                 ],
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // }
-
-    // // Prospect
-    // Prospect.prospectCards.clear();
-    // for (int i = 0; i < Prospect.prospectNames.length; i++) {
-    //   Prospect.prospectCards.add(
-    //     Card(
-    //       //Prospect Card background color
-    //       color: Colors.amber[50],
-    //       //
-    //       child: Padding(
-    //         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-    //         child: Column(
-    //           mainAxisSize: MainAxisSize.min,
-    //           children: <Widget>[
-    //             Row(
-    //               children: [
-    //                 Expanded(
-    //                   flex: 1,
-    //                   child: Container(
-    //                     padding: EdgeInsets.only(left: 10, top: 5),
-    //                     child: Text(
-    //                       Prospect.prospectNames[i],
-    //                       overflow: TextOverflow.ellipsis,
-    //                       maxLines: 1,
-    //                       style: TextStyle(
-    //                         fontSize: 20,
-    //                         color: Colors.black,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 ButtonBar(
-    //                   children: <Widget>[
-    //                     TextButton(
-    //                       child: const Icon(
-    //                         Icons.edit,
-    //                         size: 30,
-    //                         color: Colors.brown,
-    //                       ),
-    //                       onPressed: () {
-    //                         Navigator.push(
-    //                             context,
-    //                             MaterialPageRoute(
-    //                                 builder: (context) =>
-    //                                     EditProspectStateless()));
-    //                       },
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ],
-    //             ),
-    //             Row(
-    //               children: [
-    //                 Expanded(
-    //                   flex: 1,
-    //                   child: Container(
-    //                     padding: EdgeInsets.only(left: 10, top: 5),
-    //                     child: Text(
-    //                       Prospect.prospectTypes[i],
-    //                       overflow: TextOverflow.ellipsis,
-    //                       maxLines: 1,
-    //                       style: TextStyle(
-    //                         fontSize: 20,
-    //                         color: Colors.black54,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //             Row(
-    //               children: [
-    //                 Expanded(
-    //                   flex: 1,
-    //                   child: Container(
-    //                     padding: EdgeInsets.only(left: 10, top: 5),
-    //                     child: Text(
-    //                       Prospect.prospectSteps[i],
-    //                       overflow: TextOverflow.ellipsis,
-    //                       maxLines: 1,
-    //                       style: TextStyle(
-    //                         fontSize: 18,
-    //                         color: Colors.black,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 Expanded(
-    //                   flex: 1,
-    //                   child: Container(
-    //                     padding: EdgeInsets.only(left: 30, top: 30),
-    //                     child: Text(
-    //                       "Meeting at " +
-    //                           Prospect.prospectSchedules[i]
-    //                               .toString()
-    //                               .substring(11, 16) +
-    //                           "\n" +
-    //                           Prospect.prospectLocations[i],
-    //                       overflow: TextOverflow.ellipsis,
-    //                       maxLines: 3,
-    //                       style: TextStyle(
-    //                         fontSize: 18,
-    //                         color: Colors.black,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //             // ButtonBar(
-    //             //   children: <Widget>[
-    //             //     FlatButton(
-    //             //       child: const Icon(
-    //             //         Icons.edit,
-    //             //         size: 30,
-    //             //       ),
-    //             //       onPressed: () {
-    //             //         Navigator.push(
-    //             //             context,
-    //             //             MaterialPageRoute(
-    //             //                 builder: (context) => EditProspectStateless()));
-    //             //       },
-    //             //     ),
-    //             //   ],
-    //             // ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // }
   }
 
   void dispose() {
@@ -354,7 +139,8 @@ class _AdvisorViewState extends StateMVC {
     final screenSize = MediaQuery.of(context);
     print('testAdvisor');
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: appBarWidget(),
+      // appBar: CustomAppBar(),
       drawer: CustomDrawer(),
       bottomNavigationBar: BottomAppBar(
         child: BottomNavigationBar(
@@ -401,6 +187,7 @@ class _AdvisorViewState extends StateMVC {
   }
 
   Widget home(MediaQueryData screenSize) {
+    // _con.getMeetingCount(context);
     return FutureBuilder(
       future: null,
       builder: (context, snapshot) => snapshot.connectionState ==
@@ -1110,18 +897,28 @@ class _AdvisorViewState extends StateMVC {
                                       padding:
                                           EdgeInsets.fromLTRB(16, 0, 16, 0),
                                       height: screenSize.size.height * 0.23,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: _con.prospectCardList.length,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            alignment: Alignment.center,
-                                            width: screenSize.size.width * 0.5,
-                                            child: prospectCard(
-                                                _con.prospectCardList[index]),
-                                          );
-                                        },
-                                      ),
+                                      child: _con.prospectCardList.length == 0
+                                          ? Container(
+                                              child: Text(
+                                              '\n\nNo Incoming Meeting',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.amber),
+                                            ))
+                                          : ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  _con.prospectCardList.length,
+                                              itemBuilder: (context, index) {
+                                                return Container(
+                                                  alignment: Alignment.center,
+                                                  width: screenSize.size.width *
+                                                      0.5,
+                                                  child: prospectCard(_con
+                                                      .prospectCardList[index]),
+                                                );
+                                              },
+                                            ),
                                     ),
                             ),
                           ],
@@ -1135,9 +932,93 @@ class _AdvisorViewState extends StateMVC {
     );
   }
 
+  Widget appBarWidget() {
+    return AppBar(
+      title: const Text('VIPC GROUP'),
+      actions: [
+        FutureBuilder(
+          future: _con.getTodayMeeting(context),
+          builder: (context, snapshot) => snapshot.connectionState ==
+                  ConnectionState.waiting
+              ? Stack(children: [
+                  IconButton(
+                    padding: EdgeInsets.only(top: 4),
+                    tooltip: 'Notifications',
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdvisorNotificationView()));
+                    },
+                  ),
+                  Container()
+                ])
+              : Stack(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.only(top: 4),
+                      tooltip: 'Notifications',
+                      icon: const Icon(
+                        Icons.notifications,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AdvisorNotificationView()));
+                      },
+                    ),
+                    _con.meetingCount != 0
+                        ? Positioned(
+                            right: 11,
+                            top: 11,
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 14,
+                                minHeight: 14,
+                              ),
+                              child: Text(
+                                '${_con.meetingCount}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 8,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        : Container()
+                  ],
+                ),
+        ),
+        IconButton(
+          tooltip: 'Search',
+          icon: const Icon(
+            Icons.search,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AdvisorSearchView()));
+          },
+        ),
+      ],
+    );
+  }
+
   Widget prospectCard(Prospect oneProspect) {
     int intValue = oneProspect.steps['length'] - 1;
-
     return Card(
       color: Colors.amber[50],
       child: Padding(

@@ -34,11 +34,15 @@ class AdvisorController extends ControllerMVC {
   List<DateTime> rangeTime;
   int numIndex;
   bool weekPoint = false;
+  List<Prospect> prospectListRequestPassword = [];
+  int meetingCount = 0;
+  String userId;
 
   String dropdownValue = 'Sort by Time';
   String sort = 'up';
 
   Future<void> getNews(BuildContext context) async {
+    await getTodayMeeting(context);
     List<News> newsListTemp = [];
 
     try {
@@ -71,10 +75,11 @@ class AdvisorController extends ControllerMVC {
   }
 
   Future<void> getProspect(BuildContext context) async {
+    await getTodayMeeting(context);
     List<Prospect> newsProspectListTemp = [];
     minimumDate = DateTime.now();
     try {
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       if (dropdownValue == 'Sort by Time')
         prospects = await FirebaseFirestore.instance
@@ -127,7 +132,7 @@ class AdvisorController extends ControllerMVC {
     DateTime time;
 
     try {
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -171,7 +176,7 @@ class AdvisorController extends ControllerMVC {
     currentMonthPoint = 0;
 
     try {
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -238,7 +243,7 @@ class AdvisorController extends ControllerMVC {
     currentWeekPoint = 0;
 
     try {
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -323,7 +328,7 @@ class AdvisorController extends ControllerMVC {
 // monthlyPoint = 0
 
     try {
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -414,7 +419,7 @@ class AdvisorController extends ControllerMVC {
     }
 
     try {
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -499,5 +504,75 @@ class AdvisorController extends ControllerMVC {
             backgroundColor: Theme.of(context).errorColor),
       );
     }
+  }
+
+  // Future<void> getMeetingCount(context) async {
+  //   await getTodayMeeting(context);
+  //   // setState(() {
+  //   // meetingCount = prospectListRequestPassword.length;
+  //   // });
+  //   // setState(() {});
+  // }
+
+  Future<void> getTodayMeeting(BuildContext context) async {
+    List<Prospect> prospectListRequestTemp = [];
+
+    try {
+      // String userId = FirebaseAuth.instance.currentUser.uid;
+      var prospects;
+      TimeOfDay t;
+      DateTime now, time;
+      DateTime present = DateTime.now();
+      prospects = await FirebaseFirestore.instance
+          .collection("prospect")
+          .doc(userId)
+          .collection('prospects')
+          .get();
+
+      prospects.docs.forEach((oneProspect) {
+        for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
+          if (oneProspect.data()['steps']['${i}meetingTime'] != '')
+            t = TimeOfDay(
+                hour: int.parse(oneProspect
+                    .data()['steps']['${i}meetingTime']
+                    .substring(0, 2)),
+                minute: int.parse(oneProspect
+                    .data()['steps']['${i}meetingTime']
+                    .substring(3, 5)));
+          else
+            t = TimeOfDay(hour: 0, minute: 0);
+          now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
+          time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+          print('asdf: ${time.difference(present).inSeconds}');
+          print(time);
+          print('present: $present');
+          print(time.difference(present).inDays == 0);
+          if (time.difference(present).inDays == 0 &&
+              time.difference(present).inSeconds > 0)
+            prospectListRequestTemp.add(Prospect(
+              prospectId: oneProspect.id,
+              prospectName: oneProspect.data()['prospectName'],
+              phoneNo: oneProspect.data()['phone'],
+              email: oneProspect.data()['email'],
+              type: oneProspect.data()['type'],
+              steps: oneProspect.data()['steps'],
+              lastUpdate: oneProspect.data()['lastUpdate'],
+              lastStep: oneProspect.data()['lastStep'],
+              done: oneProspect.data()['done'],
+            ));
+        }
+      });
+      prospectListRequestPassword = prospectListRequestTemp;
+      meetingCount = prospectListRequestPassword.length;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+    // setState(() {
+    //   meetingCount = prospectListRequestPassword.length;
+    // });
   }
 }
