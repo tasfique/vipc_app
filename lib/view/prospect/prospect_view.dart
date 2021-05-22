@@ -81,7 +81,7 @@ class _ProspectViewState extends State<ProspectView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Prospect Detail'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(false),
@@ -96,64 +96,135 @@ class _ProspectViewState extends State<ProspectView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 25, top: 25),
+                    padding: EdgeInsets.only(bottom: 40, top: 40),
                     child: Container(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                       child: Text(
-                        "Prospect Detail",
+                        "Prospect Details",
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
+                          //decoration: TextDecoration.underline,
+                          decorationThickness: 1.5,
+                          fontWeight: FontWeight.w400,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 10.0,
+                              color: Colors.grey,
+                              offset: Offset(3.0, 4.0),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  Text(
-                    'Name: ${widget.prospect.prospectName}',
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Text('Phone: ${widget.prospect.phoneNo}',
-                      style: TextStyle(fontSize: 22)
-                      // DateFormat('dd/MM/yyyy HH:mm')
-                      // .format(DateTime.parse(widget.oneNew.newsId)),
-                      // style: TextStyle(
-                      //   fontSize: 18,
-                      //   color: Colors.white70,
-                      // ),
+                  Container(
+                    width: 400,
+                    child: Card(
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: Colors.amber[50],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //Name
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'Name: ${widget.prospect.prospectName}',
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          // SizedBox(
+                          //   height: 14,
+                          // ),
+                          //Phone
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text('Phone: ${widget.prospect.phoneNo}',
+                                style:
+                                    TextStyle(fontSize: 22, color: Colors.black)
+                                // DateFormat('dd/MM/yyyy HH:mm')
+                                // .format(DateTime.parse(widget.oneNew.newsId)),
+                                // style: TextStyle(
+                                //   fontSize: 18,
+                                //   color: Colors.white70,
+                                // ),
+                                ),
+                          ),
+                          // SizedBox(
+                          //   height: 14,
+                          // ),
+                          widget.prospect.email != ''
+                              ? Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text('Email: ${widget.prospect.email}',
+                                      style: TextStyle(
+                                          fontSize: 22, color: Colors.black)),
+                                )
+                              : SizedBox(),
+                        ],
                       ),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  widget.prospect.email != ''
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 14),
-                          child: Text('Email: ${widget.prospect.email}',
-                              style: TextStyle(fontSize: 22)),
-                        )
-                      : SizedBox(),
-                  Text(
-                    'The Process:',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 24,
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Total Point Earned:  $totalPoint',
-                    style: TextStyle(
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: const Divider(
+                      height: 20,
+                      thickness: 2,
+                      indent: 1,
+                      endIndent: 1,
                       color: Colors.amber,
-                      fontSize: 22,
                     ),
+                    // child: Column(
+                    //   children: [],
+                    // ),
                   ),
+                  // Text(
+                  //   'Point Description:',
+                  //   style: TextStyle(
+                  //     color: Colors.white70,
+                  //     fontSize: 24,
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 10,
+                  ),
+                  Center(
+                    child: Text(
+                      'Total Point(s) Earned:  ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35,
+                      ),
+                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                  ),
+                  Center(
+                    child: Text(
+                      '$totalPoint',
+                      style: TextStyle(
+                        color: Colors.amber,
+                        fontSize: 35,
+                      ),
+                    ),
+                  ),
+
+                  const Divider(
+                    height: 20,
+                    thickness: 2,
+                    indent: 1,
+                    endIndent: 1,
+                    color: Colors.amber,
+                  ),
+                  SizedBox(
+                    height: 30,
                   ),
                   Text(widget.prospect.steps['0'],
                       style: TextStyle(fontSize: 22)),
@@ -170,6 +241,13 @@ class _ProspectViewState extends State<ProspectView> {
                             DateTime.parse(widget.prospect.steps['0Time'])),
                     style: TextStyle(fontSize: 16),
                   ),
+                  const Divider(
+                    height: 20,
+                    thickness: 0.5,
+                    indent: 1,
+                    endIndent: 1,
+                    color: Colors.amber,
+                  ),
                   widget.prospect.steps['0memo'] != ''
                       ? Padding(
                           padding: const EdgeInsets.only(top: 5),
@@ -179,6 +257,9 @@ class _ProspectViewState extends State<ProspectView> {
                           ),
                         )
                       : SizedBox(),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                  ),
                   widget.prospect.steps['length'] != 1
                       ? ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -192,6 +273,7 @@ class _ProspectViewState extends State<ProspectView> {
                               return SizedBox();
                           })
                       : SizedBox(),
+
                   widget.prospect.done == 0 &&
                           widget.prospect.lastStep == 6 &&
                           checkStepState()
@@ -287,6 +369,19 @@ class _ProspectViewState extends State<ProspectView> {
         SizedBox(
           height: 5,
         ),
+        Text(
+          DateFormat('HH:mm').format(time) != '00:00'
+              ? 'Finish Date:  ' + DateFormat('dd/MM/yyyy HH:mm').format(time)
+              : 'Finish Date:  ' + DateFormat('dd/MM/yyyy').format(time),
+          style: TextStyle(fontSize: 16),
+        ),
+        const Divider(
+          height: 20,
+          thickness: 0.5,
+          indent: 1,
+          endIndent: 1,
+          color: Colors.amber,
+        ),
         widget.prospect.steps['${index}meetingPlace'] != ''
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 5),
@@ -296,12 +391,6 @@ class _ProspectViewState extends State<ProspectView> {
                 ),
               )
             : SizedBox(),
-        Text(
-          DateFormat('HH:mm').format(time) != '00:00'
-              ? 'Finish Date:  ' + DateFormat('dd/MM/yyyy HH:mm').format(time)
-              : 'Finish Date:  ' + DateFormat('dd/MM/yyyy').format(time),
-          style: TextStyle(fontSize: 16),
-        ),
         widget.prospect.steps['${index}memo'] != ''
             ? Padding(
                 padding: const EdgeInsets.only(top: 5),
@@ -311,6 +400,9 @@ class _ProspectViewState extends State<ProspectView> {
                 ),
               )
             : SizedBox(),
+        Padding(
+          padding: const EdgeInsets.all(10),
+        ),
       ],
     );
   }
