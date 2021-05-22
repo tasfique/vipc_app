@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/prospect.dart';
+import 'package:vipc_app/model/user.dart';
 
 class AdvisorController extends ControllerMVC {
   factory AdvisorController() {
@@ -24,7 +25,7 @@ class AdvisorController extends ControllerMVC {
   List<News> newsList;
   List<Prospect> prospectList;
   List<Prospect> prospectCardList;
-  List<double> weeklyPoint = [0, 0, 0, 0];
+  List<int> weeklyPoint = [0, 0, 0, 0];
   List<int> monthlyPoint = [];
   int currentMonthPoint = 0;
   int currentWeekPoint = 0;
@@ -40,6 +41,22 @@ class AdvisorController extends ControllerMVC {
 
   String dropdownValue = 'Sort by Time';
   String sort = 'up';
+  Usr advisorDetail;
+
+  Future<void> getAdvisorDetail() async {
+    userId = FirebaseAuth.instance.currentUser.uid;
+    final admin =
+        await FirebaseFirestore.instance.collection("users").doc(userId).get();
+
+    advisorDetail = Usr(
+        userId: admin.id,
+        empID: admin.data()['empID'],
+        email: admin.data()['email'],
+        fullName: admin.data()['fullName'],
+        type: admin.data()['type'],
+        assignUnder: admin.data()['assignUnder'],
+        password: admin.data()['password']);
+  }
 
   Future<void> getNews(BuildContext context) async {
     await getTodayMeeting(context);
@@ -252,7 +269,7 @@ class AdvisorController extends ControllerMVC {
           .get();
 
       for (int i = 0; i < 4; i++) {
-        weeklyPoint[i] = 0.0;
+        weeklyPoint[i] = 0;
       }
 
       TimeOfDay t;
@@ -273,10 +290,6 @@ class AdvisorController extends ControllerMVC {
         else
           weeklyPoint[3]++;
 
-        print('test');
-        for (int i = 0; i < 4; i++) {
-          print(weeklyPoint[i]);
-        }
         for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
           if (oneProspect.data()['steps']['${i}meetingTime'] != '')
             t = TimeOfDay(
@@ -323,7 +336,6 @@ class AdvisorController extends ControllerMVC {
     DateTime present = DateTime.now();
     int currentYear = present.year;
     int currentMonth = present.month;
-    print(currentMonth);
     // for (int i = 0; i < 12; i++) monthlyPoint.add(0);
 // monthlyPoint = 0
 
@@ -357,7 +369,6 @@ class AdvisorController extends ControllerMVC {
         //     lastStep: oneProspect.data()['lastStep'],
         //     done: oneProspect.data()['done'],
         //   ));
-        // print(oneProspect.data()['steps']['length']);
 
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);
@@ -396,12 +407,9 @@ class AdvisorController extends ControllerMVC {
   Future<void> getRangePoint(BuildContext context) async {
     DateTime present = DateTime.now();
 
-    print(fromDate);
-    print(toDate);
     double numIndexD = toDate.difference(fromDate).inDays / 30;
     numIndex = numIndexD.toInt();
     int month = toDate.month;
-    print(month);
     rangePoint = {};
     rangeTime = [];
     String date;
@@ -410,11 +418,7 @@ class AdvisorController extends ControllerMVC {
           .format(DateTime(fromDate.year, fromDate.month + i, 1, 0, 0, 0))
           .toString();
       rangeTime.add(DateTime(fromDate.year, fromDate.month + i));
-      print('alo');
-      print(rangeTime[i]);
-      print(date);
       rangePoint['$date'] = 0;
-      // print(rangePoint[i]['$date']);
       // rangePoint.add(0);
     }
 
@@ -433,19 +437,6 @@ class AdvisorController extends ControllerMVC {
       prospects.docs.forEach((oneProspect) {
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);
-        // print('created time');
-        // print(DateTime(createdTime.year, createdTime.month, 1, 0, 0, 0)
-        //     .toString());
-        // print(DateTime(fromDate.year, fromDate.month, 1, 0, 0, 0).toString());
-        // print(DateTime(toDate.year, toDate.month, 1, 0, 0, 0).toString());
-        // print(DateTime(createdTime.year, createdTime.month, 1, 0, 0, 0)
-        //         .difference(DateTime(fromDate.year, fromDate.month, 1, 0, 0, 0))
-        //         .inSeconds >=
-        //     0);
-        // print(DateTime(createdTime.year, createdTime.month, 1, 0, 0, 0)
-        //         .difference(DateTime(toDate.year, toDate.month, 1, 0, 0, 0))
-        //         .inSeconds <=
-        //     0);
 
         if (DateTime(createdTime.year, createdTime.month, 1, 0, 0, 0)
                     .difference(
@@ -495,7 +486,6 @@ class AdvisorController extends ControllerMVC {
               time.difference(present).inSeconds <= 0)
             rangePoint['$date'] += oneProspect.data()['steps']['${i}Point'];
         }
-        print(rangePoint);
       });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -543,10 +533,7 @@ class AdvisorController extends ControllerMVC {
             t = TimeOfDay(hour: 0, minute: 0);
           now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
           time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
-          print('asdf: ${time.difference(present).inSeconds}');
-          print(time);
-          print('present: $present');
-          print(time.difference(present).inDays == 0);
+
           if (time.difference(present).inDays == 0 &&
               time.difference(present).inSeconds > 0)
             prospectListRequestTemp.add(Prospect(
