@@ -885,7 +885,7 @@ class _ManagerViewState extends StateMVC {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.only(left: 10),
+                      padding: EdgeInsets.only(left: 10, bottom: 15, top: 8),
                       child: Text(
                         oneProspect.prospectName,
                         // overflow: TextOverflow.ellipsis,
@@ -893,7 +893,20 @@ class _ManagerViewState extends StateMVC {
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      oneProspect.type,
+                      // overflow: TextOverflow.ellipsis,
+                      // maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
                       ),
                     ),
                   ),
@@ -926,23 +939,12 @@ class _ManagerViewState extends StateMVC {
                   // Expanded(
                   // flex: 1,
                   // child:
-                  Container(
-                    padding: EdgeInsets.only(left: 10, top: 5),
-                    child: Text(
-                      oneProspect.type,
-                      // overflow: TextOverflow.ellipsis,
-                      // maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
+
                   // ),
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.only(left: 50),
+                      padding: EdgeInsets.only(left: 10, bottom: 5),
                       child: Text(
                         oneProspect.steps['${intValue}meetingPlace'] == ''
                             ? ''
@@ -971,44 +973,42 @@ class _ManagerViewState extends StateMVC {
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        intValue == 0
-                            ? 'Created at ' +
-                                DateFormat('dd/MM/yyyy HH:mm').format(
-                                    DateTime.parse(oneProspect.lastUpdate))
-                            : DateFormat('HH:mm').format(DateTime.parse(
-                                        oneProspect.lastUpdate)) !=
-                                    '00:00'
-                                ? 'Date\n' +
-                                    DateFormat('dd/MM/yyyy HH:mm').format(
-                                        DateTime.parse(oneProspect.lastUpdate))
-                                : 'Date\n' +
-                                    DateFormat('dd/MM/yyyy').format(
-                                        DateTime.parse(oneProspect.lastUpdate))
+                  Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      intValue == 0
+                          ? 'Created at ' +
+                              DateFormat('dd/MM/yyyy HH:mm').format(
+                                  DateTime.parse(oneProspect.lastUpdate))
+                          : DateFormat('HH:mm').format(
+                                      DateTime.parse(oneProspect.lastUpdate)) !=
+                                  '00:00'
+                              ? 'Date:\n' +
+                                  DateFormat('dd/MM/yyyy HH:mm').format(
+                                      DateTime.parse(oneProspect.lastUpdate))
+                              : 'Date:\n' +
+                                  DateFormat('dd/MM/yyyy').format(
+                                      DateTime.parse(oneProspect.lastUpdate))
 
-                        //     DateFormat('dd/MM/yyyy HH:mm')
-                        // .format(DateTime.parse(oneNew.newsId))
-                        // +
-                        // Prospect.prospectSchedules[i]
-                        //     .toString()
-                        //     .substring(11, 16) +
-                        // "\n" +
-                        // Prospect.prospectLocations[i]
-                        ,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
+                      //     DateFormat('dd/MM/yyyy HH:mm')
+                      // .format(DateTime.parse(oneNew.newsId))
+                      // +
+                      // Prospect.prospectSchedules[i]
+                      //     .toString()
+                      //     .substring(11, 16) +
+                      // "\n" +
+                      // Prospect.prospectLocations[i]
+                      ,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -1194,6 +1194,7 @@ Widget newsItemCard(BuildContext context, News oneNew) {
                   maxLines: 1,
                   style: TextStyle(
                     fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
