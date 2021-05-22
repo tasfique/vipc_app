@@ -2,56 +2,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
+import 'package:vipc_app/controller/home/advisor_controller.dart';
 import 'package:vipc_app/model/news.dart';
+import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
+import 'package:vipc_app/view/prospect/prospect_view.dart';
 
-class AdminSearchView extends StatefulWidget {
+class AdvisorSearchView extends StatefulWidget {
   @override
-  _AdminSearchViewState createState() => _AdminSearchViewState();
+  _AdvisorSearchViewState createState() => _AdvisorSearchViewState();
 }
 
-class _AdminSearchViewState extends StateMVC<AdminSearchView> {
-  _AdminSearchViewState() : super(AdminController()) {
-    _con = AdminController.con;
+class _AdvisorSearchViewState extends StateMVC<AdvisorSearchView> {
+  _AdvisorSearchViewState() : super(AdvisorController()) {
+    _con = AdvisorController.con;
   }
 
-  AdminController _con;
+  AdvisorController _con;
 
   TextEditingController _searchQueryController = TextEditingController();
   List<DocumentSnapshot> documentList = [];
   bool check = false;
 
   @override
-  void dispose() async {
+  void dispose() {
     super.dispose();
-    await _con.getRequestPasswordCount();
+    // await _con.getRequestPasswordCount();
   }
 
   Future<void> searchData() async {
     FocusScope.of(context).unfocus();
-// final users = await FirebaseFirestore.instance
-//           .collection("users")
-//           .where("requestChangingPassword", isEqualTo: '1')
-//           .get();
-
-    // users.docs.forEach((user) {
-    //   userListRequestTemp.add(Usr(
-    //       userId: user.id,
-    //       empID: user.data()['empID'],
-    //       email: user.data()['email'],
-    //       fullName: user.data()['fullName'],
-    //       type: user.data()['type'],
-    //       assignUnder: user.data()['assignUnder'],
-    //       password: user.data()['password']));
-    // });
-    // userListRequestPassword = userListRequestTemp;
-
     documentList = (await FirebaseFirestore.instance
             .collection('search')
-            .doc('adminSearch')
-            .collection('search')
+            .doc('userSearch')
+            .collection('${_con.userId}')
             .where("searchCase",
                 arrayContains: _searchQueryController.text.toLowerCase())
             .get())
@@ -70,7 +56,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
     return WillPopScope(
       onWillPop: () {
         _searchQueryController.clear();
-        dispose();
+        // dispose();
         Navigator.of(context).pop();
         return;
       },
@@ -81,7 +67,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               _searchQueryController.clear();
-              dispose();
+              // dispose();
               Navigator.of(context).pop();
             },
           ),
@@ -102,7 +88,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                 if (_searchQueryController == null ||
                     _searchQueryController.text.isEmpty) {
                   _searchQueryController.clear();
-                  dispose();
+                  // dispose();
                   Navigator.pop(context);
                   return;
                 }
@@ -130,16 +116,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                         itemBuilder: (context, index) {
                           var result = documentList[index];
                           return _itemCard(result);
-                          // return ListTile(
-                          //   title: result['type'] == 'News'
-                          //       ? Text(result['title'])
-                          //       : Text(result['fullName']),
-                          //   subtitle: Text(result['type']),
-                          //   trailing: IconButton(
-                          //     onPressed: null,
-                          //     icon: Icon(Icons.read_more),
-                          //   ),
-                          // );
                         },
                       ),
                     ],
@@ -173,59 +149,34 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
     });
   }
 
-  Future<Usr> getResultUser(String id) async {
-    DocumentSnapshot user =
-        await FirebaseFirestore.instance.collection('users').doc(id).get();
-    Usr userTemp;
-    userTemp = (Usr(
-        userId: user.id,
-        empID: user.data()['empID'],
-        email: user.data()['email'],
-        fullName: user.data()['fullName'],
-        type: user.data()['type'],
-        assignUnder: user.data()['assignUnder'],
-        password: user.data()['password']));
-
-    return userTemp;
-  }
-
-  Future<News> getResultNews(String id) async {
-    DocumentSnapshot news =
-        await FirebaseFirestore.instance.collection('news').doc(id).get();
-    News newsTemp;
-    if (news.data()['images'] == null) {
-      newsTemp = (News(
-        newsId: news.id,
-        title: news.data()['title'],
-        content: news.data()['content'],
-        // dateCreated: oneNew.id,
-        // imageUrl: oneNew.data()['images'],
-      ));
-    } else {
-      newsTemp = (News(
-        newsId: news.id,
-        title: news.data()['title'],
-        content: news.data()['content'],
-        // dateCreated: oneNew.id,
-        imageUrl: news.data()['images'],
-      ));
-    }
-
-    return newsTemp;
+  Future<Prospect> getResultProspect(String id) async {
+    DocumentSnapshot oneProspect = await FirebaseFirestore.instance
+        .collection("prospect")
+        .doc(_con.userId)
+        .collection('prospects')
+        .doc(id)
+        .get();
+    Prospect prospectTemp;
+    prospectTemp = (Prospect(
+      prospectId: oneProspect.id,
+      prospectName: oneProspect.data()['prospectName'],
+      phoneNo: oneProspect.data()['phone'],
+      email: oneProspect.data()['email'],
+      type: oneProspect.data()['type'],
+      steps: oneProspect.data()['steps'],
+      lastUpdate: oneProspect.data()['lastUpdate'],
+      lastStep: oneProspect.data()['lastStep'],
+      done: oneProspect.data()['done'],
+    ));
+    return prospectTemp;
   }
 
   Widget _itemCard(DocumentSnapshot result) {
     return GestureDetector(
       onTap: () async {
-        if (result['type'] == 'User') {
-          var user = await getResultUser(result.id);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => UserDetailsView(user)));
-        } else if (result['type'] == 'News') {
-          var news = await getResultNews(result.id);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => NewsDetailsView(news)));
-        }
+        var prospect = await getResultProspect(result.id);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ProspectView(prospect)));
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 7),
@@ -242,9 +193,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        result['type'] == 'User'
-                            ? 'Full Name: ${result['fullName']}'
-                            : 'Title: ${result['title']}',
+                        'Full Name: ${result['prospectName']}',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: TextStyle(
@@ -256,7 +205,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                   subtitle: Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
-                      'Type: ${result['type']}',
+                      'Phone Number: ${result['phone']}',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[600],
