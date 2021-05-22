@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/controller/home/advisor_controller.dart';
+import 'package:vipc_app/controller/home/manager_controller.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_user_control/user_reset_password_view.dart';
@@ -10,18 +11,18 @@ import 'package:intl/intl.dart';
 import 'package:vipc_app/view/prospect/prospect_edit.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 
-class AdvisorNotificationView extends StatefulWidget {
+class ManagerNotificationView extends StatefulWidget {
   @override
-  _AdvisorNotificationViewState createState() =>
-      _AdvisorNotificationViewState();
+  _ManagerNotificationViewState createState() =>
+      _ManagerNotificationViewState();
 }
 
-class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
-  _AdvisorNotificationViewState() : super(AdvisorController()) {
-    _con = AdvisorController.con;
+class _ManagerNotificationViewState extends StateMVC<ManagerNotificationView> {
+  _ManagerNotificationViewState() : super(ManagerController()) {
+    _con = ManagerController.con;
   }
 
-  AdvisorController _con;
+  ManagerController _con;
   bool _check = true;
   bool checkProspect = true;
 
@@ -156,18 +157,6 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                                       )),
                                             ),
                                           ),
-                                          // Padding(
-                                          //   padding: EdgeInsets.only(top: 30),
-                                          //   child: Container(
-                                          //     alignment: Alignment.topLeft,
-                                          //     child: Text(
-                                          //       'No User Request For Password Reset',
-                                          //       style: TextStyle(
-                                          //         fontSize: 15,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
                                         ],
                                       )
                               ],

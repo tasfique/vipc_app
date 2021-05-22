@@ -5,18 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/constants/font_constants.dart';
 import 'package:vipc_app/controller/home/advisor_controller.dart';
 import 'package:vipc_app/model/chart_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:pie_chart/pie_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 import 'package:vipc_app/model/line_graph.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/pie_chart.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/view/notifications/advisor_notification_view.dart';
@@ -25,11 +21,7 @@ import 'package:vipc_app/view/prospect/prospect_breakdown_view.dart';
 import 'package:vipc_app/view/prospect/prospect_edit.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
-// for line graph
-import 'dart:math';
-
 import 'package:vipc_app/view/search/advisor_search_view.dart';
-//import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AdvisorView extends StatefulWidget {
   AdvisorView({key}) : super(key: key);
@@ -83,16 +75,6 @@ class _AdvisorViewState extends StateMVC {
 
   Future<void> declareLineGraph() async {
     await _con.getRangePoint(context);
-    // print('ahaha');
-    // for (int i = 0; i <= _con.numIndex; i++) {
-    //   print(_con.rangeTime[i]);
-    //   String bb = DateFormat('MM/yyyy').format(DateTime(
-    //       _con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0));
-    //   print(bb);
-    //   print(_con.rangePoint['05/2021']);
-    //   print(_con.rangePoint[
-    //       '${DateFormat('MM/yyyy').format(DateTime(_con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0))}']);
-    // }
     series2 = [
       charts.Series(
         domainFn: (YearlyPointLineGraph clickData, _) => clickData.time,
@@ -210,7 +192,6 @@ class _AdvisorViewState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
-    print('testAdvisor');
     return Scaffold(
       appBar: appBarWidget(),
       // appBar: CustomAppBar(),
@@ -535,9 +516,6 @@ class _AdvisorViewState extends StateMVC {
                                                                             ),
                                                                             selectionModels: [
                                                                               new charts.SelectionModelConfig(changedListener: (charts.SelectionModel model) {
-                                                                                // print(model.selectedSeries[0].measureFn(model.selectedDatum[0].index));
-                                                                                // print(model.selectedSeries[0].domainFn(model.selectedDatum[0].index));
-                                                                                // print(model.selectedDatum[0].index);
                                                                                 if (model.selectedSeries[0].measureFn(model.selectedDatum[0].index) != 0) Navigator.push(context, MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index)));
                                                                               })
                                                                             ],
@@ -1091,6 +1069,8 @@ class _AdvisorViewState extends StateMVC {
             ListTile(
               title: Text(
                 oneProspect.prospectName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -1115,7 +1095,7 @@ class _AdvisorViewState extends StateMVC {
               ),
             ),
             TextButton(
-              child: const Text('More Info..'),
+              child: const Text('More Info'),
               onPressed: () async {
                 final pushPage4 = await Navigator.push(
                     context,
@@ -1340,15 +1320,27 @@ class _AdvisorViewState extends StateMVC {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.only(left: 10),
+                      padding: EdgeInsets.only(
+                          left: 10, bottom: 15, top: 8, right: 3),
                       child: Text(
                         oneProspect.prospectName,
-                        // overflow: TextOverflow.ellipsis,
-                        // maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      oneProspect.type,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
                       ),
                     ),
                   ),
@@ -1378,26 +1370,10 @@ class _AdvisorViewState extends StateMVC {
               ),
               Row(
                 children: [
-                  // Expanded(
-                  // flex: 1,
-                  // child:
-                  Container(
-                    padding: EdgeInsets.only(left: 10, top: 5),
-                    child: Text(
-                      oneProspect.type,
-                      // overflow: TextOverflow.ellipsis,
-                      // maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  // ),
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.only(left: 50),
+                      padding: EdgeInsets.only(left: 10, bottom: 5),
                       child: Text(
                         oneProspect.steps['${intValue}meetingPlace'] == ''
                             ? ''
@@ -1406,8 +1382,8 @@ class _AdvisorViewState extends StateMVC {
                           fontSize: 18,
                           color: Colors.black,
                         ),
-                        // overflow: TextOverflow.ellipsis,
-                        // maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
                       ),
                     ),
                   ),
@@ -1421,70 +1397,32 @@ class _AdvisorViewState extends StateMVC {
                       padding: EdgeInsets.only(left: 10, top: 5),
                       child: Text(
                         oneProspect.steps['$intValue'],
-                        // overflow: TextOverflow.ellipsis,
-                        // maxLines: 2,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        intValue == 0
-                            ? 'Created at ' +
-                                DateFormat('dd/MM/yyyy HH:mm').format(
-                                    DateTime.parse(oneProspect.lastUpdate))
-                            : DateFormat('HH:mm').format(DateTime.parse(
-                                        oneProspect.lastUpdate)) !=
-                                    '00:00'
-                                ? 'Date\n' +
-                                    DateFormat('dd/MM/yyyy HH:mm').format(
-                                        DateTime.parse(oneProspect.lastUpdate))
-                                : 'Date\n' +
-                                    DateFormat('dd/MM/yyyy').format(
-                                        DateTime.parse(oneProspect.lastUpdate))
-
-                        //     DateFormat('dd/MM/yyyy HH:mm')
-                        // .format(DateTime.parse(oneNew.newsId))
-                        // +
-                        // Prospect.prospectSchedules[i]
-                        //     .toString()
-                        //     .substring(11, 16) +
-                        // "\n" +
-                        // Prospect.prospectLocations[i]
-                        ,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
+                  Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      intValue == 0
+                          ? 'Created at ' +
+                              DateFormat('dd/MM/yyyy').format(
+                                  DateTime.parse(oneProspect.lastUpdate))
+                          : 'Date:\n' +
+                              DateFormat('dd/MM/yyyy').format(
+                                  DateTime.parse(oneProspect.lastUpdate)),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
                       ),
                     ),
                   ),
                 ],
               ),
-              // ButtonBar(
-              //   children: <Widget>[
-              //     FlatButton(
-              //       child: const Icon(
-              //         Icons.edit,
-              //         size: 30,
-              //       ),
-              //       onPressed: () {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) => EditProspectStateless()));
-              //       },
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -1578,6 +1516,7 @@ class _AdvisorViewState extends StateMVC {
                     maxLines: 1,
                     style: TextStyle(
                       fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
@@ -1607,7 +1546,7 @@ class _AdvisorViewState extends StateMVC {
               children: <Widget>[
                 const SizedBox(width: 8),
                 TextButton(
-                  child: const Text('Read more...'),
+                  child: const Text('Read More...'),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {

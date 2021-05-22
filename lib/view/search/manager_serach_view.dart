@@ -1,26 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/admin/admin_controller.dart';
-import 'package:vipc_app/controller/home/advisor_controller.dart';
-import 'package:vipc_app/model/news.dart';
+import 'package:vipc_app/controller/home/manager_controller.dart';
 import 'package:vipc_app/model/prospect.dart';
-import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
-import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 
-class AdvisorSearchView extends StatefulWidget {
+class ManagerSearchView extends StatefulWidget {
   @override
-  _AdvisorSearchViewState createState() => _AdvisorSearchViewState();
+  _ManagerSearchViewState createState() => _ManagerSearchViewState();
 }
 
-class _AdvisorSearchViewState extends StateMVC<AdvisorSearchView> {
-  _AdvisorSearchViewState() : super(AdvisorController()) {
-    _con = AdvisorController.con;
+class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
+  _ManagerSearchViewState() : super(ManagerController()) {
+    _con = ManagerController.con;
   }
 
-  AdvisorController _con;
+  ManagerController _con;
 
   TextEditingController _searchQueryController = TextEditingController();
   List<DocumentSnapshot> documentList = [];
