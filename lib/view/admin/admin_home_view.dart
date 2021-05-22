@@ -70,7 +70,7 @@ class _AdminPageState extends StateMVC {
     // _con.managers = [];
     _con.getRequestPasswordCount();
     _saveDeviceToken();
-    _con.getAdminDetail();
+    // _con.getAdminDetail();
     super.initState();
     // _con.getNews(context);
     // _con.getUser(context);
@@ -86,7 +86,7 @@ class _AdminPageState extends StateMVC {
     return Scaffold(
       appBar: AdminAppBar(),
       drawer: FutureBuilder(
-          future: _con.getNews(context),
+          future: _con.getAdminDetail(),
           builder: (context, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? Center(child: CircularProgressIndicator())
