@@ -315,6 +315,17 @@ class UserEditController extends ControllerMVC {
             .collection('search')
             .doc(uid)
             .delete();
+
+        await FirebaseFirestore.instance
+            .collection('search')
+            .doc('userSearch')
+            .collection(uid)
+            .get()
+            .then((snapshot) {
+          for (QueryDocumentSnapshot ds in snapshot.docs) {
+            ds.reference.delete();
+          }
+        });
       });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
