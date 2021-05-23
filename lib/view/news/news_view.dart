@@ -26,9 +26,9 @@ class _NewsViewState extends StateMVC<NewsView> {
   Widget build(BuildContext context) {
     bool check = true;
     return Scaffold(
-      appBar: CustomAppBar(),
+      // appBar: CustomAppBar(),
       // bottomNavigationBar: CustomNavBar(),
-      drawer: CustomDrawer(),
+      // drawer: CustomDrawer(),
       body: FutureBuilder(
         future: _con.getNews(context),
         builder: (context, snapshot) => snapshot.connectionState ==

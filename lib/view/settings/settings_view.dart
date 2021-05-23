@@ -26,8 +26,8 @@ class _SettingsViewState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-      drawer: CustomDrawer(),
+      // appBar: CustomAppBar(),
+      // drawer: CustomDrawer(),
       body: SettingsList(
         // backgroundColor: Colors.orange,
         sections: [

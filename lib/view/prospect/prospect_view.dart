@@ -81,7 +81,7 @@ class _ProspectViewState extends State<ProspectView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('VIPC GROUP'),
+          title: Text('Prospect Detail'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(false),
@@ -96,13 +96,13 @@ class _ProspectViewState extends State<ProspectView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 40, top: 40),
+                    padding: EdgeInsets.only(bottom: 38, top: 40),
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "Prospect Details",
+                        "Prospect Detail",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 22,
                           //decoration: TextDecoration.underline,
                           decorationThickness: 1.5,
                           fontWeight: FontWeight.w400,
@@ -133,6 +133,8 @@ class _ProspectViewState extends State<ProspectView> {
                             padding: EdgeInsets.all(10),
                             child: Text(
                               'Name: ${widget.prospect.prospectName}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: TextStyle(
                                 fontSize: 22,
                                 color: Colors.black,
@@ -146,6 +148,8 @@ class _ProspectViewState extends State<ProspectView> {
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text('Phone: ${widget.prospect.phoneNo}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                                 style:
                                     TextStyle(fontSize: 22, color: Colors.black)
                                 // DateFormat('dd/MM/yyyy HH:mm')
@@ -163,6 +167,8 @@ class _ProspectViewState extends State<ProspectView> {
                               ? Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Text('Email: ${widget.prospect.email}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
                                       style: TextStyle(
                                           fontSize: 22, color: Colors.black)),
                                 )

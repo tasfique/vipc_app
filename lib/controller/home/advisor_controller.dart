@@ -94,7 +94,6 @@ class AdvisorController extends ControllerMVC {
   Future<void> getProspect(BuildContext context) async {
     await getTodayMeeting(context);
     List<Prospect> newsProspectListTemp = [];
-    minimumDate = DateTime.now();
     try {
       // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
@@ -114,12 +113,6 @@ class AdvisorController extends ControllerMVC {
             .get();
 
       prospects.docs.forEach((oneProspect) {
-        if (DateTime.parse(oneProspect.data()['steps']['0Time'])
-                .difference(minimumDate)
-                .inSeconds <=
-            0)
-          minimumDate = DateTime.parse(oneProspect.data()['steps']['0Time']);
-
         if (oneProspect.data()['done'] == 0)
           newsProspectListTemp.add(Prospect(
             prospectId: oneProspect.id,
@@ -258,6 +251,7 @@ class AdvisorController extends ControllerMVC {
     int currentYear = present.year;
     int currentMonth = present.month;
     currentWeekPoint = 0;
+    minimumDate = DateTime.now();
 
     try {
       // String userId = FirebaseAuth.instance.currentUser.uid;
@@ -278,6 +272,9 @@ class AdvisorController extends ControllerMVC {
       prospects.docs.forEach((oneProspect) {
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);
+        if (createdTime.difference(minimumDate).inSeconds <= 0)
+          minimumDate = createdTime;
+
         if (createdTime.difference(present).inSeconds <= 0 &&
             createdTime.year == currentYear &&
             createdTime.month ==

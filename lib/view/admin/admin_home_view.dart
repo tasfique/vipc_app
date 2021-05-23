@@ -170,7 +170,7 @@ class _AdminPageState extends StateMVC {
                 setState(() {
                   check = false;
                 });
-                _con.getNews(context);
+                await _con.getNews(context);
                 setState(() {
                   check = true;
                 });
@@ -272,7 +272,7 @@ class _AdminPageState extends StateMVC {
                           setState(() {
                             check = false;
                           });
-                          _con.getNews(context);
+                          await _con.getNews(context);
                           setState(() {
                             check = true;
                           });
@@ -343,7 +343,7 @@ class _AdminPageState extends StateMVC {
                 setState(() {
                   check2 = false;
                 });
-                _con.getUser(context);
+                await _con.getUser(context);
                 setState(() {
                   check2 = true;
                 });
@@ -435,7 +435,7 @@ class _AdminPageState extends StateMVC {
                         setState(() {
                           check2 = false;
                         });
-                        _con.getUser(context);
+                        await _con.getUser(context);
                         setState(() {
                           check2 = true;
                         });

@@ -258,7 +258,8 @@ class _AdvisorViewState extends StateMVC {
                     setState(() {
                       checkHome = false;
                     });
-                    _con.getNews(context);
+                    // _con.getNews(context);
+                    await _con.getAdvisorDetail();
                     setState(() {
                       checkHome = true;
                     });
@@ -397,7 +398,7 @@ class _AdvisorViewState extends StateMVC {
                                                                           if (model.selectedSeries[0].measureFn(model.selectedDatum[0].index) !=
                                                                               0)
                                                                             Navigator.push(context,
-                                                                                MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index, 'week')));
+                                                                                MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index, checkWeek: 'week')));
                                                                         })
                                                                       ],
                                                                       behaviors: [
@@ -1105,7 +1106,7 @@ class _AdvisorViewState extends StateMVC {
                   setState(() {
                     checkProspect = false;
                   });
-                  _con.getProspectCard(context);
+                  await _con.getProspectCard(context);
                   setState(() {
                     checkProspect = true;
                   });
@@ -1129,7 +1130,7 @@ class _AdvisorViewState extends StateMVC {
                 setState(() {
                   checkProspect = false;
                 });
-                _con.getNews(context);
+                await _con.getProspect(context);
                 setState(() {
                   checkProspect = true;
                 });
@@ -1302,7 +1303,7 @@ class _AdvisorViewState extends StateMVC {
           setState(() {
             checkProspect = false;
           });
-          _con.getProspect(context);
+          await _con.getProspect(context);
           setState(() {
             checkProspect = true;
           });
@@ -1359,7 +1360,7 @@ class _AdvisorViewState extends StateMVC {
                         setState(() {
                           checkProspect = false;
                         });
-                        _con.getProspect(context);
+                        await _con.getProspect(context);
                         setState(() {
                           checkProspect = true;
                         });
@@ -1441,7 +1442,7 @@ class _AdvisorViewState extends StateMVC {
                 setState(() {
                   check = false;
                 });
-                _con.getNews(context);
+                await _con.getNews(context);
                 setState(() {
                   check = true;
                 });

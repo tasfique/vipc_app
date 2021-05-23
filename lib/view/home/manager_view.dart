@@ -42,6 +42,7 @@ class _ManagerViewState extends StateMVC {
   bool check = true;
   bool checkHome = true;
   bool checkProspect = true;
+  bool checkMonitor = true;
   var series, series2, series3;
 
   Future<void> declare() async {
@@ -254,7 +255,7 @@ class _ManagerViewState extends StateMVC {
                     setState(() {
                       checkHome = false;
                     });
-                    _con.getNews(context);
+                    await _con.getManagerDetail();
                     setState(() {
                       checkHome = true;
                     });
@@ -393,7 +394,7 @@ class _ManagerViewState extends StateMVC {
                                                                           if (model.selectedSeries[0].measureFn(model.selectedDatum[0].index) !=
                                                                               0)
                                                                             Navigator.push(context,
-                                                                                MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index, 'week')));
+                                                                                MaterialPageRoute(builder: (context) => ProspectBreakDownView(model.selectedSeries[0].measureFn(model.selectedDatum[0].index), model.selectedDatum[0].index, checkWeek: 'week')));
                                                                         })
                                                                       ],
                                                                       behaviors: [
@@ -1101,7 +1102,7 @@ class _ManagerViewState extends StateMVC {
                   setState(() {
                     checkProspect = false;
                   });
-                  _con.getProspectCard(context);
+                  await _con.getProspectCard(context);
                   setState(() {
                     checkProspect = true;
                   });
@@ -1125,7 +1126,7 @@ class _ManagerViewState extends StateMVC {
                 setState(() {
                   checkProspect = false;
                 });
-                _con.getNews(context);
+                await _con.getProspect(context);
                 setState(() {
                   checkProspect = true;
                 });
@@ -1298,7 +1299,7 @@ class _ManagerViewState extends StateMVC {
           setState(() {
             checkProspect = false;
           });
-          _con.getProspect(context);
+          await _con.getProspect(context);
           setState(() {
             checkProspect = true;
           });
@@ -1355,7 +1356,7 @@ class _ManagerViewState extends StateMVC {
                         setState(() {
                           checkProspect = false;
                         });
-                        _con.getProspect(context);
+                        await _con.getProspect(context);
                         setState(() {
                           checkProspect = true;
                         });
@@ -1437,14 +1438,15 @@ class _ManagerViewState extends StateMVC {
             : RefreshIndicator(
                 onRefresh: () async {
                   setState(() {
-                    check = false;
+                    checkMonitor = false;
                   });
-                  _con.getAdvisorList(context, _con.managerDetail.fullName);
+                  await _con.getAdvisorList(
+                      context, _con.managerDetail.fullName);
                   setState(() {
-                    check = true;
+                    checkMonitor = true;
                   });
                 },
-                child: (check)
+                child: (checkMonitor)
                     ? Container(
                         padding:
                             EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
@@ -1470,10 +1472,12 @@ class _ManagerViewState extends StateMVC {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      _con.selectedIndex = index;
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return MonitorDetailsView();
+                                        return MonitorDetailsView(
+                                            _con.advisorList[index],
+                                            _con.weekPointForAdvisor[index],
+                                            _con.monthPointForAdvisor[index]);
                                       }));
                                     },
                                     child: Padding(
@@ -1493,10 +1497,12 @@ class _ManagerViewState extends StateMVC {
                             } else {
                               return GestureDetector(
                                 onTap: () {
-                                  _con.selectedIndex = index;
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return MonitorDetailsView();
+                                    return MonitorDetailsView(
+                                        _con.advisorList[index],
+                                        _con.weekPointForAdvisor[index],
+                                        _con.monthPointForAdvisor[index]);
                                   }));
                                 },
                                 child: Padding(
@@ -1521,6 +1527,8 @@ class _ManagerViewState extends StateMVC {
   }
 
   Widget _advisorsItemCard(Usr oneAdvisor, int weekP, int monthP) {
+    print('testing');
+    print(weekP);
     return Card(
       color: Colors.amber[50],
       child: Column(
@@ -1645,7 +1653,7 @@ class _ManagerViewState extends StateMVC {
                 setState(() {
                   check = false;
                 });
-                _con.getNews(context);
+                await _con.getNews(context);
                 setState(() {
                   check = true;
                 });
