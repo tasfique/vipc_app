@@ -13,6 +13,7 @@ import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 import 'package:vipc_app/model/line_graph.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/pie_chart.dart';
+import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/monitor/monitor_details_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/model/prospect.dart';
@@ -1392,6 +1393,8 @@ class _ManagerViewState extends StateMVC {
                       padding: EdgeInsets.only(left: 10, top: 5),
                       child: Text(
                         oneProspect.steps['$intValue'],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
@@ -1426,66 +1429,208 @@ class _ManagerViewState extends StateMVC {
   }
 
   Widget monitor() {
-    return Container(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        // itemCount: _con.monitorCards.length,
-        itemCount: 2,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Monitor",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+    return FutureBuilder(
+        future: _con.getAdvisorList(context, _con.managerDetail.fullName),
+        builder: (context, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    check = false;
+                  });
+                  _con.getAdvisorList(context, _con.managerDetail.fullName);
+                  setState(() {
+                    check = true;
+                  });
+                },
+                child: (check)
+                    ? Container(
+                        padding:
+                            EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: _con.advisorList.length,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Monitor Advisor",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      _con.selectedIndex = index;
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return MonitorDetailsView();
+                                      }));
+                                    },
+                                    child: Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 15,
+                                        ),
+                                        child: Container(
+                                            alignment: Alignment.center,
+                                            child: _advisorsItemCard(
+                                                _con.advisorList[index],
+                                                _con.weekPointForAdvisor[index],
+                                                _con.monthPointForAdvisor[
+                                                    index]))),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return GestureDetector(
+                                onTap: () {
+                                  _con.selectedIndex = index;
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return MonitorDetailsView();
+                                  }));
+                                },
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 15,
+                                    ),
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        child: _advisorsItemCard(
+                                            _con.advisorList[index],
+                                            _con.weekPointForAdvisor[index],
+                                            _con.monthPointForAdvisor[index]))),
+                              );
+                            }
+                          },
+                        ),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
                       ),
-                    ),
-                  ),
+              ));
+  }
+
+  Widget _advisorsItemCard(Usr oneAdvisor, int weekP, int monthP) {
+    return Card(
+      color: Colors.amber[50],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            title: Padding(
+              padding: EdgeInsets.fromLTRB(15, 10, 10, 0),
+              child: Text(
+                oneAdvisor.fullName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _con.selectedIndex = index;
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return MonitorDetailsView();
-                    }));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15),
-                    child: Container(
-                        alignment: Alignment.center,
-                        // child: _con.monitorCards[index],
-                        child: Text('a')),
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return GestureDetector(
-              onTap: () {
-                _con.selectedIndex = index;
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return MonitorDetailsView();
-                }));
-              },
-              child: Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: Container(
-                    alignment: Alignment.center,
-                    // child: _con.monitorCards[index],
-                    child: Text('b')),
               ),
-            );
-          }
-        },
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+                left: 5,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            DateFormat('MMMM').format(DateTime.now()) +
+                                " Weekly Points: " +
+                                weekP.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            weekP < 50
+                                ? 'Failed'
+                                : 50 <= weekP && weekP < 100
+                                    ? 'Passed'
+                                    : 'Standard',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.amber,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            DateFormat('MMMM').format(DateTime.now()) +
+                                " Total Points: " +
+                                monthP.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            monthP < 100
+                                ? 'Failed'
+                                : 100 <= monthP && monthP < 200
+                                    ? 'Passed'
+                                    : 'Standard',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.amber,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
+      // ),
     );
   }
 

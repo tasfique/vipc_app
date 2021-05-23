@@ -35,6 +35,9 @@ class ManagerController extends ControllerMVC {
   List<Prospect> prospectListRequestPassword = [];
   int meetingCount = 0;
   String userId;
+  List<Usr> advisorList;
+  List<int> weekPointForAdvisor;
+  List<int> monthPointForAdvisor;
 
   String dropdownValue = 'Sort by Time';
   String sort = 'up';
@@ -53,6 +56,123 @@ class ManagerController extends ControllerMVC {
         type: admin.data()['type'],
         assignUnder: admin.data()['assignUnder'],
         password: admin.data()['password']);
+  }
+
+  Future<void> getAdvisorList(
+      BuildContext context, String assignUnderManager) async {
+    await getTodayMeeting(context);
+
+    weekPointForAdvisor = [];
+    monthPointForAdvisor = [];
+    List<Usr> advisorListTemp = [];
+    DateTime presentForAdvisor = DateTime.now();
+    int currentYearForAdvisor = presentForAdvisor.year;
+    int currentMonthForAdvisor = presentForAdvisor.month;
+    int currentMonthPointForAdvisor;
+    int firstDateForAdvisor, lastDateForAdvisor;
+    int currentWeekPointForAdvisor;
+
+    try {
+      var advisors = await FirebaseFirestore.instance
+          .collection("users")
+          .where('assignUnder', isEqualTo: assignUnderManager)
+          .get();
+
+      advisors.docs.forEach((oneAdvisor) {
+        advisorListTemp.add(Usr(
+            userId: oneAdvisor.id,
+            empID: oneAdvisor.data()['empID'],
+            email: oneAdvisor.data()['email'],
+            fullName: oneAdvisor.data()['fullName'],
+            type: oneAdvisor.data()['type'],
+            assignUnder: oneAdvisor.data()['assignUnder'],
+            password: oneAdvisor.data()['password']));
+      });
+      advisorList = advisorListTemp;
+
+      for (int i = 0; i < advisorList.length; i++) {
+        var prospects = await FirebaseFirestore.instance
+            .collection("prospect")
+            .doc(advisorList[i].userId)
+            .collection('prospects')
+            .get();
+
+        currentMonthPointForAdvisor = 0;
+        currentWeekPointForAdvisor = 0;
+        TimeOfDay t;
+        var now;
+        var time;
+
+        if (presentForAdvisor.day >= 1 && presentForAdvisor.day <= 7) {
+          firstDateForAdvisor = 1;
+          lastDateForAdvisor = 7;
+        } else if (presentForAdvisor.day >= 8 && presentForAdvisor.day <= 14) {
+          firstDateForAdvisor = 8;
+          lastDateForAdvisor = 14;
+        } else if (presentForAdvisor.day >= 15 && presentForAdvisor.day <= 21) {
+          firstDateForAdvisor = 15;
+          lastDateForAdvisor = 21;
+        } else {
+          firstDateForAdvisor = 22;
+          lastDateForAdvisor =
+              DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
+        }
+
+        prospects.docs.forEach((oneProspect) {
+          DateTime createdTime =
+              DateTime.parse(oneProspect.data()['steps']['0Time']);
+          if (createdTime.difference(presentForAdvisor).inSeconds <= 0 &&
+              createdTime.year == currentYearForAdvisor &&
+              createdTime.month == currentMonthForAdvisor)
+            currentMonthPointForAdvisor++;
+
+          if (createdTime.difference(presentForAdvisor).inSeconds <= 0 &&
+              createdTime.year == currentYearForAdvisor &&
+              createdTime.month == currentMonthForAdvisor &&
+              createdTime.day >= firstDateForAdvisor &&
+              createdTime.day <= lastDateForAdvisor)
+            currentWeekPointForAdvisor++;
+
+          for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
+            if (oneProspect.data()['steps']['${i}meetingTime'] != '')
+              t = TimeOfDay(
+                  hour: int.parse(oneProspect
+                      .data()['steps']['${i}meetingTime']
+                      .substring(0, 2)),
+                  minute: int.parse(oneProspect
+                      .data()['steps']['${i}meetingTime']
+                      .substring(3, 5)));
+            else
+              t = TimeOfDay(hour: 0, minute: 0);
+            now =
+                DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
+            time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+            if (time.difference(presentForAdvisor).inSeconds <= 0 &&
+                now.year == currentYearForAdvisor &&
+                now.month == currentMonthForAdvisor)
+              currentMonthPointForAdvisor +=
+                  oneProspect.data()['steps']['${i}Point'];
+
+            if (time.difference(presentForAdvisor).inSeconds <= 0 &&
+                now.year == currentYearForAdvisor &&
+                now.month == currentMonthForAdvisor &&
+                time.day >= firstDateForAdvisor &&
+                time.day <= lastDateForAdvisor)
+              currentWeekPointForAdvisor +=
+                  oneProspect.data()['steps']['${i}Point'];
+          }
+        });
+
+        weekPointForAdvisor.add(currentWeekPointForAdvisor);
+        monthPointForAdvisor.add(currentMonthPointForAdvisor);
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
   }
 
   Future<void> getNews(BuildContext context) async {

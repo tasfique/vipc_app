@@ -352,14 +352,14 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                 (widget.checkWeek == 'week'
                                     ? (widget.totalPoint < 50
                                         ? 'Failed (Total Point < 50)'
-                                        : 500 <= widget.totalPoint &&
-                                                widget.totalPoint <= 100
+                                        : 50 <= widget.totalPoint &&
+                                                widget.totalPoint < 100
                                             ? 'Passed (Total Point > 50)'
                                             : 'Standard (Total Point > 100)')
                                     : (widget.totalPoint < 100
                                         ? 'Failed (Total Point < 100)'
                                         : 100 <= widget.totalPoint &&
-                                                widget.totalPoint <= 200
+                                                widget.totalPoint < 200
                                             ? 'Passed (Total Point > 100)'
                                             : 'Standard (Total Point > 200)')),
                             style: TextStyle(
