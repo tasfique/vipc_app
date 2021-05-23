@@ -132,8 +132,13 @@ class UserEditController extends ControllerMVC {
           isLoading = true;
         });
         try {
-          List<String> caseSearchListSaveToFireBase =
-              setSearchParam(fullNameController.text.trim());
+          List<String> caseSearchListSaveToFireBase;
+          if (fullNameController.text.isNotEmpty &&
+              fullNameController.text != fullName)
+            caseSearchListSaveToFireBase =
+                setSearchParam(fullNameController.text.trim());
+          else
+            caseSearchListSaveToFireBase = setSearchParam(fullName);
 
           if (emailController.text != email &&
               (emailController.text.isNotEmpty)) {
@@ -218,41 +223,124 @@ class UserEditController extends ControllerMVC {
               );
             }
           } else {
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(uid)
-                .update({
-              'email': email,
-              'fullName': (fullNameController.text.isNotEmpty &&
-                      fullNameController.text != fullName)
-                  ? fullNameController.text
-                  : fullName,
-              'type': (selectedType != null && selectedType != type)
-                  ? selectedType
-                  : type,
-              'assignUnder':
-                  ((selectedType != null && selectedType == "Manager") ||
-                          (selectedType == null && type == "Manager"))
-                      ? ""
-                      : (selectedManager != null &&
-                              selectedManager != assignManager)
-                          ? selectedManager
-                          : assignManager,
-              // 'password': (userPwdController.text.isNotEmpty &&
-              //         userPwdController.text != password)
-              //     ? userPwdController.text
-              //     : password
-            }).then((_) async {
+            // TODO advisor to manager
+            if (selectedType != null &&
+                selectedType != type &&
+                selectedType == 'Manager') {
+              print('no email, advisor to manager');
               await FirebaseFirestore.instance
-                  .collection('search')
-                  .doc('adminSearch')
-                  .collection('search')
+                  .collection('users')
+                  .doc(uid)
+                  .update({'type': 'Manager', 'assignUnder': ''}).then(
+                      (_) async {
+//  await FirebaseFirestore.instance
+//                         .collection('search')
+//                         .doc('userSearch')
+//                         .collection(managerId.docs.first.id)
+//                         .doc(uid)
+//                         .set({
+//                       'fullName': fullNameController.text.trim(),
+//                       'type': 'Advisor',
+//                       'searchCase': caseSearchListSaveToFireBase.toList()
+//                     });
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .where('fullName', isEqualTo: assignManager)
+                    .limit(1)
+                    .get()
+                    .then((managerId) async {
+                  await FirebaseFirestore.instance
+                      .collection('search')
+                      .doc('userSearch')
+                      .collection(managerId.docs.first.id)
+                      .doc(uid)
+                      .delete();
+                });
+              });
+            }
+            // TODO manager to advisor
+            // prospect, advisor
+            else if (selectedType != null &&
+                selectedType != type &&
+                selectedType == 'Advisor') {
+              print('no email, manager to advisor');
+              await FirebaseFirestore.instance
+                  .collection('users')
                   .doc(uid)
                   .update({
-                'fullName': fullNameController.text.trim(),
-                'searchCase': caseSearchListSaveToFireBase.toList()
+                'type': 'Advisor',
+                'assignUnder': selectedManager
+              }).then((_) async {
+                await FirebaseFirestore.instance
+                    .collection('search')
+                    .doc('userSearch')
+                    .collection(uid)
+                    .where('type', isEqualTo: 'Advisor')
+                    .get()
+                    .then((snapshot) {
+                  for (QueryDocumentSnapshot ds in snapshot.docs) {
+                    ds.reference.delete();
+                  }
+                }).then((_) async {
+                  await FirebaseFirestore.instance
+                      .collection("users")
+                      .where('fullName', isEqualTo: selectedManager)
+                      .limit(1)
+                      .get()
+                      .then((managerId) async {
+                    await FirebaseFirestore.instance
+                        .collection('search')
+                        .doc('userSearch')
+                        .collection(managerId.docs.first.id)
+                        .doc(uid)
+                        .set({
+                      'fullName': fullNameController.text.trim(),
+                      'type': 'Advisor',
+                      'searchCase': caseSearchListSaveToFireBase.toList()
+                    });
+                  });
+                });
               });
-            });
+            }
+
+            if (fullNameController.text.isNotEmpty &&
+                fullNameController.text != fullName)
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .update({
+                // 'email': email,
+                'fullName': fullNameController.text
+                //  (fullNameController.text.isNotEmpty &&
+                //         fullNameController.text != fullName)
+                //     ? fullNameController.text
+                //     : fullName,
+                // 'type': (selectedType != null && selectedType != type)
+                //     ? selectedType
+                //     : type,
+                // 'assignUnder':
+                //     ((selectedType != null && selectedType == "Manager") ||
+                //             (selectedType == null && type == "Manager"))
+                //         ? ""
+                //         : (selectedManager != null &&
+                //                 selectedManager != assignManager)
+                //             ? selectedManager
+                //             : assignManager,
+                // 'password': (userPwdController.text.isNotEmpty &&
+                //         userPwdController.text != password)
+                //     ? userPwdController.text
+                //     : password
+              }).then((_) async {
+                await FirebaseFirestore.instance
+                    .collection('search')
+                    .doc('adminSearch')
+                    .collection('search')
+                    .doc(uid)
+                    .update({
+                  'fullName': fullNameController.text.trim(),
+                  'searchCase': caseSearchListSaveToFireBase.toList()
+                });
+              });
 
             // if (!(userPwdController.text.isEmpty ||
             //     userPwdController.text == password)) {
