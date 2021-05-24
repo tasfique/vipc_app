@@ -1580,9 +1580,10 @@ class _ManagerViewState extends StateMVC {
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                            weekP < 50
-                                ? 'Failed'
-                                : 50 <= weekP && weekP < 100
+                            // weekP < 50
+                            //     ? 'Failed'
+                            //     : 
+                                50 <= weekP && weekP < 100
                                     ? 'Passed'
                                     : 'Standard',
                             style: TextStyle(
@@ -1619,9 +1620,10 @@ class _ManagerViewState extends StateMVC {
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                            monthP < 100
-                                ? 'Failed'
-                                : 100 <= monthP && monthP < 200
+                            // monthP < 100
+                            //     ? 'Failed'
+                            //     : 
+                                100 <= monthP && monthP < 200
                                     ? 'Passed'
                                     : 'Standard',
                             style: TextStyle(
