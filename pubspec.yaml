@@ -46,6 +46,7 @@ dependencies:
   mailer:
   flutter_local_notifications: ^4.0.1+2
   month_picker_dialog: ^0.4.0
+  drop_cap_text: ^1.1.3
 
 dependency_overrides:
   intl: ^0.17.0-nullsafety.2
