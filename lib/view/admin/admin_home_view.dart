@@ -374,13 +374,22 @@ class _AdminPageState extends StateMVC {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
+                                  onTap: () async {
+                                    final pushUserDetail = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 UserDetailsView(
                                                     _con.userList[index])));
+                                    if (pushUserDetail) {
+                                      setState(() {
+                                        check2 = false;
+                                      });
+                                      await _con.getUser(context);
+                                      setState(() {
+                                        check2 = true;
+                                      });
+                                    }
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 15),
@@ -394,12 +403,21 @@ class _AdminPageState extends StateMVC {
                             );
                           } else {
                             return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
+                              onTap: () async {
+                                final pushUserDetail = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => UserDetailsView(
                                             _con.userList[index])));
+                                if (pushUserDetail) {
+                                  setState(() {
+                                    check2 = false;
+                                  });
+                                  await _con.getUser(context);
+                                  setState(() {
+                                    check2 = true;
+                                  });
+                                }
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(top: 15),

@@ -21,7 +21,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
 
   TextEditingController _searchQueryController = TextEditingController();
   List<DocumentSnapshot> documentList = [];
-  bool check = false;
+  bool check = false, checkPage = true;
 
   @override
   void dispose() async {
@@ -111,58 +111,60 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
             ),
           ],
         ),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: _searchQueryController.text.isNotEmpty &&
-                  _searchQueryController.text != null &&
-                  !check
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: documentList.length,
-                        itemBuilder: (context, index) {
-                          var result = documentList[index];
-                          return _itemCard(result);
-                          // return ListTile(
-                          //   title: result['type'] == 'News'
-                          //       ? Text(result['title'])
-                          //       : Text(result['fullName']),
-                          //   subtitle: Text(result['type']),
-                          //   trailing: IconButton(
-                          //     onPressed: null,
-                          //     icon: Icon(Icons.read_more),
-                          //   ),
-                          // );
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              : _searchQueryController.text.isNotEmpty &&
-                      _searchQueryController.text != null &&
-                      check
-                  ? Container(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        'No result found!',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    )
-                  : Container(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        'Enter keyword to search...',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-        ),
+        body: (checkPage)
+            ? GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: _searchQueryController.text.isNotEmpty &&
+                        _searchQueryController.text != null &&
+                        !check
+                    ? SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: documentList.length,
+                              itemBuilder: (context, index) {
+                                var result = documentList[index];
+                                return _itemCard(result);
+                                // return ListTile(
+                                //   title: result['type'] == 'News'
+                                //       ? Text(result['title'])
+                                //       : Text(result['fullName']),
+                                //   subtitle: Text(result['type']),
+                                //   trailing: IconButton(
+                                //     onPressed: null,
+                                //     icon: Icon(Icons.read_more),
+                                //   ),
+                                // );
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    : _searchQueryController.text.isNotEmpty &&
+                            _searchQueryController.text != null &&
+                            check
+                        ? Container(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'No result found!',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          )
+                        : Container(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'Enter keyword to search...',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+              )
+            : Center(child: CircularProgressIndicator()),
       ),
     );
   }
@@ -177,15 +179,17 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
     DocumentSnapshot user =
         await FirebaseFirestore.instance.collection('users').doc(id).get();
     Usr userTemp;
-    userTemp = (Usr(
+    print('bbb');
+    userTemp = Usr(
         userId: user.id,
         empID: user.data()['empID'],
         email: user.data()['email'],
         fullName: user.data()['fullName'],
         type: user.data()['type'],
         assignUnder: user.data()['assignUnder'],
-        password: user.data()['password']));
-
+        password: user.data()['password']);
+    print(user.data()['type']);
+    print('basdf');
     return userTemp;
   }
 
@@ -219,8 +223,11 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
       onTap: () async {
         if (result['type'] == 'User') {
           var user = await getResultUser(result.id);
-          Navigator.push(context,
+          final pushUserDetail = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => UserDetailsView(user)));
+          if (pushUserDetail) {
+            _clearSearchQuery();
+          }
         } else if (result['type'] == 'News') {
           var news = await getResultNews(result.id);
           Navigator.push(context,

@@ -5,8 +5,9 @@ import 'package:vipc_app/model/user.dart';
 
 class EditUser extends StatefulWidget {
   final Usr user;
+  final String checkDetail;
 
-  EditUser(this.user);
+  EditUser(this.user, [this.checkDetail]);
   @override
   _EditUserState createState() => _EditUserState();
 }
@@ -687,7 +688,10 @@ class _EditUserState extends StateMVC<EditUser> {
                   onPressed: () async {
                     await _con.deleteUser(context);
                     Navigator.of(context).pop();
-                    Navigator.of(context).pop(true);
+                    if (widget.checkDetail == 'userDetail')
+                      Navigator.of(context).pop(null);
+                    else
+                      Navigator.of(context).pop(true);
                   },
                 )
               ],
