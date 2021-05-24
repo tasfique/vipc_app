@@ -142,7 +142,6 @@ class SignupController extends ControllerMVC {
             });
             setState(() {
               isLoading = false;
-
               signUpSuccess = true;
             });
           } else if (isAdvisor) {
@@ -166,6 +165,23 @@ class SignupController extends ControllerMVC {
                 'fullName': fullNameController.text.trim(),
                 'type': 'User',
                 'searchCase': caseSearchListSaveToFireBase.toList()
+              });
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .where('fullName', isEqualTo: selectedManager)
+                  .limit(1)
+                  .get()
+                  .then((managerId) async {
+                await FirebaseFirestore.instance
+                    .collection('search')
+                    .doc('userSearch')
+                    .collection(managerId.docs.first.id)
+                    .doc(userCredential.user.uid)
+                    .set({
+                  'fullName': fullNameController.text.trim(),
+                  'type': 'Advisor',
+                  'searchCase': caseSearchListSaveToFireBase.toList()
+                });
               });
             });
             setState(() {

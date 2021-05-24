@@ -197,24 +197,30 @@ class ProspectEditController extends ControllerMVC {
                   .doc('userSearch')
                   .collection(userId)
                   .doc(prospect.prospectId)
-                  .update(
-                      {'searchCase': caseSearchListSaveToFireBase.toList()});
+                  .update({
+                'prospectName': nameController.text.trim(),
+                'searchCase': caseSearchListSaveToFireBase.toList()
+              });
             }
-            await FirebaseFirestore.instance
-                .collection('search')
-                .doc('userSearch')
-                .collection(userId)
-                .doc(prospect.prospectId)
-                .update({
-              'prospectName': nameController.text.isNotEmpty &&
-                      nameController.text != prospect.prospectName
-                  ? nameController.text.trim()
-                  : prospect.prospectName,
-              'phone': (phoneController.text.isNotEmpty &&
-                      phoneController.text != prospect.phoneNo)
-                  ? phoneController.text.trim()
-                  : prospect.phoneNo,
-            });
+
+            if (phoneController.text.isNotEmpty &&
+                phoneController.text != prospect.phoneNo)
+              await FirebaseFirestore.instance
+                  .collection('search')
+                  .doc('userSearch')
+                  .collection(userId)
+                  .doc(prospect.prospectId)
+                  .update({
+                // 'prospectName': nameController.text.isNotEmpty &&
+                //         nameController.text != prospect.prospectName
+                //     ? nameController.text.trim()
+                //     : prospect.prospectName,
+                'phone': phoneController.text.trim(),
+                // (phoneController.text.isNotEmpty &&
+                //         phoneController.text != prospect.phoneNo)
+                //     ? phoneController.text.trim()
+                //     : prospect.phoneNo,
+              });
           });
         } else if (choice == Choices.update) {
           if (timeController.text.isNotEmpty) {
