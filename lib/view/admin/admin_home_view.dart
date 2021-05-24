@@ -8,6 +8,7 @@ import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
+import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
 import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/admin_news_control/news_upload_view.dart';
@@ -371,21 +372,40 @@ class _AdminPageState extends StateMVC {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 15),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: userItemCard(_con.userList[index]),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserDetailsView(
+                                                    _con.userList[index])));
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: userItemCard(_con.userList[index]),
+                                    ),
                                   ),
                                 )
                               ],
                             );
                           } else {
-                            return Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: userItemCard(_con.userList[index]),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserDetailsView(
+                                            _con.userList[index])));
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 15),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: userItemCard(_con.userList[index]),
+                                ),
                               ),
                             );
                           }
