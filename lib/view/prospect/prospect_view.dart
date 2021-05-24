@@ -212,6 +212,9 @@ class _ProspectViewState extends State<ProspectView> {
                     //   height: 10,
                     // ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                  ),
                   Center(
                     child: Text(
                       '$totalPoint',
@@ -235,7 +238,7 @@ class _ProspectViewState extends State<ProspectView> {
                   Text(widget.prospect.steps['0'],
                       style: TextStyle(fontSize: 22)),
                   Text(
-                    'Point: ${widget.prospect.steps['0Point']}',
+                    'Point(s): ${widget.prospect.steps['0Point']}',
                     style: TextStyle(color: Colors.amberAccent),
                   ),
                   SizedBox(
@@ -365,11 +368,11 @@ class _ProspectViewState extends State<ProspectView> {
         Text(widget.prospect.steps['$index'], style: TextStyle(fontSize: 22)),
         time.difference(present).inSeconds <= 0
             ? Text(
-                'Point: ${widget.prospect.steps['${index}Point']}',
+                'Point(s): ${widget.prospect.steps['${index}Point']}',
                 style: TextStyle(color: Colors.amberAccent),
               )
             : Text(
-                'Point About To Earn: ${widget.prospect.steps['${index}Point']}',
+                'Pending Point(s): ${widget.prospect.steps['${index}Point']}',
                 style: TextStyle(color: Colors.amberAccent),
               ),
         SizedBox(
