@@ -1577,19 +1577,23 @@ class _ManagerViewState extends StateMVC {
                           ),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                            // weekP < 50
-                            //     ? 'Failed'
-                            //     :
-                            50 <= weekP && weekP < 100 ? 'Passed' : 'Standard',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.amber,
-                              fontWeight: FontWeight.w600,
-                            )),
-                      ),
+                      50 <= weekP
+                          ? Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                  // weekP < 50
+                                  //     ? 'Failed'
+                                  //     :
+                                  50 <= weekP && weekP < 100
+                                      ? 'Passed'
+                                      : 'Standard',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                            )
+                          : SizedBox(),
                     ],
                   ),
                   SizedBox(
@@ -1615,21 +1619,23 @@ class _ManagerViewState extends StateMVC {
                           ),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                            // monthP < 100
-                            //     ? 'Failed'
-                            //     :
-                            100 <= monthP && monthP < 200
-                                ? 'Passed'
-                                : 'Standard',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.amber,
-                              fontWeight: FontWeight.w600,
-                            )),
-                      ),
+                      100 <= monthP
+                          ? Container(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                  // monthP < 100
+                                  //     ? 'Failed'
+                                  //     :
+                                  100 <= monthP && monthP < 200
+                                      ? 'Passed'
+                                      : 'Standard',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                            )
+                          : SizedBox(),
                     ],
                   ),
                 ],
