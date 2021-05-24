@@ -5,6 +5,7 @@ import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/view/appbar/appbar_view.dart';
 import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News oneNew;
@@ -111,6 +112,108 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                     ),
                   ),
                 ),
+
+                if (widget.oneNew.imageUrl != null &&
+                    widget.oneNew.imageUrl['length'] == 1)
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HeroImage(widget.oneNew.imageUrl['0'])),
+                        );
+                      },
+                      child: Hero(
+                        tag: 'Image',
+                        child: Image.network(
+                          widget.oneNew.imageUrl['0'],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    height: screenSize.size.height * 0.4,
+                    width: screenSize.size.width * 0.9,
+                    padding: EdgeInsets.only(bottom: 30),
+                  )
+                else if (widget.oneNew.imageUrl != null &&
+                    widget.oneNew.imageUrl['length'] != 1)
+                  CarouselSlider(
+                    items: [
+                      for (int i = 0; i < widget.oneNew.imageUrl['length']; i++)
+                        Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HeroImage(
+                                        widget.oneNew.imageUrl['$i'])),
+                              );
+                            },
+                            child: Hero(
+                              tag: '$i',
+                              child: Image.network(
+                                widget.oneNew.imageUrl['$i'],
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          ),
+                          height: double.infinity,
+                          width: double.infinity,
+                        )
+
+                      //GridView.count(
+                      // primary: false,
+                      // padding: const EdgeInsets.all(10),
+                      // mainAxisSpacing: 10,
+                      // crossAxisSpacing: 10,
+                      // shrinkWrap: true,
+                      // crossAxisCount: 4,
+                      // children:
+                      // ListView.builder(
+                      //     itemCount: widget.oneNew.imageUrl['length'],
+                      //     itemBuilder: (context, index)
+                      //         // widget.oneNew.imageUrl['length'], (index) {
+                      //         {
+                      //       print('test');
+                      //       return Container(
+                      //         child: GestureDetector(
+                      //           onTap: () {
+                      //             Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                   builder: (context) => HeroImage(
+                      //                       widget.oneNew.imageUrl['$index'])),
+                      //             );
+                      //           },
+                      //           child: Hero(
+                      //             tag: '$index',
+                      //             child: Image.network(
+                      //               widget.oneNew.imageUrl['$index'],
+                      //               fit: BoxFit.fitWidth,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         height: double.infinity,
+                      //         width: double.infinity,
+                      //       );
+                      //     }),
+                      //),
+                    ],
+                    options: CarouselOptions(
+                      height: 180.0,
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 16 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      viewportFraction: 0.8,
+                    ),
+                  ),
                 // if (widget.oneNew.imageUrl != null &&
                 //     widget.oneNew.imageUrl['length'] == 1)
                 //   Container(
@@ -171,82 +274,82 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                 //     }),
                 //   ),
 
-                DropCapText(
-                  loremIpsumText,
-                  dropCap: DropCap(
-                    width: 200,
-                    height: 300,
-                    child: widget.oneNew.imageUrl != null &&
-                            widget.oneNew.imageUrl['length'] == 1
-                        ? Container(
-                            alignment: Alignment.bottomCenter,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HeroImage(
-                                          widget.oneNew.imageUrl['0'])),
-                                );
-                              },
-                              child: Hero(
-                                tag: 'Image',
-                                child: Image.network(
-                                  widget.oneNew.imageUrl['0'],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            height: screenSize.size.height * 0.4,
-                            width: screenSize.size.width * 0.9,
-                            padding: EdgeInsets.only(bottom: 30),
-                          )
-                        : GridView.count(
-                            primary: false,
-                            padding: const EdgeInsets.all(10),
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            shrinkWrap: true,
-                            crossAxisCount: 2,
-                            children: List.generate(
-                                widget.oneNew.imageUrl['length'], (index) {
-                              return Container(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HeroImage(widget
-                                              .oneNew.imageUrl['$index'])),
-                                    );
-                                  },
-                                  child: Hero(
-                                    tag: '$index',
-                                    child: Image.network(
-                                      widget.oneNew.imageUrl['$index'],
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
-                                ),
-                                height: double.infinity,
-                                width: double.infinity,
-                              );
-                            }),
-                          ),
-                  ),
-                ),
-                // Padding(
-                //   padding: EdgeInsets.all(25),
-                //   child: Container(
-                //     alignment: Alignment.centerLeft,
-                //     child: Text(
-                //       widget.oneNew.content,
-                //       style: TextStyle(
-                //         fontSize: 18,
-                //       ),
-                //     ),
+                // DropCapText(
+                //   loremIpsumText,
+                //   dropCap: DropCap(
+                //     width: 200,
+                //     height: 300,
+                //     child: widget.oneNew.imageUrl != null &&
+                //             widget.oneNew.imageUrl['length'] == 1
+                //         ? Container(
+                //             alignment: Alignment.bottomCenter,
+                //             child: GestureDetector(
+                //               onTap: () {
+                //                 Navigator.push(
+                //                   context,
+                //                   MaterialPageRoute(
+                //                       builder: (context) => HeroImage(
+                //                           widget.oneNew.imageUrl['0'])),
+                //                 );
+                //               },
+                //               child: Hero(
+                //                 tag: 'Image',
+                //                 child: Image.network(
+                //                   widget.oneNew.imageUrl['0'],
+                //                   fit: BoxFit.cover,
+                //                 ),
+                //               ),
+                //             ),
+                //             height: screenSize.size.height * 0.4,
+                //             width: screenSize.size.width * 0.9,
+                //             padding: EdgeInsets.only(bottom: 30),
+                //           )
+                //         : GridView.count(
+                //             primary: false,
+                //             padding: const EdgeInsets.all(10),
+                //             mainAxisSpacing: 10,
+                //             crossAxisSpacing: 10,
+                //             shrinkWrap: true,
+                //             crossAxisCount: 2,
+                //             children: List.generate(
+                //                 widget.oneNew.imageUrl['length'], (index) {
+                //               return Container(
+                //                 child: GestureDetector(
+                //                   onTap: () {
+                //                     Navigator.push(
+                //                       context,
+                //                       MaterialPageRoute(
+                //                           builder: (context) => HeroImage(widget
+                //                               .oneNew.imageUrl['$index'])),
+                //                     );
+                //                   },
+                //                   child: Hero(
+                //                     tag: '$index',
+                //                     child: Image.network(
+                //                       widget.oneNew.imageUrl['$index'],
+                //                       fit: BoxFit.fitWidth,
+                //                     ),
+                //                   ),
+                //                 ),
+                //                 height: double.infinity,
+                //                 width: double.infinity,
+                //               );
+                //             }),
+                //           ),
                 //   ),
                 // ),
+                Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.oneNew.content,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
