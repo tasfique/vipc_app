@@ -171,7 +171,7 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Advisor Detail'),
+            title: Text('VIPC GROUP'),
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () => Navigator.of(context).pop(),
@@ -289,12 +289,13 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                         Container(
                           alignment: Alignment.topRight,
                           child: Text(
-                              widget.monthPoint < 100
-                                  ? 'Failed'
-                                  : 100 <= widget.monthPoint &&
-                                          widget.monthPoint < 200
-                                      ? 'Passed'
-                                      : 'Standard',
+                              // widget.monthPoint < 100
+                              //     ? 'Failed'
+                              //     :
+                              100 <= widget.monthPoint &&
+                                      widget.monthPoint < 200
+                                  ? 'Passed'
+                                  : 'Standard',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.amber,
@@ -325,12 +326,12 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                         Container(
                           alignment: Alignment.topRight,
                           child: Text(
-                              widget.weekPoint < 50
-                                  ? 'Failed'
-                                  : 50 <= widget.weekPoint &&
-                                          widget.weekPoint < 100
-                                      ? 'Passed'
-                                      : 'Standard',
+                              // widget.weekPoint < 50
+                              //     ? 'Failed'
+                              //     :
+                              50 <= widget.weekPoint && widget.weekPoint < 100
+                                  ? 'Passed'
+                                  : 'Standard',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.amber,

@@ -8,6 +8,7 @@ import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
+import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
 import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/admin_news_control/news_upload_view.dart';
@@ -228,7 +229,7 @@ class _AdminPageState extends StateMVC {
     return Card(
       color: Colors.amber[50],
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -246,6 +247,7 @@ class _AdminPageState extends StateMVC {
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
@@ -371,21 +373,40 @@ class _AdminPageState extends StateMVC {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 15),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: userItemCard(_con.userList[index]),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserDetailsView(
+                                                    _con.userList[index])));
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: userItemCard(_con.userList[index]),
+                                    ),
                                   ),
                                 )
                               ],
                             );
                           } else {
-                            return Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: userItemCard(_con.userList[index]),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserDetailsView(
+                                            _con.userList[index])));
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 15),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: userItemCard(_con.userList[index]),
+                                ),
                               ),
                             );
                           }
@@ -410,14 +431,15 @@ class _AdminPageState extends StateMVC {
                 Expanded(
                   flex: 8,
                   child: Container(
-                    padding: EdgeInsets.only(left: 5),
+                    padding: EdgeInsets.only(left: 5, top: 5),
                     child: Text(
                       user.fullName,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      maxLines: 2,
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

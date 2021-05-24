@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/news.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
+// import 'package:vipc_app/view/appbar/appbar_view.dart';
+// import 'package:vipc_app/view/bottomnavbar/bottomnavbar.dart';
+// import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:vipc_app/view/news/news_details_view.dart';
 
 class NewsView extends StatefulWidget {
@@ -103,7 +103,7 @@ Widget newsItemCard(BuildContext context, News oneNew) {
   return Card(
     color: Colors.amber[50],
     child: Padding(
-      padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

@@ -40,7 +40,7 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Password Reset List'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(),
@@ -182,7 +182,7 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
     return Card(
       color: Colors.amber[50],
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -193,38 +193,41 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                   Text(
                     'Full Name: ${oneUser.fullName}',
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                    maxLines: 2,
                     style: TextStyle(
                       fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'User ID: ${oneUser.empID}',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Colors.grey[600],
+                      color: Colors.grey[700],
                     ),
                   ),
                 ],
               ),
               subtitle: Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Email: ${oneUser.email}',
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
+                      maxLines: 2,
                       style: TextStyle(
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                     ),
                     Text(
                       'Request to change password',
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
+                      maxLines: 2,
                       style: TextStyle(
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                     ),
@@ -235,26 +238,32 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text('Change Password'),
-                  onPressed: () async {
-                    final pushResult = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ResetPassword(oneUser)));
-                    if (pushResult) {
-                      setState(() {
-                        _check = false;
-                      });
-                      _con.getRequestedPasswordUser(context);
-                      setState(() {
-                        _check = true;
-                      });
-                    }
-                  },
+                // const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: TextButton(
+                    child: const Text('Change Password',
+                        style: TextStyle(
+                          fontSize: 16,
+                        )),
+                    onPressed: () async {
+                      final pushResult = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResetPassword(oneUser)));
+                      if (pushResult) {
+                        setState(() {
+                          _check = false;
+                        });
+                        _con.getRequestedPasswordUser(context);
+                        setState(() {
+                          _check = true;
+                        });
+                      }
+                    },
+                  ),
                 ),
-                const SizedBox(width: 8),
+                // const SizedBox(width: 8),
               ],
             ),
           ],

@@ -108,7 +108,8 @@ class ProspectAddController extends ControllerMVC {
               .set({
             'prospectName': usernameController.text.trim(),
             'phone': phoneController.text.trim(),
-            'searchCase': caseSearchListSaveToFireBase.toList()
+            'searchCase': caseSearchListSaveToFireBase.toList(),
+            'type': 'Prospect'
           });
         });
 

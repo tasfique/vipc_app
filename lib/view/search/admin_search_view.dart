@@ -249,6 +249,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                         maxLines: 3,
                         style: TextStyle(
                           fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -258,8 +259,8 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                     child: Text(
                       'Type: ${result['type']}',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[600],
+                        fontSize: 16,
+                        color: Colors.grey[700],
                       ),
                       textAlign: TextAlign.end,
                     ),

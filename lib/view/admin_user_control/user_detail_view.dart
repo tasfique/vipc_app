@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
+// import 'package:vipc_app/view/appbar/appbar_view.dart';
+// import 'package:vipc_app/view/drawer/drawer_view.dart';
 
 class UserDetailsView extends StatefulWidget {
   final Usr oneUser;
@@ -32,7 +32,7 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
       child: Scaffold(
         // appBar: CustomAppBar(),
         appBar: AppBar(
-          title: Text('User Detail'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(),

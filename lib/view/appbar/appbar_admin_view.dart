@@ -6,7 +6,7 @@ import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/view/notifications/admin_notification_view.dart';
 // import 'package:vipc_app/view/notifications/notifications_view.dart';
 import 'package:vipc_app/view/search/admin_search_view.dart';
-import 'package:vipc_app/view/search/search_view.dart';
+// import 'package:vipc_app/view/search/search_view.dart';
 
 class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
   AdminAppBar({Key key})
@@ -35,7 +35,7 @@ class _AdminAppBarState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('VIPC'),
+      title: const Text('VIPC GROUP'),
       actions: [
         Stack(
           children: [

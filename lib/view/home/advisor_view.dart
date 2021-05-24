@@ -1503,7 +1503,7 @@ class _AdvisorViewState extends StateMVC {
     return Card(
       color: Colors.amber[50],
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

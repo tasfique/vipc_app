@@ -48,7 +48,7 @@ class _ManagerNotificationViewState extends StateMVC<ManagerNotificationView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Today\'s Meeting'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(),

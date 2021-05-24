@@ -1580,11 +1580,10 @@ class _ManagerViewState extends StateMVC {
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                            weekP < 50
-                                ? 'Failed'
-                                : 50 <= weekP && weekP < 100
-                                    ? 'Passed'
-                                    : 'Standard',
+                            // weekP < 50
+                            //     ? 'Failed'
+                            //     :
+                            50 <= weekP && weekP < 100 ? 'Passed' : 'Standard',
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.amber,
@@ -1619,11 +1618,12 @@ class _ManagerViewState extends StateMVC {
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                            monthP < 100
-                                ? 'Failed'
-                                : 100 <= monthP && monthP < 200
-                                    ? 'Passed'
-                                    : 'Standard',
+                            // monthP < 100
+                            //     ? 'Failed'
+                            //     :
+                            100 <= monthP && monthP < 200
+                                ? 'Passed'
+                                : 'Standard',
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.amber,
@@ -1714,7 +1714,7 @@ class _ManagerViewState extends StateMVC {
     return Card(
       color: Colors.amber[50],
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

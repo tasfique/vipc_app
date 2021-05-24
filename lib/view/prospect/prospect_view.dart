@@ -81,7 +81,7 @@ class _ProspectViewState extends State<ProspectView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Prospect Detail'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(false),
