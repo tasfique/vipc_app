@@ -309,7 +309,7 @@ class _AdminPageState extends StateMVC {
               children: <Widget>[
                 const SizedBox(width: 8),
                 TextButton(
-                  child: const Text('Read more...'),
+                  child: const Text('Read More...'),
                   onPressed: () async {
                     // await _con.getRequestPasswordCount();
                     final pushDetailResult = await Navigator.push(

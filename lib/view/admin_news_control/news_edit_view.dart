@@ -44,7 +44,7 @@ class _EditNewsState extends StateMVC<EditNews> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Edit News'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(true),

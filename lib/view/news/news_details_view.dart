@@ -358,11 +358,15 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                 //           ),
                 //   ),
                 // ),
+                if (widget.oneNew.imageUrl != null &&
+                    widget.oneNew.imageUrl['length'] != 1)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 10, bottom: 30),
+                  ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(30),
+                  padding:
+                      EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 30),
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(

@@ -146,7 +146,7 @@ Widget newsItemCard(BuildContext context, News oneNew) {
             children: <Widget>[
               const SizedBox(width: 8),
               TextButton(
-                child: const Text('Read more...'),
+                child: const Text('Read More...'),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return NewsDetailsView(oneNew);
