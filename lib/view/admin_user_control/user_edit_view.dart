@@ -56,7 +56,7 @@ class _EditUserState extends StateMVC<EditUser> {
       child: Scaffold(
         // appBar: CustomAppBar(),
         appBar: AppBar(
-          title: Text('Edit User'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(false),

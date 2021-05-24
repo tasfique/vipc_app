@@ -541,7 +541,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Point Breakdown'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(),

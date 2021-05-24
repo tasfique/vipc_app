@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/model/news.dart';
-import 'package:vipc_app/view/appbar/appbar_view.dart';
-import 'package:vipc_app/view/drawer/drawer_view.dart';
+// import 'package:vipc_app/view/appbar/appbar_view.dart';
+// import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 
 class NewsDetailsView extends StatefulWidget {
@@ -34,7 +34,7 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
       child: Scaffold(
         // appBar: CustomAppBar(),
         appBar: AppBar(
-          title: Text('News'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(true),

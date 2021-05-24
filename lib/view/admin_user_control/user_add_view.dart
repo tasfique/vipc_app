@@ -40,7 +40,7 @@ class _AddUserState extends StateMVC {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Add User'),
+          title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(false),

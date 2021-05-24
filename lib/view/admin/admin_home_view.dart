@@ -229,7 +229,7 @@ class _AdminPageState extends StateMVC {
     return Card(
       color: Colors.amber[50],
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -247,6 +247,7 @@ class _AdminPageState extends StateMVC {
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
@@ -430,14 +431,15 @@ class _AdminPageState extends StateMVC {
                 Expanded(
                   flex: 8,
                   child: Container(
-                    padding: EdgeInsets.only(left: 5),
+                    padding: EdgeInsets.only(left: 5, top: 5),
                     child: Text(
                       user.fullName,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      maxLines: 2,
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

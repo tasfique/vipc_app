@@ -35,7 +35,7 @@ class _AdminAppBarState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('VIPC'),
+      title: const Text('VIPC GROUP'),
       actions: [
         Stack(
           children: [
