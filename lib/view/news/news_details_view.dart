@@ -529,7 +529,7 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                   ),
                 Padding(
                   padding:
-                      EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 30),
+                      EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 55),
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
