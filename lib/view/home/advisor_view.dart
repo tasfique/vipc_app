@@ -439,7 +439,8 @@ class _AdvisorViewState extends StateMVC {
                                                                           0.9,
                                                                       child:
                                                                           Text(
-                                                                        'No Point Earned So Far',
+                                                                        // 'No Point Earned So Far',
+                                                                        "No Data Available To Display",
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 20,
@@ -563,7 +564,8 @@ class _AdvisorViewState extends StateMVC {
                                                                             0.5,
                                                                         child:
                                                                             Text(
-                                                                          'No Point Earned So Far',
+                                                                          // 'No Point Earned So Far',
+                                                                          "No Data Available To Display",
                                                                           style: TextStyle(
                                                                               fontSize: 20,
                                                                               color: Colors.amber),

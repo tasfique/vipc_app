@@ -633,7 +633,8 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                 .size.width *
                                                             0.9,
                                                         child: Text(
-                                                          'No Point Earned So Far',
+                                                          // 'No Point Earned So Far',
+                                                          "No Data Available To Display",
                                                           style: TextStyle(
                                                               fontSize: 20,
                                                               color:
@@ -792,7 +793,8 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                       .height *
                                                                   0.5,
                                                               child: Text(
-                                                                'No Point Earned So Far',
+                                                                // 'No Point Earned So Far',
+                                                                "No Data Available To Display",
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         20,
