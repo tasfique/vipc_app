@@ -677,7 +677,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                               padding: const EdgeInsets.only(
                                                   bottom: 5),
                                               child: Card(
-                                                color: Colors.amber[200],
+                                                color: Colors.amber[50],
                                                 child: ListTile(
                                                   onTap: () async {
                                                     final pushPage3 = await Navigator.push(
