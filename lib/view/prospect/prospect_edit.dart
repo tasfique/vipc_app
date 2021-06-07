@@ -22,11 +22,12 @@ class _EditProspectState extends StateMVC<EditProspect> {
   List<String> steps = [
     "Step 1 Make Appointment",
     "Step 2 Open Case",
-    "Step 3 Presentation",
-    'Step 4 Follow Up',
-    'Step 5 Close',
-    "Step 6 Referral/Servicing",
+    "Step 3 Follow Up",
+    "Step 4 Presentation Zoom/Meet Up",
+    'Step 5 Closing',
+    "Step 6 Referral/Servicing"
   ];
+
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
