@@ -561,17 +561,6 @@ class _AdminPageState extends StateMVC {
           ),
           ListTile(
             title: Text(
-              'Home',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          ListTile(
-            title: Text(
               'Search',
               style: TextStyle(
                 color: Colors.white,
