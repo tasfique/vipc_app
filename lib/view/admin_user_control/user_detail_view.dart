@@ -29,7 +29,7 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
   int currentMonthPoint;
   int currentWeekPoint;
 
-  Future<void> _getUser(BuildContext context) async {
+  Future<void> _getUser() async {
     try {
       final users = await FirebaseFirestore.instance
           .collection("users")
@@ -419,7 +419,7 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
                 setState(() {
                   check = false;
                 });
-                await _getUser(context);
+                await _getUser();
                 setState(() {
                   check = true;
                 });

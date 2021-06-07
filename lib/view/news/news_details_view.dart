@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -6,11 +7,13 @@ import 'package:vipc_app/model/news.dart';
 // import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News oneNew;
+  final String search;
 
-  NewsDetailsView(this.oneNew);
+  NewsDetailsView(this.oneNew, [this.search]);
 
   @override
   _NewsDetailsViewState createState() => _NewsDetailsViewState();
@@ -22,14 +25,57 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
   // }
 
   // AdminController _con;
+  News newsDetail;
+  bool check, pushP;
+
+  @override
+  void initState() {
+    newsDetail = null;
+    check = true;
+    pushP = false;
+    super.initState();
+  }
+
+  Future<void> _getNews() async {
+    try {
+      final news = await FirebaseFirestore.instance
+          .collection("news")
+          .doc(widget.oneNew.newsId)
+          .get();
+
+      if (news['images'] == null) {
+        newsDetail = News(
+          newsId: news.id,
+          title: news.data()['title'],
+          content: news.data()['content'],
+        );
+      } else {
+        newsDetail = News(
+          newsId: news.id,
+          title: news.data()['title'],
+          content: news.data()['content'],
+          imageUrl: news.data()['images'],
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context, true);
-        return false;
+        if (pushP)
+          Navigator.pop(context, true);
+        else
+          Navigator.pop(context, false);
+        return;
       },
       child: Scaffold(
         // appBar: CustomAppBar(),
@@ -37,7 +83,12 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
           title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () {
+              if (pushP)
+                Navigator.pop(context, true);
+              else
+                Navigator.pop(context, false);
+            },
           ),
         ),
         // drawer: CustomDrawer(),
@@ -94,7 +145,9 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.oneNew.title,
+                          newsDetail == null
+                              ? widget.oneNew.title
+                              : newsDetail.title,
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -131,8 +184,8 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                 ),
-
-                if (widget.oneNew.imageUrl != null &&
+                if (newsDetail == null &&
+                    widget.oneNew.imageUrl != null &&
                     widget.oneNew.imageUrl['length'] == 1)
                   Container(
                     alignment: Alignment.bottomCenter,
@@ -157,7 +210,8 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                     width: screenSize.size.width * 0.9,
                     padding: EdgeInsets.only(bottom: 30),
                   )
-                else if (widget.oneNew.imageUrl != null &&
+                else if (newsDetail == null &&
+                    widget.oneNew.imageUrl != null &&
                     widget.oneNew.imageUrl['length'] != 1)
                   CarouselSlider(
                     items: [
@@ -176,6 +230,107 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                               tag: '$i',
                               child: Image.network(
                                 widget.oneNew.imageUrl['$i'],
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          ),
+                          height: double.infinity,
+                          width: double.infinity,
+                        )
+
+                      //GridView.count(
+                      // primary: false,
+                      // padding: const EdgeInsets.all(10),
+                      // mainAxisSpacing: 10,
+                      // crossAxisSpacing: 10,
+                      // shrinkWrap: true,
+                      // crossAxisCount: 4,
+                      // children:
+                      // ListView.builder(
+                      //     itemCount: widget.oneNew.imageUrl['length'],
+                      //     itemBuilder: (context, index)
+                      //         // widget.oneNew.imageUrl['length'], (index) {
+                      //         {
+                      //       print('test');
+                      //       return Container(
+                      //         child: GestureDetector(
+                      //           onTap: () {
+                      //             Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                   builder: (context) => HeroImage(
+                      //                       widget.oneNew.imageUrl['$index'])),
+                      //             );
+                      //           },
+                      //           child: Hero(
+                      //             tag: '$index',
+                      //             child: Image.network(
+                      //               widget.oneNew.imageUrl['$index'],
+                      //               fit: BoxFit.fitWidth,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         height: double.infinity,
+                      //         width: double.infinity,
+                      //       );
+                      //     }),
+                      //),
+                    ],
+                    options: CarouselOptions(
+                      height: 180.0,
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 16 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      viewportFraction: 0.8,
+                    ),
+                  )
+                else if (newsDetail.imageUrl != null &&
+                    newsDetail.imageUrl['length'] == 1)
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HeroImage(newsDetail.imageUrl['0'])),
+                        );
+                      },
+                      child: Hero(
+                        tag: 'Image',
+                        child: Image.network(
+                          newsDetail.imageUrl['0'],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    height: screenSize.size.height * 0.4,
+                    width: screenSize.size.width * 0.9,
+                    padding: EdgeInsets.only(bottom: 30),
+                  )
+                else if (newsDetail.imageUrl != null &&
+                    newsDetail.imageUrl['length'] != 1)
+                  CarouselSlider(
+                    items: [
+                      for (int i = 0; i < newsDetail.imageUrl['length']; i++)
+                        Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HeroImage(newsDetail.imageUrl['$i'])),
+                              );
+                            },
+                            child: Hero(
+                              tag: '$i',
+                              child: Image.network(
+                                newsDetail.imageUrl['$i'],
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
@@ -358,8 +513,16 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                 //           ),
                 //   ),
                 // ),
-                if (widget.oneNew.imageUrl != null &&
+                if (newsDetail == null &&
+                    widget.oneNew.imageUrl != null &&
                     widget.oneNew.imageUrl['length'] != 1)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 10, bottom: 30),
+                  )
+                else if (newsDetail != null &&
+                    newsDetail.imageUrl != null &&
+                    newsDetail.imageUrl['length'] != 1)
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 30),
@@ -370,7 +533,9 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      widget.oneNew.content,
+                      newsDetail == null
+                          ? widget.oneNew.content
+                          : newsDetail.content,
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -381,6 +546,37 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
             ),
           ),
         ),
+        floatingActionButton:
+            (widget.search == "Search" && widget.search != null)
+                ? Container(
+                    padding: EdgeInsets.all(10),
+                    child: FloatingActionButton(
+                      onPressed: () async {
+                        pushP = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditNews(widget.oneNew, 'newsDetail')));
+                        if (pushP == null) {
+                          Navigator.pop(context, true);
+                        } else if (pushP) {
+                          setState(() {
+                            check = false;
+                          });
+                          await _getNews();
+                          setState(() {
+                            check = true;
+                          });
+                        }
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                : Container(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }

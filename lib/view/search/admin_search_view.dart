@@ -230,8 +230,13 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
           }
         } else if (result['type'] == 'News') {
           var news = await getResultNews(result.id);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => NewsDetailsView(news)));
+          final pushNewsDetail = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NewsDetailsView(news, "Search")));
+          if (pushNewsDetail) {
+            _clearSearchQuery();
+          }
         }
       },
       child: Container(

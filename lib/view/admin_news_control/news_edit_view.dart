@@ -7,8 +7,9 @@ import 'package:vipc_app/model/news.dart';
 
 class EditNews extends StatefulWidget {
   final News oneNew;
+  final String checkDetail;
 
-  EditNews(this.oneNew);
+  EditNews(this.oneNew, [this.checkDetail]);
   @override
   _EditNewsState createState() => _EditNewsState();
 }
@@ -434,10 +435,15 @@ class _EditNewsState extends StateMVC<EditNews> {
                   child: Text('Yes'),
                   onPressed: () async {
                     await _con.deleteNews(context);
-
-                    // await _con.setToDefault();
                     Navigator.of(context).pop();
-                    Navigator.of(context).pop(true);
+                    if (widget.checkDetail == 'newsDetail')
+                      Navigator.of(context).pop(null);
+                    else
+                      Navigator.of(context).pop(true);
+
+                    // // await _con.setToDefault();
+                    // Navigator.of(context).pop();
+                    // Navigator.of(context).pop(true);
                   },
                 ),
               ],
