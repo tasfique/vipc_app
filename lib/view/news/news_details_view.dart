@@ -230,11 +230,12 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                               tag: '$i',
                               child: Image.network(
                                 widget.oneNew.imageUrl['$i'],
-                                fit: BoxFit.fitWidth,
+                                // fit: BoxFit.fitWidth,
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
-                          height: double.infinity,
+                          // height: double.infinity,
                           width: double.infinity,
                         )
 
@@ -287,7 +288,8 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                       viewportFraction: 0.8,
                     ),
                   )
-                else if (newsDetail.imageUrl != null &&
+                else if (newsDetail != null &&
+                    newsDetail.imageUrl != null &&
                     newsDetail.imageUrl['length'] == 1)
                   Container(
                     alignment: Alignment.bottomCenter,
@@ -312,7 +314,8 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                     width: screenSize.size.width * 0.9,
                     padding: EdgeInsets.only(bottom: 30),
                   )
-                else if (newsDetail.imageUrl != null &&
+                else if (newsDetail != null &&
+                    newsDetail.imageUrl != null &&
                     newsDetail.imageUrl['length'] != 1)
                   CarouselSlider(
                     items: [
@@ -331,11 +334,12 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                               tag: '$i',
                               child: Image.network(
                                 newsDetail.imageUrl['$i'],
-                                fit: BoxFit.fitWidth,
+                                // fit: BoxFit.fitWidth,
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
-                          height: double.infinity,
+                          // height: double.infinity,
                           width: double.infinity,
                         )
 
@@ -513,16 +517,12 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                 //           ),
                 //   ),
                 // ),
-                if (newsDetail == null &&
-                    widget.oneNew.imageUrl != null &&
-                    widget.oneNew.imageUrl['length'] != 1)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 10, bottom: 30),
-                  )
-                else if (newsDetail != null &&
-                    newsDetail.imageUrl != null &&
-                    newsDetail.imageUrl['length'] != 1)
+                if ((newsDetail == null &&
+                        widget.oneNew.imageUrl != null &&
+                        widget.oneNew.imageUrl['length'] != 1) ||
+                    (newsDetail != null &&
+                        newsDetail.imageUrl != null &&
+                        newsDetail.imageUrl['length'] != 1))
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 30),
@@ -592,16 +592,23 @@ class HeroImage extends StatelessWidget {
         appBar: AppBar(),
         body: Hero(
           tag: 'Image',
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            alignment: Alignment.topCenter,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                      imageUrl,
-                    ),
-                    fit: BoxFit.cover)),
+          child: InteractiveViewer(
+            // panEnabled: false, // Set it to false to prevent panning.
+            // boundaryMargin: EdgeInsets.symmetric(horizontal: 5),
+            minScale: 0.5,
+            maxScale: 4,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              alignment: Alignment.topCenter,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: NetworkImage(
+                  imageUrl,
+                ),
+                // fit: BoxFit.cover
+              )),
+            ),
           ),
         ));
   }
