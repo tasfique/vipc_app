@@ -27,7 +27,7 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
 
   @override
   void initState() {
-    _con.prospectListRequestPassword = [];
+    _con.prospectListMeetingToday = [];
     super.initState();
   }
 
@@ -76,13 +76,13 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                 horizontal: 16.0, vertical: 24.0),
                             child: Column(
                               children: [
-                                (_con.prospectListRequestPassword.length != 0)
+                                (_con.prospectListMeetingToday.length != 0)
                                     ? ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         itemCount: _con
-                                            .prospectListRequestPassword.length,
+                                            .prospectListMeetingToday.length,
                                         itemBuilder: (context, index) {
                                           if (index == 0) {
                                             return Column(
@@ -107,7 +107,7 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                                   child: Container(
                                                     alignment: Alignment.center,
                                                     child: prospectItemCard(
-                                                        _con.prospectListRequestPassword[
+                                                        _con.prospectListMeetingToday[
                                                             index]),
                                                   ),
                                                 ),
@@ -119,7 +119,7 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                               child: Container(
                                                 alignment: Alignment.center,
                                                 child: prospectItemCard(
-                                                    _con.prospectListRequestPassword[
+                                                    _con.prospectListMeetingToday[
                                                         index]),
                                               ),
                                             );

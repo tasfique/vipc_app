@@ -35,7 +35,7 @@ class AdvisorController extends ControllerMVC {
   List<DateTime> rangeTime;
   int numIndex;
   bool weekPoint = false;
-  List<Prospect> prospectListRequestPassword = [];
+  List<Prospect> prospectListMeetingToday = [];
   int meetingCount = 0;
   String userId;
 
@@ -496,7 +496,7 @@ class AdvisorController extends ControllerMVC {
   // Future<void> getMeetingCount(context) async {
   //   await getTodayMeeting(context);
   //   // setState(() {
-  //   // meetingCount = prospectListRequestPassword.length;
+  //   // meetingCount = prospectListMeetingToday.length;
   //   // });
   //   // setState(() {});
   // }
@@ -531,8 +531,7 @@ class AdvisorController extends ControllerMVC {
           now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
           time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
 
-          if (time.difference(present).inDays == 0 &&
-              time.difference(present).inSeconds > 0)
+          if (time.day == present.day && time.difference(present).inSeconds > 0)
             prospectListRequestTemp.add(Prospect(
               prospectId: oneProspect.id,
               prospectName: oneProspect.data()['prospectName'],
@@ -546,8 +545,8 @@ class AdvisorController extends ControllerMVC {
             ));
         }
       });
-      prospectListRequestPassword = prospectListRequestTemp;
-      meetingCount = prospectListRequestPassword.length;
+      prospectListMeetingToday = prospectListRequestTemp;
+      meetingCount = prospectListMeetingToday.length;
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -556,7 +555,7 @@ class AdvisorController extends ControllerMVC {
       );
     }
     // setState(() {
-    //   meetingCount = prospectListRequestPassword.length;
+    //   meetingCount = prospectListMeetingToday.length;
     // });
   }
 }

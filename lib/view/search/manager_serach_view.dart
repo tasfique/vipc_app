@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/home/manager_controller.dart';
 import 'package:vipc_app/model/prospect.dart';
+import 'package:vipc_app/model/user.dart';
+import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
+import 'package:vipc_app/view/monitor/monitor_details_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 
 class ManagerSearchView extends StatefulWidget {
@@ -20,6 +23,7 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
   TextEditingController _searchQueryController = TextEditingController();
   List<DocumentSnapshot> documentList = [];
   bool check = false;
+  int weeklyPoint, monthlyPoint;
 
   @override
   void dispose() {
@@ -166,12 +170,121 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
     return prospectTemp;
   }
 
+  Future<Usr> getResultUser(String id) async {
+    DocumentSnapshot user =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+    Usr userTemp;
+    userTemp = Usr(
+        userId: user.id,
+        empID: user.data()['empID'],
+        email: user.data()['email'],
+        fullName: user.data()['fullName'],
+        type: user.data()['type'],
+        assignUnder: user.data()['assignUnder'],
+        password: user.data()['password']);
+
+    DateTime presentForAdvisor = DateTime.now();
+    int currentYearForAdvisor = presentForAdvisor.year;
+    int currentMonthForAdvisor = presentForAdvisor.month;
+    monthlyPoint = 0;
+    int firstDateForAdvisor, lastDateForAdvisor;
+    weeklyPoint = 0;
+
+    try {
+      var prospects = await FirebaseFirestore.instance
+          .collection("prospect")
+          .doc(id)
+          .collection('prospects')
+          .get();
+
+      TimeOfDay t;
+      var now;
+      var time;
+
+      if (presentForAdvisor.day >= 1 && presentForAdvisor.day <= 7) {
+        firstDateForAdvisor = 1;
+        lastDateForAdvisor = 7;
+      } else if (presentForAdvisor.day >= 8 && presentForAdvisor.day <= 14) {
+        firstDateForAdvisor = 8;
+        lastDateForAdvisor = 14;
+      } else if (presentForAdvisor.day >= 15 && presentForAdvisor.day <= 21) {
+        firstDateForAdvisor = 15;
+        lastDateForAdvisor = 21;
+      } else {
+        firstDateForAdvisor = 22;
+        lastDateForAdvisor =
+            DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
+      }
+
+      prospects.docs.forEach((oneProspect) {
+        DateTime createdTime =
+            DateTime.parse(oneProspect.data()['steps']['0Time']);
+        if (createdTime.difference(presentForAdvisor).inSeconds <= 0 &&
+            createdTime.year == currentYearForAdvisor &&
+            createdTime.month == currentMonthForAdvisor) monthlyPoint++;
+
+        if (createdTime.difference(presentForAdvisor).inSeconds <= 0 &&
+            createdTime.year == currentYearForAdvisor &&
+            createdTime.month == currentMonthForAdvisor &&
+            createdTime.day >= firstDateForAdvisor &&
+            createdTime.day <= lastDateForAdvisor) weeklyPoint++;
+
+        for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
+          if (oneProspect.data()['steps']['${i}meetingTime'] != '')
+            t = TimeOfDay(
+                hour: int.parse(oneProspect
+                    .data()['steps']['${i}meetingTime']
+                    .substring(0, 2)),
+                minute: int.parse(oneProspect
+                    .data()['steps']['${i}meetingTime']
+                    .substring(3, 5)));
+          else
+            t = TimeOfDay(hour: 0, minute: 0);
+          now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
+          time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+          if (time.difference(presentForAdvisor).inSeconds <= 0 &&
+              now.year == currentYearForAdvisor &&
+              now.month == currentMonthForAdvisor)
+            monthlyPoint += oneProspect.data()['steps']['${i}Point'];
+
+          if (time.difference(presentForAdvisor).inSeconds <= 0 &&
+              now.year == currentYearForAdvisor &&
+              now.month == currentMonthForAdvisor &&
+              time.day >= firstDateForAdvisor &&
+              time.day <= lastDateForAdvisor)
+            weeklyPoint = oneProspect.data()['steps']['${i}Point'];
+        }
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
+    return userTemp;
+  }
+
   Widget _itemCard(DocumentSnapshot result) {
     return GestureDetector(
       onTap: () async {
-        var prospect = await getResultProspect(result.id);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProspectView(prospect)));
+        if (result['type'] == 'Prospect') {
+          var prospect = await getResultProspect(result.id);
+          final pushProspectDetail = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProspectView(prospect, "Search")));
+          if (pushProspectDetail) {
+            _clearSearchQuery();
+          }
+        } else if (result['type'] == 'Advisor') {
+          var user = await getResultUser(result.id);
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MonitorDetailsView(user, weeklyPoint, monthlyPoint)));
+        }
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 7),
@@ -188,7 +301,9 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Full Name: ${result['prospectName']}',
+                        result['type'] == 'Prospect'
+                            ? 'Full Name: ${result['prospectName']}'
+                            : 'Full Name: ${result['fullName']}',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
@@ -201,7 +316,9 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
                   subtitle: Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
-                      'Phone Number: ${result['phone']}',
+                      result['type'] == 'Prospect'
+                          ? 'Phone Number: ${result['phone']}'
+                          : 'Type: Advisor',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[600],
