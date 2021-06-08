@@ -510,13 +510,50 @@ class UserEditController extends ControllerMVC {
 
   Future<void> deleteUser(BuildContext context) async {
     try {
-      //  app2 = await Firebase.initializeApp(
-      //     name: 'Third', options: Firebase.app().options);
-
       await FirebaseAuth.instanceFor(app: app)
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
         value.user.delete();
+      });
+
+      if (type == 'Advisor' && assignManager != '')
+        await FirebaseFirestore.instance
+            .collection("users")
+            .where('fullName', isEqualTo: assignManager)
+            .limit(1)
+            .get()
+            .then((managerId) async {
+          print(managerId.docs.first.id);
+          await FirebaseFirestore.instance
+              .collection('search')
+              .doc('userSearch')
+              .collection(managerId.docs.first.id)
+              .doc(uid)
+              .delete();
+        });
+      else if (type == 'Manager')
+        await FirebaseFirestore.instance
+            .collection("users")
+            .where('assignUnder', isEqualTo: fullName)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((result) async {
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(result.id)
+                .update({'assignUnder': ''});
+          });
+        });
+
+      await FirebaseFirestore.instance
+          .collection('prospect')
+          .doc(uid)
+          .collection('prospects')
+          .get()
+          .then((value) {
+        for (QueryDocumentSnapshot ds in value.docs) {
+          ds.reference.delete();
+        }
       });
 
       await FirebaseFirestore.instance
