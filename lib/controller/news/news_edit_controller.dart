@@ -367,10 +367,10 @@ class NewsEditController extends ControllerMVC {
         loadImage = true;
         clearDone = true;
       });
-    } on Exception catch (e) {
+    } on NoImagesSelectedException catch (_) {} on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Error! ${e.toString()}'),
+            content: Text('${e.toString()}'),
             backgroundColor: Theme.of(context).errorColor),
       );
     }
