@@ -546,36 +546,37 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
             ),
           ),
         ),
-        floatingActionButton:
-            (widget.search == "Search" && widget.search != null)
-                ? Container(
-                    padding: EdgeInsets.all(10),
-                    child: FloatingActionButton(
-                      onPressed: () async {
-                        pushP = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditNews(widget.oneNew, 'newsDetail')));
-                        if (pushP == null) {
-                          Navigator.pop(context, true);
-                        } else if (pushP) {
-                          setState(() {
-                            check = false;
-                          });
-                          await _getNews();
-                          setState(() {
-                            check = true;
-                          });
-                        }
-                      },
-                      child: Icon(
-                        Icons.edit,
-                        size: 30,
-                      ),
-                    ),
-                  )
-                : Container(),
+        floatingActionButton: (widget.search == "Search" &&
+                widget.search != null)
+            ? Container(
+                padding: EdgeInsets.all(10),
+                child: FloatingActionButton(
+                  onPressed: () async {
+                    pushP = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditNews(
+                                newsDetail == null ? widget.oneNew : newsDetail,
+                                'newsDetail')));
+                    if (pushP == null) {
+                      Navigator.pop(context, true);
+                    } else if (pushP) {
+                      setState(() {
+                        check = false;
+                      });
+                      await _getNews();
+                      setState(() {
+                        check = true;
+                      });
+                    }
+                  },
+                  child: Icon(
+                    Icons.edit,
+                    size: 30,
+                  ),
+                ),
+              )
+            : Container(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );

@@ -175,8 +175,13 @@ class _AdvisorSearchViewState extends StateMVC<AdvisorSearchView> {
     return GestureDetector(
       onTap: () async {
         var prospect = await getResultProspect(result.id);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProspectView(prospect)));
+        final pushProspectDetail = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProspectView(prospect, "Search")));
+        if (pushProspectDetail) {
+          _clearSearchQuery();
+        }
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 7),

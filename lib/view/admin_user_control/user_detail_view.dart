@@ -411,8 +411,9 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
               pushP = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          EditUser(widget.oneUser, 'userDetail')));
+                      builder: (context) => EditUser(
+                          userDetail == null ? widget.oneUser : userDetail,
+                          'userDetail')));
               if (pushP == null) {
                 Navigator.pop(context, true);
               } else if (pushP) {

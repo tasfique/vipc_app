@@ -6,8 +6,9 @@ import 'package:vipc_app/model/prospect.dart';
 
 class EditProspect extends StatefulWidget {
   final Prospect prospect;
+  final String checkDetail;
 
-  EditProspect(this.prospect);
+  EditProspect(this.prospect, [this.checkDetail]);
   @override
   _EditProspectState createState() => _EditProspectState();
 }
@@ -972,9 +973,15 @@ class _EditProspectState extends StateMVC<EditProspect> {
                 TextButton(
                   child: Text('Yes'),
                   onPressed: () async {
+                    // await _con.deleteProspect(context);
+                    // Navigator.of(context).pop();
+                    // Navigator.of(context).pop(true);
                     await _con.deleteProspect(context);
                     Navigator.of(context).pop();
-                    Navigator.of(context).pop(true);
+                    if (widget.checkDetail == 'prospectDetail')
+                      Navigator.of(context).pop(null);
+                    else
+                      Navigator.of(context).pop(true);
                   },
                 )
               ],

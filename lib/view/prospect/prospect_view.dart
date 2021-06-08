@@ -3,54 +3,92 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vipc_app/model/prospect.dart';
+import 'package:vipc_app/view/prospect/prospect_edit.dart';
 
 class ProspectView extends StatefulWidget {
   final Prospect prospect;
+  final String search;
 
-  ProspectView(this.prospect);
+  ProspectView(this.prospect, [this.search]);
 
   @override
   _ProspectViewState createState() => _ProspectViewState();
 }
 
 class _ProspectViewState extends State<ProspectView> {
-  int totalPoint = 1;
+  int totalPoint;
   DateTime present = DateTime.now();
+  bool check, pushP;
+  Prospect prospectDetail;
+
+  Future<void> getResultProspect() async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    DocumentSnapshot oneProspect = await FirebaseFirestore.instance
+        .collection("prospect")
+        .doc(userId)
+        .collection('prospects')
+        .doc(widget.prospect.prospectId)
+        .get();
+    prospectDetail = Prospect(
+      prospectId: oneProspect.id,
+      prospectName: oneProspect.data()['prospectName'],
+      phoneNo: oneProspect.data()['phone'],
+      email: oneProspect.data()['email'],
+      type: oneProspect.data()['type'],
+      steps: oneProspect.data()['steps'],
+      lastUpdate: oneProspect.data()['lastUpdate'],
+      lastStep: oneProspect.data()['lastStep'],
+      done: oneProspect.data()['done'],
+    );
+    calculateTotalPointEarned();
+  }
 
   void calculateTotalPointEarned() {
+    totalPoint = 1;
+    Prospect prospect;
+    if (prospectDetail == null) {
+      prospect = widget.prospect;
+    } else {
+      prospect = prospectDetail;
+    }
     TimeOfDay t;
     var now;
     var time;
-    for (int i = 1; i < widget.prospect.steps['length']; i++) {
-      if (widget.prospect.steps['${i}meetingTime'] != '')
+    for (int i = 1; i < prospect.steps['length']; i++) {
+      if (prospect.steps['${i}meetingTime'] != '')
         t = TimeOfDay(
-            hour: int.parse(
-                widget.prospect.steps['${i}meetingTime'].substring(0, 2)),
-            minute: int.parse(
-                widget.prospect.steps['${i}meetingTime'].substring(3, 5)));
+            hour: int.parse(prospect.steps['${i}meetingTime'].substring(0, 2)),
+            minute:
+                int.parse(prospect.steps['${i}meetingTime'].substring(3, 5)));
       else
         t = TimeOfDay(hour: 0, minute: 0);
-      now = DateTime.parse(widget.prospect.steps['${i}meetingDate']);
+      now = DateTime.parse(prospect.steps['${i}meetingDate']);
       time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
       if (time.difference(present).inSeconds <= 0)
-        totalPoint += widget.prospect.steps['${i}Point'];
+        totalPoint += prospect.steps['${i}Point'];
     }
   }
 
   bool checkStepState() {
-    int neededIndex = widget.prospect.steps['length'] - 1;
+    Prospect prospect;
+    if (prospectDetail == null) {
+      prospect = widget.prospect;
+    } else {
+      prospect = prospectDetail;
+    }
+    int neededIndex = prospect.steps['length'] - 1;
     TimeOfDay t;
     var now;
     var time;
-    if (widget.prospect.steps['${neededIndex}meetingTime'] != '')
+    if (prospect.steps['${neededIndex}meetingTime'] != '')
       t = TimeOfDay(
-          hour: int.parse(widget.prospect.steps['${neededIndex}meetingTime']
-              .substring(0, 2)),
-          minute: int.parse(widget.prospect.steps['${neededIndex}meetingTime']
-              .substring(3, 5)));
+          hour: int.parse(
+              prospect.steps['${neededIndex}meetingTime'].substring(0, 2)),
+          minute: int.parse(
+              prospect.steps['${neededIndex}meetingTime'].substring(3, 5)));
     else
       t = TimeOfDay(hour: 0, minute: 0);
-    now = DateTime.parse(widget.prospect.steps['${neededIndex}meetingDate']);
+    now = DateTime.parse(prospect.steps['${neededIndex}meetingDate']);
     time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
     if (time.difference(present).inSeconds <= 0) return true;
     return false;
@@ -68,6 +106,9 @@ class _ProspectViewState extends State<ProspectView> {
 
   @override
   void initState() {
+    prospectDetail = null;
+    check = true;
+    pushP = false;
     super.initState();
     calculateTotalPointEarned();
   }
@@ -76,7 +117,10 @@ class _ProspectViewState extends State<ProspectView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context, false);
+        if (pushP)
+          Navigator.pop(context, true);
+        else
+          Navigator.pop(context, false);
         return;
       },
       child: Scaffold(
@@ -84,7 +128,12 @@ class _ProspectViewState extends State<ProspectView> {
           title: Text('VIPC GROUP'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () {
+              if (pushP)
+                Navigator.pop(context, true);
+              else
+                Navigator.pop(context, false);
+            },
           ),
         ),
         body: SingleChildScrollView(
@@ -132,7 +181,9 @@ class _ProspectViewState extends State<ProspectView> {
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
-                              'Name: ${widget.prospect.prospectName}',
+                              prospectDetail == null
+                                  ? 'Name: ${widget.prospect.prospectName}'
+                                  : 'Name: ${prospectDetail.prospectName}',
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: TextStyle(
@@ -147,7 +198,10 @@ class _ProspectViewState extends State<ProspectView> {
                           //Phone
                           Padding(
                             padding: EdgeInsets.all(10),
-                            child: Text('Phone: ${widget.prospect.phoneNo}',
+                            child: Text(
+                                prospectDetail == null
+                                    ? 'Phone: ${widget.prospect.phoneNo}'
+                                    : 'Phone: ${prospectDetail.phoneNo}',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style:
@@ -163,7 +217,7 @@ class _ProspectViewState extends State<ProspectView> {
                           // SizedBox(
                           //   height: 14,
                           // ),
-                          widget.prospect.email != ''
+                          widget.prospect.email != '' && prospectDetail == null
                               ? Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Text('Email: ${widget.prospect.email}',
@@ -172,7 +226,30 @@ class _ProspectViewState extends State<ProspectView> {
                                       style: TextStyle(
                                           fontSize: 22, color: Colors.black)),
                                 )
-                              : SizedBox(),
+                              : prospectDetail != null &&
+                                      prospectDetail.email != ''
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                          'Email: ${prospectDetail.email}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              color: Colors.black)),
+                                    )
+                                  : SizedBox(),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                                prospectDetail == null
+                                    ? 'Type: ${widget.prospect.type}'
+                                    : 'Type: ${prospectDetail.type}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    fontSize: 22, color: Colors.black)),
+                          ),
                         ],
                       ),
                     ),
@@ -235,10 +312,15 @@ class _ProspectViewState extends State<ProspectView> {
                   SizedBox(
                     height: 30,
                   ),
-                  Text(widget.prospect.steps['0'],
+                  Text(
+                      prospectDetail == null
+                          ? widget.prospect.steps['0']
+                          : prospectDetail.steps['0'],
                       style: TextStyle(fontSize: 22)),
                   Text(
-                    'Point(s): ${widget.prospect.steps['0Point']}',
+                    prospectDetail == null
+                        ? 'Point(s): ${widget.prospect.steps['0Point']}'
+                        : 'Point(s): ${prospectDetail.steps['0Point']}',
                     style: TextStyle(color: Colors.amberAccent),
                   ),
                   SizedBox(
@@ -246,8 +328,10 @@ class _ProspectViewState extends State<ProspectView> {
                   ),
                   Text(
                     'Date Added:  ' +
-                        DateFormat('dd/MM/yyyy HH:mm').format(
-                            DateTime.parse(widget.prospect.steps['0Time'])),
+                        DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(
+                            prospectDetail == null
+                                ? widget.prospect.steps['0Time']
+                                : prospectDetail.steps['0Time'])),
                     style: TextStyle(fontSize: 16),
                   ),
                   const Divider(
@@ -257,7 +341,7 @@ class _ProspectViewState extends State<ProspectView> {
                     endIndent: 1,
                     color: Colors.amber,
                   ),
-                  widget.prospect.steps['0memo'] != ''
+                  widget.prospect.steps['0memo'] != '' && prospectDetail == null
                       ? Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
@@ -265,11 +349,20 @@ class _ProspectViewState extends State<ProspectView> {
                             style: TextStyle(fontSize: 16),
                           ),
                         )
-                      : SizedBox(),
+                      : prospectDetail != null &&
+                              prospectDetail.steps['0memo'] != ''
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                'Memo: ' + prospectDetail.steps['0memo'],
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            )
+                          : SizedBox(),
                   Padding(
                     padding: const EdgeInsets.all(10),
                   ),
-                  widget.prospect.steps['length'] != 1
+                  widget.prospect.steps['length'] != 1 && prospectDetail == null
                       ? ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -281,15 +374,33 @@ class _ProspectViewState extends State<ProspectView> {
                             } else
                               return SizedBox();
                           })
-                      : SizedBox(),
+                      : prospectDetail != null &&
+                              prospectDetail.steps['length'] != 1
+                          ? ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: prospectDetail.steps['length'],
+                              itemBuilder: (context, index) {
+                                if (index != 0) {
+                                  return Container(
+                                      child: _displayProgress(index, present));
+                                } else
+                                  return SizedBox();
+                              })
+                          : SizedBox(),
 
-                  widget.prospect.done == 0 &&
-                          widget.prospect.lastStep == 6 &&
-                          checkStepState()
+                  ((widget.prospect.done == 0 &&
+                              widget.prospect.lastStep == 6 &&
+                              checkStepState() &&
+                              prospectDetail == null) ||
+                          (prospectDetail != null &&
+                              prospectDetail.done == 0 &&
+                              prospectDetail.lastStep == 6 &&
+                              checkStepState()))
                       ? Padding(
                           padding: EdgeInsets.only(bottom: 25, right: 25),
                           child: Container(
-                            alignment: Alignment.bottomRight,
+                            alignment: Alignment.bottomCenter,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 elevation: 5.0,
@@ -343,21 +454,61 @@ class _ProspectViewState extends State<ProspectView> {
             ),
           ),
         ),
+        floatingActionButton:
+            (widget.search == "Search" && widget.search != null)
+                ? Container(
+                    padding: EdgeInsets.all(10),
+                    child: FloatingActionButton(
+                      onPressed: () async {
+                        pushP = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProspect(
+                                    prospectDetail == null
+                                        ? widget.prospect
+                                        : prospectDetail,
+                                    'prospectDetail')));
+                        if (pushP == null) {
+                          Navigator.pop(context, true);
+                        } else if (pushP) {
+                          setState(() {
+                            check = false;
+                          });
+                          await getResultProspect();
+                          setState(() {
+                            check = true;
+                          });
+                        }
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                : Container(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 
   Widget _displayProgress(int index, DateTime present) {
+    Prospect prospect;
+    if (prospectDetail == null) {
+      prospect = widget.prospect;
+    } else {
+      prospect = prospectDetail;
+    }
     TimeOfDay t;
-    if (widget.prospect.steps['${index}meetingTime'] != '')
+    if (prospect.steps['${index}meetingTime'] != '')
       t = TimeOfDay(
-          hour: int.parse(
-              widget.prospect.steps['${index}meetingTime'].substring(0, 2)),
-          minute: int.parse(
-              widget.prospect.steps['${index}meetingTime'].substring(3, 5)));
+          hour:
+              int.parse(prospect.steps['${index}meetingTime'].substring(0, 2)),
+          minute:
+              int.parse(prospect.steps['${index}meetingTime'].substring(3, 5)));
     else
       t = TimeOfDay(hour: 0, minute: 0);
-    final now = DateTime.parse(widget.prospect.steps['${index}meetingDate']);
+    final now = DateTime.parse(prospect.steps['${index}meetingDate']);
     final time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,14 +516,14 @@ class _ProspectViewState extends State<ProspectView> {
         SizedBox(
           height: 10,
         ),
-        Text(widget.prospect.steps['$index'], style: TextStyle(fontSize: 22)),
+        Text(prospect.steps['$index'], style: TextStyle(fontSize: 22)),
         time.difference(present).inSeconds <= 0
             ? Text(
-                'Point(s): ${widget.prospect.steps['${index}Point']}',
+                'Point(s): ${prospect.steps['${index}Point']}',
                 style: TextStyle(color: Colors.amberAccent),
               )
             : Text(
-                'Pending Point(s): ${widget.prospect.steps['${index}Point']}',
+                'Pending Point(s): ${prospect.steps['${index}Point']}',
                 style: TextStyle(color: Colors.amberAccent),
               ),
         SizedBox(
@@ -391,20 +542,20 @@ class _ProspectViewState extends State<ProspectView> {
           endIndent: 1,
           color: Colors.amber,
         ),
-        widget.prospect.steps['${index}meetingPlace'] != ''
+        prospect.steps['${index}meetingPlace'] != ''
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
-                  'Meet at: ' + widget.prospect.steps['${index}meetingPlace'],
+                  'Meet at: ' + prospect.steps['${index}meetingPlace'],
                   style: TextStyle(fontSize: 16),
                 ),
               )
             : SizedBox(),
-        widget.prospect.steps['${index}memo'] != ''
+        prospect.steps['${index}memo'] != ''
             ? Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  'Memo: ' + widget.prospect.steps['${index}memo'],
+                  'Memo: ' + prospect.steps['${index}memo'],
                   style: TextStyle(fontSize: 16),
                 ),
               )
