@@ -561,7 +561,7 @@ class _ManagerViewState extends StateMVC {
                                                                         child:
                                                                             Text(
                                                                           // 'No Point Earned So Far',
-                                                                        "No Data Available To Display",
+                                                                          "No Data Available To Display",
                                                                           style: TextStyle(
                                                                               fontSize: 20,
                                                                               color: Colors.amber),
@@ -1392,27 +1392,27 @@ class _ManagerViewState extends StateMVC {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, bottom: 5),
-                      child: Text(
-                        oneProspect.steps['${intValue}meetingPlace'] == ''
-                            ? ''
-                            : 'Meeting at ${oneProspect.steps["${intValue}meetingPlace"]}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
+              oneProspect.steps['${intValue}meetingPlace'] != ''
+                  ? Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10, bottom: 5),
+                            child: Text(
+                              'Meeting at ${oneProspect.steps["${intValue}meetingPlace"]}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ),
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                      ],
+                    )
+                  : SizedBox(),
               Row(
                 children: [
                   Expanded(
