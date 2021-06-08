@@ -290,8 +290,9 @@ class _LoginViewState extends StateMVC {
           // }
         },
         child: _con.isLoading
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            ? Container(
+                height: 40, width: 30,
+                // padding: const EdgeInsets.symmetric(horizontal: 50.0),
                 child: Center(child: CircularProgressIndicator()),
               )
             : Text(
