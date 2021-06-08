@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -583,31 +585,61 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
   }
 }
 
-class HeroImage extends StatelessWidget {
+class HeroImage extends StatefulWidget {
   final String imageUrl;
   HeroImage(this.imageUrl);
+
+  @override
+  _HeroImageState createState() => _HeroImageState();
+}
+
+class _HeroImageState extends State<HeroImage> {
+  final _transformationController = TransformationController();
+
+  TapDownDetails _doubleTapDetails;
+
+  void _handleDoubleTapDown(TapDownDetails details) {
+    _doubleTapDetails = details;
+  }
+
+  void _handleDoubleTap() {
+    if (_transformationController.value != Matrix4.identity()) {
+      _transformationController.value = Matrix4.identity();
+    } else {
+      final position = _doubleTapDetails.localPosition;
+      _transformationController.value = Matrix4.identity()
+        ..translate(-position.dx * 2, -position.dy * 2)
+        ..scale(3.0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
         body: Hero(
           tag: 'Image',
-          child: InteractiveViewer(
-            // panEnabled: false, // Set it to false to prevent panning.
-            // boundaryMargin: EdgeInsets.symmetric(horizontal: 5),
-            minScale: 0.5,
-            maxScale: 4,
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              alignment: Alignment.topCenter,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: NetworkImage(
-                  imageUrl,
-                ),
-                // fit: BoxFit.cover
-              )),
+          child: GestureDetector(
+            onDoubleTapDown: _handleDoubleTapDown,
+            onDoubleTap: _handleDoubleTap,
+            child: InteractiveViewer(
+              transformationController: _transformationController,
+              // panEnabled: false, // Set it to false to prevent panning.
+              // boundaryMargin: EdgeInsets.symmetric(horizontal: 5),
+              minScale: 0.5,
+              maxScale: 4,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                alignment: Alignment.topCenter,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: NetworkImage(
+                    widget.imageUrl,
+                  ),
+                  // fit: BoxFit.cover
+                )),
+              ),
             ),
           ),
         ));
