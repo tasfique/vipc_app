@@ -28,6 +28,7 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
   bool check, pushP;
   int currentMonthPoint;
   int currentWeekPoint;
+  List<Usr> advisorList;
 
   Future<void> _getUser() async {
     try {
@@ -137,6 +138,7 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
 
   @override
   void initState() {
+    advisorList = [];
     userDetail = null;
     check = true;
     pushP = false;
@@ -174,157 +176,214 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
                   ConnectionState.waiting
               ? Center(child: CircularProgressIndicator())
               : (check)
-                  ? ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 38, top: 40),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "User Detail",
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  //decoration: TextDecoration.underline,
-                                  decorationThickness: 1.5,
-                                  fontWeight: FontWeight.w400,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 10.0,
-                                      color: Colors.grey,
-                                      offset: Offset(3.0, 4.0),
+                  ? SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 38, top: 40),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "User Detail",
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    //decoration: TextDecoration.underline,
+                                    decorationThickness: 1.5,
+                                    fontWeight: FontWeight.w400,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 10.0,
+                                        color: Colors.grey,
+                                        offset: Offset(3.0, 4.0),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 25, right: 25),
+                              width: 800,
+                              child: Card(
+                                semanticContainer: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                color: Colors.amber[50],
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: 10,
+                                          left: 10,
+                                          bottom: 10,
+                                          top: 20),
+                                      child: Text(
+                                        userDetail == null
+                                            ? 'Name: ${widget.oneUser.fullName}'
+                                            : 'Name: ${userDetail.fullName}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                     ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      child: Text(
+                                        userDetail == null
+                                            ? 'Employee ID: ${widget.oneUser.empID}'
+                                            : 'Employee ID: ${userDetail.empID}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                          userDetail == null
+                                              ? 'Email: ${widget.oneUser.email}'
+                                              : 'Email: ${userDetail.email}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              color: Colors.black)),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: 10, left: 10, bottom: 10),
+                                      child: Text(
+                                          userDetail == null
+                                              ? 'User Type: ${widget.oneUser.type}'
+                                              : 'User Type: ${userDetail.type}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              color: Colors.black)),
+                                    ),
+                                    if (userDetail == null &&
+                                        widget.oneUser.type == 'Advisor')
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 10, left: 10, bottom: 10),
+                                          child: Text(
+                                              'Assigned Manager:  ${widget.oneUser.assignUnder}',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  fontSize: 22,
+                                                  color: Colors.black)))
+                                    else if (userDetail != null &&
+                                        userDetail.type == 'Advisor')
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 10, left: 10, bottom: 10),
+                                          child: Text(
+                                              'Assigned Manager:  ${widget.oneUser.assignUnder}',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  fontSize: 22,
+                                                  color: Colors.black))),
+                                    SizedBox(height: 10)
                                   ],
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 25, right: 25),
-                            width: 400,
-                            child: Card(
-                              semanticContainer: true,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              color: Colors.amber[50],
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 25, right: 25),
+                              child: const Divider(
+                                height: 20,
+                                thickness: 2,
+                                indent: 1,
+                                endIndent: 1,
+                                color: Colors.amber,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 25, right: 25),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        right: 10,
-                                        left: 10,
-                                        bottom: 10,
-                                        top: 20),
-                                    child: Text(
-                                      userDetail == null
-                                          ? 'Name: ${widget.oneUser.fullName}'
-                                          : 'Name: ${userDetail.fullName}',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 10, right: 10),
-                                    child: Text(
-                                      userDetail == null
-                                          ? 'Employee ID: ${widget.oneUser.empID}'
-                                          : 'Employee ID: ${userDetail.empID}',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text(
-                                        userDetail == null
-                                            ? 'Email: ${widget.oneUser.email}'
-                                            : 'Email: ${userDetail.email}',
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child: Text(
+                                        DateFormat('MMMM')
+                                                .format(DateTime.now()) +
+                                            " Total Points: " +
+                                            currentMonthPoint.toString(),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                         style: TextStyle(
-                                            fontSize: 22, color: Colors.black)),
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        right: 10, left: 10, bottom: 10),
-                                    child: Text(
-                                        userDetail == null
-                                            ? 'User Type: ${widget.oneUser.type}'
-                                            : 'User Type: ${userDetail.type}',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontSize: 22, color: Colors.black)),
-                                  ),
-                                  if (userDetail == null &&
-                                      widget.oneUser.type == 'Advisor')
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            right: 10, left: 10, bottom: 10),
-                                        child: Text(
-                                            'Assigned Manager:  ${widget.oneUser.assignUnder}',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                                fontSize: 22,
-                                                color: Colors.black)))
-                                  else if (userDetail != null &&
-                                      userDetail.type == 'Advisor')
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            right: 10, left: 10, bottom: 10),
-                                        child: Text(
-                                            'Assigned Manager:  ${widget.oneUser.assignUnder}',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                                fontSize: 22,
-                                                color: Colors.black))),
-                                  SizedBox(height: 10)
+                                  100 <= currentMonthPoint
+                                      ? Container(
+                                          padding: EdgeInsets.only(bottom: 10),
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                              100 <= currentMonthPoint &&
+                                                      currentMonthPoint < 200
+                                                  ? 'Passed'
+                                                  : 'Standard',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.amber,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                        )
+                                      : SizedBox(),
                                 ],
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, bottom: 10, left: 25, right: 25),
-                            child: const Divider(
-                              height: 20,
-                              thickness: 2,
-                              indent: 1,
-                              endIndent: 1,
-                              color: Colors.amber,
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, bottom: 10, left: 25, right: 25),
+                              child: const Divider(
+                                height: 20,
+                                thickness: 2,
+                                indent: 1,
+                                endIndent: 1,
+                                color: Colors.amber,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25, right: 25),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 25, right: 25),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
                                     child: Text(
                                       DateFormat('MMMM')
                                               .format(DateTime.now()) +
-                                          " Total Points: " +
-                                          currentMonthPoint.toString(),
+                                          " Weekly Points: " +
+                                          currentWeekPoint.toString(),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: TextStyle(
@@ -332,74 +391,41 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
                                       ),
                                     ),
                                   ),
-                                ),
-                                100 <= currentMonthPoint
-                                    ? Container(
-                                        padding: EdgeInsets.only(bottom: 10),
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                            100 <= currentMonthPoint &&
-                                                    currentMonthPoint < 200
-                                                ? 'Passed'
-                                                : 'Standard',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.amber,
-                                              fontWeight: FontWeight.w600,
-                                            )),
-                                      )
-                                    : SizedBox(),
-                              ],
+                                  50 <= currentWeekPoint
+                                      ? Container(
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                              50 <= currentWeekPoint &&
+                                                      currentWeekPoint < 100
+                                                  ? 'Passed'
+                                                  : 'Standard',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.amber,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, bottom: 10, left: 25, right: 25),
-                            child: const Divider(
-                              height: 20,
-                              thickness: 2,
-                              indent: 1,
-                              endIndent: 1,
-                              color: Colors.amber,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25, right: 25),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    DateFormat('MMMM').format(DateTime.now()) +
-                                        " Weekly Points: " +
-                                        currentWeekPoint.toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                50 <= currentWeekPoint
-                                    ? Container(
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                            50 <= currentWeekPoint &&
-                                                    currentWeekPoint < 100
-                                                ? 'Passed'
-                                                : 'Standard',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.amber,
-                                              fontWeight: FontWeight.w600,
-                                            )),
-                                      )
-                                    : SizedBox(),
-                              ],
-                            ),
-                          ),
-                        ],
+                            ((userDetail == null &&
+                                        widget.oneUser.type == 'Manager') ||
+                                    (userDetail != null &&
+                                        userDetail.type == 'Manager'))
+                                ? FutureBuilder(
+                                    future: _getAdvisorList(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return _displayAdvisorList();
+                                      } else {
+                                        return SizedBox();
+                                      }
+                                    })
+                                : SizedBox(),
+                          ],
+                        ),
                       ),
                     )
                   : Center(child: CircularProgressIndicator()),
@@ -435,5 +461,139 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
+  }
+
+  Widget _displayAdvisorList() {
+    return Column(
+      children: [
+        Padding(
+          padding:
+              const EdgeInsets.only(top: 20, bottom: 10, left: 25, right: 25),
+          child: const Divider(
+            height: 20,
+            thickness: 2,
+            indent: 1,
+            endIndent: 1,
+            color: Colors.amber,
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: Text(
+            "Advisor List",
+            style: TextStyle(
+              fontSize: 20,
+              decorationThickness: 1.5,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        advisorList.length == 0
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20.0, right: 25, left: 25),
+                child: Text(
+                  'No Advisor Assigned To This Manager',
+                  style: TextStyle(fontSize: 22),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: advisorList.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: 800,
+                    padding: index == 0
+                        ? EdgeInsets.only(top: 20, left: 40, right: 40)
+                        : EdgeInsets.only(top: 10, left: 40, right: 40),
+                    child: Card(
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: Colors.amber[50],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 10, left: 10, bottom: 5, top: 10),
+                            child: Text(
+                              'Name: ${advisorList[index].fullName}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              'Employee ID: ${advisorList[index].empID}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 10, left: 10, top: 5, bottom: 10),
+                            child: Text('Email: ${advisorList[index].email}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    fontSize: 22, color: Colors.black)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+        advisorList.length != 0
+            ? SizedBox(
+                height: 50,
+              )
+            : SizedBox(),
+      ],
+    );
+  }
+
+  Future<void> _getAdvisorList() async {
+    List<Usr> userListTemp = [];
+    try {
+      final users = await FirebaseFirestore.instance
+          .collection("users")
+          .where("assignUnder",
+              isEqualTo: userDetail == null
+                  ? widget.oneUser.fullName
+                  : userDetail.fullName)
+          .get();
+
+      users.docs.forEach((user) {
+        userListTemp.add(Usr(
+            userId: user.id,
+            empID: user.data()['empID'],
+            email: user.data()['email'],
+            fullName: user.data()['fullName'],
+            type: user.data()['type'],
+            assignUnder: user.data()['assignUnder'],
+            password: user.data()['password']));
+      });
+
+      advisorList = userListTemp;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Theme.of(context).errorColor),
+      );
+    }
   }
 }
