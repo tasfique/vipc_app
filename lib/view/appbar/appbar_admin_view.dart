@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/view/notifications/admin_notification_view.dart';
-// import 'package:vipc_app/view/notifications/notifications_view.dart';
 import 'package:vipc_app/view/search/admin_search_view.dart';
-// import 'package:vipc_app/view/search/search_view.dart';
 
 class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
   AdminAppBar({Key key})

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/controller/home/advisor_controller.dart';
 import 'package:vipc_app/model/prospect.dart';
-import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/admin_user_control/user_reset_password_view.dart';
-import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 import 'package:intl/intl.dart';
 import 'package:vipc_app/view/prospect/prospect_edit.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';

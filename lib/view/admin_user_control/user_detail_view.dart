@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_user_control/user_edit_view.dart';
-// import 'package:vipc_app/view/appbar/appbar_view.dart';
-// import 'package:vipc_app/view/drawer/drawer_view.dart';
 
 class UserDetailsView extends StatefulWidget {
   final Usr oneUser;

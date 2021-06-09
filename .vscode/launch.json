@@ -11,12 +11,6 @@
             "program": "lib/main.dart"
         },
         {
-            "name": "dev_mode",
-            "request": "launch",
-            "type": "dart",
-            "program": "lib/program_dev.dart"
-        },
-        {
             "name": "vipc_app",
             "request": "launch",
             "type": "dart"

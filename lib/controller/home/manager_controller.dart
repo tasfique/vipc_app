@@ -523,7 +523,6 @@ class ManagerController extends ControllerMVC {
 
     double numIndexD = toDate.difference(fromDate).inDays / 30;
     numIndex = numIndexD.toInt();
-    int month = toDate.month;
     rangePoint = {};
     rangeTime = [];
     String date;
@@ -546,8 +545,8 @@ class ManagerController extends ControllerMVC {
           .get();
 
       TimeOfDay t;
-      var now, now2;
-      var time, time2;
+      var now;
+      var time;
       prospects.docs.forEach((oneProspect) {
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);

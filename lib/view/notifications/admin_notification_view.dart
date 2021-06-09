@@ -3,7 +3,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/user.dart';
 import 'package:vipc_app/view/admin_user_control/user_reset_password_view.dart';
-import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
 
 class AdminNotificationView extends StatefulWidget {
   @override

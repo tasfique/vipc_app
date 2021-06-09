@@ -4,7 +4,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/home/manager_controller.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
 import 'package:vipc_app/view/monitor/monitor_details_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 

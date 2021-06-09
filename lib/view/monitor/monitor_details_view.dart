@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:provider/provider.dart';
 import 'package:vipc_app/model/chart_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:vipc_app/model/line_graph.dart';

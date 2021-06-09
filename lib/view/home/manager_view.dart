@@ -289,7 +289,6 @@ class _ManagerViewState extends StateMVC {
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    // fontSize: FontConstants.fontMediumSize
                                   ),
                                 ),
                               ),

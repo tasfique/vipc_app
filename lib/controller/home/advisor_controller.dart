@@ -2,12 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:http/http.dart' as http;
-import 'package:vipc_app/model/member.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'package:intl/intl.dart';
-
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/prospect.dart';
 import 'package:vipc_app/model/user.dart';
@@ -406,7 +402,6 @@ class AdvisorController extends ControllerMVC {
 
     double numIndexD = toDate.difference(fromDate).inDays / 30;
     numIndex = numIndexD.toInt();
-    int month = toDate.month;
     rangePoint = {};
     rangeTime = [];
     String date;
@@ -429,8 +424,8 @@ class AdvisorController extends ControllerMVC {
           .get();
 
       TimeOfDay t;
-      var now, now2;
-      var time, time2;
+      var now;
+      var time;
       prospects.docs.forEach((oneProspect) {
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);

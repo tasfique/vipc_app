@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
-import 'package:vipc_app/view/login/login_view.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   ForgotPasswordView({key}) : super(key: key);

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/model/news.dart';
-// import 'package:vipc_app/view/appbar/appbar_view.dart';
-// import 'package:vipc_app/view/drawer/drawer_view.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
 import 'dart:math';

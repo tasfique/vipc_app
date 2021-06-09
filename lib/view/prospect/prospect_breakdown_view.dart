@@ -184,7 +184,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
           .collection('prospects')
           .get();
 
-      List<Prospect> newsProspectListTemp = [];
       TimeOfDay t;
       var now;
       var time;
@@ -291,7 +290,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
           .collection('prospects')
           .get();
 
-      List<Prospect> newsProspectListTemp = [];
       TimeOfDay t;
       var now;
       var time;

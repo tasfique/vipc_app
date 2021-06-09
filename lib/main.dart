@@ -1,120 +1,291 @@
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:vipc_app/view/admin/admin_home_view.dart';
+import 'package:vipc_app/view/home/advisor_view.dart';
+import 'package:vipc_app/view/home/manager_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:vipc_app/view/splash/splash_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
-void main() {
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.max,
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.apps.toList().clear();
+  await Firebase.initializeApp();
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.grey[800],
+  ));
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     return MaterialApp(
-      title: 'Great Ideals',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-        //added Accent colour.
-        accentColor: Colors.amber[400],
-        //added canvas colour for hamburger to have dark background.
-        //canvasColor is changing the background colour globally.
-        canvasColor: Colors.grey[800],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        //changing the text color into white globally
-        textTheme: TextTheme(
-          bodyText1: TextStyle(),
-          bodyText2: TextStyle(),
-        ).apply(
-          //here the bodyColor below changes the text color.
-          bodyColor: Colors.grey[50],
-          displayColor: Colors.amberAccent,
+        title: 'Great Ideals',
+        theme: ThemeData(
+          primarySwatch: Colors.amber,
+          //added Accent colour.
+          accentColor: Colors.amber[400],
+          //added canvas colour for hamburger to have dark background.
+          //canvasColor is changing the background colour globally.
+          canvasColor: Colors.grey[800],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          //changing the text color into white globally
+          textTheme: TextTheme(
+            bodyText1: TextStyle(),
+            bodyText2: TextStyle(),
+          ).apply(
+            //here the bodyColor below changes the text color.
+            bodyColor: Colors.grey[50],
+            displayColor: Colors.amberAccent,
+          ),
         ),
-      ),
-      home: LoginView(),
-    );
+        home: VipC(null));
   }
 }
 
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key key, this.title}) : super(key: key);
+class VipC extends StatefulWidget {
+  final RemoteMessage message;
+  VipC(this.message);
 
-//   // This widget is the home page of your application. It is stateful, meaning
-//   // that it has a State object (defined below) that contains fields that affect
-//   // how it looks.
+  @override
+  _VipCState createState() => _VipCState();
+}
 
-//   // This class is the configuration for the state. It holds the values (in this
-//   // case the title) provided by the parent (in this case the App widget) and
-//   // used by the build method of the State. Fields in a Widget subclass are
-//   // always marked "final".
+class _VipCState extends State<VipC> {
+  static int _count = 0;
 
-//   final String title;
+  void tomorrowNotification() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where("token", isNotEqualTo: '')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        if (element.data()['type'] != 'Admin') {
+          print(element.id);
+          await FirebaseFirestore.instance
+              .collection('prospect')
+              .doc(element.id)
+              .collection('prospects')
+              .where('steps.length', isGreaterThan: 1)
+              .get()
+              .then((value) {
+            value.docs.forEach((oneProspect) async {
+              int lastIndex = oneProspect.data()['steps']['length'] - 1;
+              DateTime present = DateTime.now();
+              DateTime time;
 
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
+              time = DateTime.parse(oneProspect.data()['lastUpdate']);
+              print(time);
+              print('bbb');
+              if (time.day != present.day &&
+                  time.difference(present).inDays <= 1 &&
+                  present.hour >= 8 &&
+                  present.hour <= 20 &&
+                  time.difference(present).inSeconds > 0 &&
+                  time.difference(present).inHours < 24 &&
+                  !oneProspect.data()['steps']['${lastIndex}noti']) {
+                String severToken =
+                    'AAAAQ2vv-_M:APA91bGWibt_2dMmTc7p32PD17hEt4aRzJlEKCUX62817BxxVYtPB2uSErpXiGECayd03rlLg2HqgGYMB9N6ugO5kyGnbPdVDskgHhNmmmTXIVNCzp8l9sjpnPiGE_NKCjHpcbhi--Df';
+                await http.post('https://fcm.googleapis.com/fcm/send',
+                    headers: <String, String>{
+                      'Content-Type': 'application/json',
+                      'Authorization': 'key=$severToken',
+                    },
+                    body: jsonEncode(
+                      <String, dynamic>{
+                        'notification': <String, dynamic>{
+                          'title': 'Meeting Tomorrow',
+                          'body': '\nYou have meeting tomorrow with the prospect: ${oneProspect.data()['prospectName']}\nTime: ' +
+                              (DateFormat('HH:mm').format(DateTime.parse(
+                                          oneProspect.data()['lastUpdate'])) !=
+                                      '00:00'
+                                  ? DateFormat('dd/MM/yyyy HH:mm').format(
+                                      DateTime.parse(
+                                          oneProspect.data()['lastUpdate']))
+                                  : DateFormat('dd/MM/yyyy').format(
+                                      DateTime.parse(
+                                          oneProspect.data()['lastUpdate']))) +
+                              (oneProspect.data()['steps']
+                                          ['${lastIndex}meetingPlace'] ==
+                                      ''
+                                  ? ''
+                                  : '\nMeeting at ${oneProspect.data()['steps']['${lastIndex}meetingPlace']}'),
+                        },
+                        'priority': 'high',
+                        'data': <String, dynamic>{
+                          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                          'status': 'done'
+                        },
+                        'to': element.data()['token'],
+                      },
+                    ));
+                await FirebaseFirestore.instance
+                    .collection('prospect')
+                    .doc(element.id)
+                    .collection('prospects')
+                    .doc(oneProspect.id)
+                    .update({'steps.${lastIndex}noti': true});
+              }
+            });
+          });
+        }
+      });
+    });
+  }
 
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
+  @override
+  void initState() {
+    // print('hellomainmain');
+    // tomorrowNotification();
+    Future.delayed(Duration.zero, () {
+      if (widget.message != null && _count == 0) {
+        _count++;
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            content: ListTile(
+                title: Text(
+                  widget.message.notification.title,
+                  style: TextStyle(fontSize: 18),
+                ),
+                subtitle: Text(widget.message.notification.body,
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
+            actions: [
+              TextButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        ).then((value) => _count = 0);
+      }
+    });
 
-//   void _incrementCounter() {
-//     setState(() {
-//       // This call to setState tells the Flutter framework that something has
-//       // changed in this State, which causes it to rerun the build method below
-//       // so that the display can reflect the updated values. If we changed
-//       // _counter without calling setState(), then the build method would not be
-//       // called again, and so nothing would appear to happen.
-//       _counter++;
-//     });
-//   }
+    if (_count == 0) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        _count++;
+        if (_count == 1) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: ListTile(
+                  title: Text(
+                    message.notification.title,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  subtitle: Text(message.notification.body,
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold))),
+              actions: [
+                TextButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            ),
+          ).then((value) {
+            Future.delayed(Duration(milliseconds: 100), () {
+              _count = 0;
+            });
+          });
+        }
+        _count++;
+      });
+    }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
-//     return Scaffold(
-//       appBar: AppBar(
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         // Center is a layout widget. It takes a single child and positions it
-//         // in the middle of the parent.
-//         child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Invoke "debug painting" (press "p" in the console, choose the
-//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
-//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-//           // to see the wireframe for each widget.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               'You have pushed the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
-//     );
-//   }
-// }
+    Future.delayed(Duration(milliseconds: 100), () {
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage message) async {
+        await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => VipC(message)));
+      });
+    });
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+        await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => VipC(message)));
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // return MultiProvider(
+    //   providers: [
+    //     // ChangeNotifierProvider.value(value: AdminController()),
+
+    //     // ChangeNotifierProvider(
+    //     //   create: (context) => AdminController(),
+    //     // ),
+    //   ],
+    //   child:
+    return StreamBuilder<User>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.waiting) {
+          return SplashScreen();
+        }
+        if (userSnapshot.hasData) {
+          tomorrowNotification();
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(userSnapshot.data.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                final userDoc = snapshot.data;
+                final user = userDoc.data();
+                if (user['type'] == 'Admin') {
+                  return AdminPage();
+                } else if (user['type'] == 'Manager') {
+                  return ManagerView();
+                } else if (user['type'] == 'Advisor') {
+                  return AdvisorView();
+                }
+              }
+              return LoginView();
+            },
+          );
+        }
+        return LoginView();
+      },
+    );
+  }
+}

@@ -1,13 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/controller/home/advisor_controller.dart';
-import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/prospect.dart';
-import 'package:vipc_app/model/user.dart';
-import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
-import 'package:vipc_app/view/news/news_details_view.dart';
 import 'package:vipc_app/view/prospect/prospect_view.dart';
 
 class AdvisorSearchView extends StatefulWidget {
