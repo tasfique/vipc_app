@@ -155,14 +155,20 @@ class _ForgotPasswordViewState extends StateMVC {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: new Text("VIPC Message"),
-                content: new Text("Password Reset Request Successfully Sent!"),
+                title: Text("VIPC Message"),
+                content: Text(_con.forgotPasswordType != 'Admin'
+                    ? "Password Reset Request Successfully Sent!"
+                    : 'You Cannot Request New Password For Admin User'),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
                     onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      if (_con.forgotPasswordType != 'Admin') {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      } else {
+                        Navigator.of(context).pop();
+                      }
                     },
                   )
                 ],

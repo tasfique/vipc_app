@@ -28,6 +28,7 @@ class AdminController extends ControllerMVC {
   bool isLoading;
   bool requestSuccess;
   int requestPasswordCount;
+  String forgotPasswordType;
   final String severToken =
       'AAAAQ2vv-_M:APA91bGWibt_2dMmTc7p32PD17hEt4aRzJlEKCUX62817BxxVYtPB2uSErpXiGECayd03rlLg2HqgGYMB9N6ugO5kyGnbPdVDskgHhNmmmTXIVNCzp8l9sjpnPiGE_NKCjHpcbhi--Df';
 
@@ -55,6 +56,7 @@ class AdminController extends ControllerMVC {
   }
 
   Future<void> requestChangePassword(BuildContext context) async {
+    forgotPasswordType = '';
     FocusScope.of(context).unfocus();
     isValid = formKeyForget.currentState.validate();
 
@@ -70,45 +72,53 @@ class AdminController extends ControllerMVC {
             .get();
 
         if (userData.docs.length == 1) {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userData.docs.first.id)
-              .update({'requestChangingPassword': '1'});
+          if (userData.docs.first.data()['type'] != 'Admin') {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userData.docs.first.id)
+                .update({'requestChangingPassword': '1'});
 
-          setState(() {
-            isLoading = false;
-            requestSuccess = true;
-          });
+            setState(() {
+              isLoading = false;
+              requestSuccess = true;
+            });
 
-          String token = '';
-          await FirebaseFirestore.instance
-              .collection('users')
-              .where('type', isEqualTo: 'Admin')
-              .get()
-              .then((value) {
-            token = value.docs[0]['token'];
-          });
+            String token = '';
+            await FirebaseFirestore.instance
+                .collection('users')
+                .where('type', isEqualTo: 'Admin')
+                .get()
+                .then((value) {
+              token = value.docs[0]['token'];
+            });
 
-          await http.post('https://fcm.googleapis.com/fcm/send',
-              headers: <String, String>{
-                'Content-Type': 'application/json',
-                'Authorization': 'key=$severToken',
-              },
-              body: jsonEncode(
-                <String, dynamic>{
-                  'notification': <String, dynamic>{
-                    'title': 'Request To Change Password',
-                    'body':
-                        'User Name: ${userData.docs.first.data()['fullName']}\nUser ID: ${empNoController.text}\nRequest to change their password.',
-                  },
-                  'priority': 'high',
-                  'data': <String, dynamic>{
-                    'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-                    'status': 'done'
-                  },
-                  'to': token,
+            await http.post('https://fcm.googleapis.com/fcm/send',
+                headers: <String, String>{
+                  'Content-Type': 'application/json',
+                  'Authorization': 'key=$severToken',
                 },
-              ));
+                body: jsonEncode(
+                  <String, dynamic>{
+                    'notification': <String, dynamic>{
+                      'title': 'Request To Change Password',
+                      'body':
+                          'User Name: ${userData.docs.first.data()['fullName']}\nUser ID: ${empNoController.text}\nRequest to change their password.',
+                    },
+                    'priority': 'high',
+                    'data': <String, dynamic>{
+                      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                      'status': 'done'
+                    },
+                    'to': token,
+                  },
+                ));
+          } else {
+            forgotPasswordType = 'Admin';
+            setState(() {
+              isLoading = false;
+              requestSuccess = true;
+            });
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
