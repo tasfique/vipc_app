@@ -90,7 +90,6 @@ class _VipCState extends State<VipC> {
         .then((value) {
       value.docs.forEach((element) async {
         if (element.data()['type'] != 'Admin') {
-          print(element.id);
           await FirebaseFirestore.instance
               .collection('prospect')
               .doc(element.id)
@@ -104,8 +103,6 @@ class _VipCState extends State<VipC> {
               DateTime time;
 
               time = DateTime.parse(oneProspect.data()['lastUpdate']);
-              print(time);
-              print('bbb');
               if (time.day != present.day &&
                   time.difference(present).inDays <= 1 &&
                   present.hour >= 8 &&
@@ -164,8 +161,6 @@ class _VipCState extends State<VipC> {
 
   @override
   void initState() {
-    // print('hellomainmain');
-    // tomorrowNotification();
     Future.delayed(Duration.zero, () {
       if (widget.message != null && _count == 0) {
         _count++;

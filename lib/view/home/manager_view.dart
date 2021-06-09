@@ -192,7 +192,6 @@ class _ManagerViewState extends StateMVC {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context);
-    print('testManager');
     return Scaffold(
       appBar: appBarWidget(),
       drawer: FutureBuilder(
@@ -1553,8 +1552,6 @@ class _ManagerViewState extends StateMVC {
   }
 
   Widget _advisorsItemCard(Usr oneAdvisor, int weekP, int monthP) {
-    print('testing');
-    print(weekP);
     return Card(
       color: Colors.amber[50],
       child: Column(

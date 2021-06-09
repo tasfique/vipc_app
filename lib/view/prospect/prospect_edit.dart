@@ -38,7 +38,6 @@ class _EditProspectState extends StateMVC<EditProspect> {
     _con.start();
     _con.prospect = widget.prospect;
     _con.length = widget.prospect.steps['length'] - 1;
-    print('${_con.length + 1}');
     if (_con.prospect.lastStep > 0)
       steps.removeRange(0, _con.prospect.lastStep);
   }

@@ -72,8 +72,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       else
         userId = widget.usrId;
 
-      print('asdf');
-      print('user id: $userId');
       var prospects = await FirebaseFirestore.instance
           .collection("prospect")
           .doc(userId)
@@ -87,8 +85,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       prospects.docs.forEach((oneProspect) {
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);
-        print(createdTime);
-        print('date: ${createdTime.day}');
 
         if (createdTime.difference(present).inSeconds <= 0 &&
             createdTime.month == present.month &&
@@ -143,11 +139,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
           }
         }
       });
-      // print(prospectList['New Prospect'][0].prospectName);
-      // print('test');
       // for (int i = 0; i < 7; i++) {
-      //   print('length $i: ${prospectList["Step 3 Presentation"].length}');
-      //   print('step $i: ${eachStepPoint[i]}');
       // }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -253,11 +245,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
         //   done: oneProspect.data()['done'],
         // ));
       });
-      // print(prospectList['New Prospect'][0].prospectName);
-      // print('test');
       // for (int i = 0; i < 7; i++) {
-      //   print('length $i: ${prospectList["Step 3 Presentation"].length}');
-      //   print('step $i: ${eachStepPoint[i]}');
       // }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -371,8 +359,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
             }
           }
         } else if (widget.status == 'Incompleted') {
-          print('length');
-          print(length);
           if (length != 0) {
             if (oneProspect.data()['steps']['${length}meetingTime'] != '')
               t = TimeOfDay(
@@ -387,7 +373,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
             now = DateTime.parse(
                 oneProspect.data()['steps']['${length}meetingDate']);
             time = DateTime(now.year, now.month, now.day, t.hour, t.minute);
-            print('test point');
 
             if (!(time.difference(present).inSeconds <= 0 &&
                     oneProspect.data()['steps']['$length'] ==
@@ -447,7 +432,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
               }
             }
           } else {
-            print('............');
             DateTime createdTime =
                 DateTime.parse(oneProspect.data()['steps']['0Time']);
 
@@ -481,13 +465,8 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
         //   done: oneProspect.data()['done'],
         // ));
       });
-      // print(prospectList['New Prospect'][0].prospectName);
-      // print('test');
       // for (int i = 0; i < 7; i++) {
-      //   print('length $i: ${prospectList["Step 3 Presentation"].length}');
-      //   print('step $i: ${eachStepPoint[i]}');
       // }
-      print(eachStepPoint);
       for (int i = 0; i < 7; i++) totalPoint += eachStepPoint[i];
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -139,8 +139,6 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
     userDetail = null;
     check = true;
     pushP = false;
-    print('heelo');
-    print(widget.oneUser.type);
     super.initState();
   }
 

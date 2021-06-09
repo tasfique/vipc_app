@@ -247,7 +247,6 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                       //     itemBuilder: (context, index)
                       //         // widget.oneNew.imageUrl['length'], (index) {
                       //         {
-                      //       print('test');
                       //       return Container(
                       //         child: GestureDetector(
                       //           onTap: () {
@@ -350,7 +349,6 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                       //     itemBuilder: (context, index)
                       //         // widget.oneNew.imageUrl['length'], (index) {
                       //         {
-                      //       print('test');
                       //       return Container(
                       //         child: GestureDetector(
                       //           onTap: () {

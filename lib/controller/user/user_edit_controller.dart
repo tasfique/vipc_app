@@ -152,7 +152,6 @@ class UserEditController extends ControllerMVC {
               if (selectedType != null &&
                   selectedType != type &&
                   selectedType == 'Manager') {
-                print('no email, advisor to manager');
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(uid)
@@ -177,7 +176,6 @@ class UserEditController extends ControllerMVC {
               else if (selectedType != null &&
                   selectedType != type &&
                   selectedType == 'Advisor') {
-                print('no email, manager to advisor');
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(uid)
@@ -234,12 +232,7 @@ class UserEditController extends ControllerMVC {
               } else if (type == 'Advisor' &&
                   selectedManager != null &&
                   assignManager != selectedManager) {
-                print('testhh');
-                print(type);
-                print(assignManager == '');
-                print(selectedManager);
                 if (assignManager == '') {
-                  print('no assign manager');
                   await FirebaseFirestore.instance
                       .collection('users')
                       .doc(uid)
@@ -266,9 +259,6 @@ class UserEditController extends ControllerMVC {
                     });
                   });
                 } else {
-                  // aaa to manager 2
-                  print('okman');
-                  print('got assign manager');
                   await FirebaseFirestore.instance
                       .collection('users')
                       .doc(uid)
@@ -334,7 +324,6 @@ class UserEditController extends ControllerMVC {
               } else if (fullNameController.text.isNotEmpty &&
                   fullNameController.text != fullName &&
                   type == 'Manager') {
-                print('hello');
                 await FirebaseFirestore.instance
                     .collection("users")
                     .where('assignUnder', isEqualTo: fullName)
@@ -466,21 +455,17 @@ class UserEditController extends ControllerMVC {
             if (selectedType != null &&
                 selectedType != type &&
                 selectedType == 'Manager') {
-              print('test');
-              print('no email, advisor to manager');
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(uid)
                   .update({'type': 'Manager', 'assignUnder': ''}).then(
                       (_) async {
-                print('test2');
                 await FirebaseFirestore.instance
                     .collection("users")
                     .where('fullName', isEqualTo: assignManager)
                     .limit(1)
                     .get()
                     .then((managerId) async {
-                  print('test3');
                   await FirebaseFirestore.instance
                       .collection('search')
                       .doc('userSearch')
@@ -494,7 +479,6 @@ class UserEditController extends ControllerMVC {
             else if (selectedType != null &&
                 selectedType != type &&
                 selectedType == 'Advisor') {
-              print('no email, manager to advisor');
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(uid)
@@ -551,12 +535,7 @@ class UserEditController extends ControllerMVC {
             } else if (type == 'Advisor' &&
                 selectedManager != null &&
                 assignManager != selectedManager) {
-              print('testhh');
-              print(type);
-              print(assignManager == '');
-              print(selectedManager);
               if (assignManager == '') {
-                print('no assign manager');
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(uid)
@@ -583,9 +562,6 @@ class UserEditController extends ControllerMVC {
                   });
                 });
               } else {
-                // aaa to manager 2
-                print('okman');
-                print('got assign manager');
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(uid)
@@ -629,7 +605,6 @@ class UserEditController extends ControllerMVC {
             } else if (fullNameController.text.isNotEmpty &&
                 fullNameController.text != fullName &&
                 type == 'Advisor') {
-              print('here');
               await FirebaseFirestore.instance
                   .collection("users")
                   .where('fullName', isEqualTo: assignManager)
@@ -652,7 +627,6 @@ class UserEditController extends ControllerMVC {
             } else if (fullNameController.text.isNotEmpty &&
                 fullNameController.text != fullName &&
                 type == 'Manager') {
-              print('hello');
               await FirebaseFirestore.instance
                   .collection("users")
                   .where('assignUnder', isEqualTo: fullName)
@@ -760,7 +734,6 @@ class UserEditController extends ControllerMVC {
             .limit(1)
             .get()
             .then((managerId) async {
-          print(managerId.docs.first.id);
           await FirebaseFirestore.instance
               .collection('search')
               .doc('userSearch')

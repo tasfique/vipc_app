@@ -179,7 +179,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
     DocumentSnapshot user =
         await FirebaseFirestore.instance.collection('users').doc(id).get();
     Usr userTemp;
-    print('bbb');
     userTemp = Usr(
         userId: user.id,
         empID: user.data()['empID'],
@@ -188,8 +187,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
         type: user.data()['type'],
         assignUnder: user.data()['assignUnder'],
         password: user.data()['password']);
-    print(user.data()['type']);
-    print('basdf');
     return userTemp;
   }
 
