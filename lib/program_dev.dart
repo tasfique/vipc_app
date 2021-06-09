@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,6 +12,8 @@ import 'package:vipc_app/view/home/manager_view.dart';
 import 'package:vipc_app/view/login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:vipc_app/view/splash/splash_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
@@ -79,8 +83,90 @@ class VipC extends StatefulWidget {
 class _VipCState extends State<VipC> {
   static int _count = 0;
 
+  void tomorrowNotification() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where("token", isNotEqualTo: '')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        if (element.data()['type'] != 'Admin') {
+          print(element.id);
+          await FirebaseFirestore.instance
+              .collection('prospect')
+              .doc(element.id)
+              .collection('prospects')
+              .where('steps.length', isGreaterThan: 1)
+              .get()
+              .then((value) {
+            value.docs.forEach((oneProspect) async {
+              int lastIndex = oneProspect.data()['steps']['length'] - 1;
+              DateTime present = DateTime.now();
+              DateTime time;
+
+              time = DateTime.parse(oneProspect.data()['lastUpdate']);
+              print(time);
+              print('bbb');
+              if (time.day != present.day &&
+                  time.difference(present).inDays <= 1 &&
+                  present.hour >= 8 &&
+                  present.hour <= 20 &&
+                  time.difference(present).inSeconds > 0 &&
+                  time.difference(present).inHours < 24 &&
+                  !oneProspect.data()['steps']['${lastIndex}noti']) {
+                String severToken =
+                    'AAAAQ2vv-_M:APA91bGWibt_2dMmTc7p32PD17hEt4aRzJlEKCUX62817BxxVYtPB2uSErpXiGECayd03rlLg2HqgGYMB9N6ugO5kyGnbPdVDskgHhNmmmTXIVNCzp8l9sjpnPiGE_NKCjHpcbhi--Df';
+                await http.post('https://fcm.googleapis.com/fcm/send',
+                    headers: <String, String>{
+                      'Content-Type': 'application/json',
+                      'Authorization': 'key=$severToken',
+                    },
+                    body: jsonEncode(
+                      <String, dynamic>{
+                        'notification': <String, dynamic>{
+                          'title': 'Meeting Tomorrow',
+                          'body': '\nYou have meeting tomorrow with the prospect: ${oneProspect.data()['prospectName']}\nTime: ' +
+                              (DateFormat('HH:mm').format(DateTime.parse(
+                                          oneProspect.data()['lastUpdate'])) !=
+                                      '00:00'
+                                  ? DateFormat('dd/MM/yyyy HH:mm').format(
+                                      DateTime.parse(
+                                          oneProspect.data()['lastUpdate']))
+                                  : DateFormat('dd/MM/yyyy').format(
+                                      DateTime.parse(
+                                          oneProspect.data()['lastUpdate']))) +
+                              (oneProspect.data()['steps']
+                                          ['${lastIndex}meetingPlace'] ==
+                                      ''
+                                  ? ''
+                                  : '\nMeeting at ${oneProspect.data()['steps']['${lastIndex}meetingPlace']}'),
+                        },
+                        'priority': 'high',
+                        'data': <String, dynamic>{
+                          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                          'status': 'done'
+                        },
+                        'to': element.data()['token'],
+                      },
+                    ));
+                await FirebaseFirestore.instance
+                    .collection('prospect')
+                    .doc(element.id)
+                    .collection('prospects')
+                    .doc(oneProspect.id)
+                    .update({'steps.${lastIndex}noti': true});
+              }
+            });
+          });
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
+    // print('hellomainmain');
+    // tomorrowNotification();
     Future.delayed(Duration.zero, () {
       if (widget.message != null && _count == 0) {
         _count++;
@@ -177,6 +263,7 @@ class _VipCState extends State<VipC> {
           return SplashScreen();
         }
         if (userSnapshot.hasData) {
+          tomorrowNotification();
           return StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("users")

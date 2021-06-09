@@ -182,9 +182,12 @@ class NewsAddController extends ControllerMVC {
                       body: jsonEncode(
                         <String, dynamic>{
                           'notification': <String, dynamic>{
-                            'title': titleController.text,
-                            'body':
-                                '${contentController.text.substring(0, 20)}...\nCheck News Page to read more.',
+                            'title': titleController.text.length > 30
+                                ? '${titleController.text.substring(0, 30)}...'
+                                : titleController.text,
+                            'body': contentController.text.length > 20
+                                ? '${contentController.text.substring(0, 20)}...\nCheck News Page to read more.'
+                                : '${contentController.text}\nCheck News Page to read more.',
                           },
                           'priority': 'high',
                           'data': <String, dynamic>{

@@ -187,6 +187,12 @@ class ProspectEditController extends ControllerMVC {
                     memoController.text != prospect.steps['${length}memo'])
                 ? memoController.text
                 : prospect.steps['${length}memo'],
+            'steps.${length}noti': (dateController.text.isNotEmpty &&
+                    dateController.text !=
+                        prospect.steps['${length}meetingDate'] &&
+                    length != 0)
+                ? false
+                : prospect.steps['${length}noti'],
           }).then((_) async {
             if (nameController.text.isNotEmpty &&
                 nameController.text != prospect.prospectName) {
@@ -276,6 +282,7 @@ class ProspectEditController extends ControllerMVC {
                 timeController.text.isNotEmpty ? timeController.text : '',
             'steps.${length + 1}memo':
                 memoController.text.isNotEmpty ? memoController.text : '',
+            'steps.${length + 1}noti': false
           });
         }
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,9 +5,9 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/model/news.dart';
 // import 'package:vipc_app/view/appbar/appbar_view.dart';
 // import 'package:vipc_app/view/drawer/drawer_view.dart';
-import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
+import 'dart:math';
 
 class NewsDetailsView extends StatefulWidget {
   final News oneNew;
@@ -202,10 +200,8 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                       },
                       child: Hero(
                         tag: 'Image',
-                        child: Image.network(
-                          widget.oneNew.imageUrl['0'],
-                          fit: BoxFit.cover,
-                        ),
+                        child: Image.network(widget.oneNew.imageUrl['0'],
+                            fit: BoxFit.cover),
                       ),
                     ),
                     height: screenSize.size.height * 0.4,
@@ -229,11 +225,10 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                               );
                             },
                             child: Hero(
-                              tag: '$i',
+                              tag: '${Random().nextInt(100000)}$i',
                               child: Image.network(
                                 widget.oneNew.imageUrl['$i'],
-                                // fit: BoxFit.fitWidth,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
                           ),
@@ -333,11 +328,10 @@ class _NewsDetailsViewState extends StateMVC<NewsDetailsView> {
                               );
                             },
                             child: Hero(
-                              tag: '$i',
+                              tag: '${Random().nextInt(100000)}$i',
                               child: Image.network(
                                 newsDetail.imageUrl['$i'],
-                                // fit: BoxFit.fitWidth,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
                           ),

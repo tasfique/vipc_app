@@ -126,7 +126,8 @@ class SignupController extends ControllerMVC {
               'fullName': fullNameController.text.trim(),
               'type': selectedType,
               'assignUnder': '',
-              'password': userPwdController.text.trim()
+              'password': userPwdController.text.trim(),
+              'token': ''
             }).then((_) async {
               await FirebaseFirestore.instance
                   .collection('search')
@@ -153,7 +154,8 @@ class SignupController extends ControllerMVC {
               'fullName': fullNameController.text.trim(),
               'type': selectedType,
               'assignUnder': selectedManager,
-              'password': userPwdController.text.trim()
+              'password': userPwdController.text.trim(),
+              'token': ''
             }).then((_) async {
               await FirebaseFirestore.instance
                   .collection('search')
