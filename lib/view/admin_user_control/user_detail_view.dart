@@ -15,12 +15,6 @@ class UserDetailsView extends StatefulWidget {
 }
 
 class _UserDetailsViewState extends StateMVC<UserDetailsView> {
-  // _UserDetailsViewState() : super(AdminController()) {
-  //   _con = AdminController.con;
-  // }
-
-  // AdminController _con;
-
   Usr userDetail;
   bool check, pushP;
   int currentMonthPoint;
@@ -187,7 +181,6 @@ class _UserDetailsViewState extends StateMVC<UserDetailsView> {
                                   "User Detail",
                                   style: TextStyle(
                                     fontSize: 22,
-                                    //decoration: TextDecoration.underline,
                                     decorationThickness: 1.5,
                                     fontWeight: FontWeight.w400,
                                     shadows: [

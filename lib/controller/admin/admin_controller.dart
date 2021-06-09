@@ -17,12 +17,10 @@ class AdminController extends ControllerMVC {
   static AdminController get con => _this;
 
   int selectedIndex = 0;
-  // int selectedNewsIndex = 0;
   Usr adminDetail;
   List<Usr> userList;
   List<Usr> userListRequestPassword;
   List<News> newsList;
-  // List<String> managers;
   final empNoController = TextEditingController();
   GlobalKey<FormState> formKeyForget =
       GlobalKey<FormState>(debugLabel: 'request_changing_password');
@@ -150,50 +148,13 @@ class AdminController extends ControllerMVC {
     setState(() {
       requestPasswordCount = userData.docs.length;
     });
-
-    // setState(() {
-
-    // });
   }
 
-  // bool isLoadingUser;
-
-  // void getManagerList(BuildContext context) async {
-  //   List<String> managerListTemp = [];
-
-  //   try {
-  //     setState(() {
-  //       managers.clear();
-  //     });
-  //     final managerList = await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .where('type', isEqualTo: 'Manager')
-  //         .get();
-  //     managerList.docs.forEach((result) {
-  //       managerListTemp.add(result.data()['fullName']);
-  //       managers = managerListTemp;
-  //     });
-  //   } catch (err) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //           content: Text('Error, couldn\'s load data.'),
-  //           backgroundColor: Theme.of(context).errorColor),
-  //     );
-  //   }
-  // }
-
   Future<void> getUser(BuildContext context) async {
-    // setState(() {
-    //   isLoadingUser = true;
-    // });
-    //
     List<Usr> userListTemp = [];
     getRequestPasswordCount();
 
     try {
-      // setState(() {
-      //   userList.clear();
-      // });
       final users = await FirebaseFirestore.instance
           .collection("users")
           .where("type", whereIn: ["Manager", "Advisor"]).get();
@@ -216,21 +177,9 @@ class AdminController extends ControllerMVC {
             backgroundColor: Theme.of(context).errorColor),
       );
     }
-
-    // setState(() {
-    //   isLoadingUser = false;
-    // });
   }
 
   Future<void> getNews(BuildContext context) async {
-    // setState(() {
-    //   isLoadingUser = true;
-    // });
-    //
-    //
-    // setState(() {
-    //   newsList.clear();
-    // });
     getRequestPasswordCount();
 
     List<News> newsListTemp = [];
@@ -239,23 +188,17 @@ class AdminController extends ControllerMVC {
       final news = await FirebaseFirestore.instance.collection("news").get();
 
       news.docs.forEach((oneNew) {
-        // DateFormat('dd/MM/yyyy hh:mm')
-        // .format(DateTime.parse(oneNew.id.toString()));
-        // DateFormat('dd/MM/yyyy hh:mm').parse(oneNew.id);
         if (oneNew.data()['images'] == null) {
           newsListTemp.add(News(
             newsId: oneNew.id,
             title: oneNew.data()['title'],
             content: oneNew.data()['content'],
-            // dateCreated: oneNew.id,
-            // imageUrl: oneNew.data()['images'],
           ));
         } else {
           newsListTemp.add(News(
             newsId: oneNew.id,
             title: oneNew.data()['title'],
             content: oneNew.data()['content'],
-            // dateCreated: oneNew.id,
             imageUrl: oneNew.data()['images'],
           ));
         }
@@ -272,8 +215,6 @@ class AdminController extends ControllerMVC {
 
   Future<void> getRequestedPasswordUser(BuildContext context) async {
     List<Usr> userListRequestTemp = [];
-
-    // getRequestPassword();
 
     try {
       final users = await FirebaseFirestore.instance

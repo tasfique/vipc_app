@@ -100,16 +100,6 @@ class NewsAddController extends ControllerMVC {
           });
         });
 
-        // await FirebaseFirestore.instance
-        //     .collection('search').
-        //     .doc('adminSearch')
-        //     .collection('search').set({'title': titleController.text,'type': 'News',});
-
-        //     .set({
-        //   'title': titleController.text,
-        //   'content': contentController.text,
-        // });
-
         if (imageCount == 0) {
           final ref = FirebaseStorage.instance
               .ref()
@@ -229,10 +219,6 @@ class NewsAddController extends ControllerMVC {
     );
     final pickedImageFile = File(pickedImage.path);
 
-    // File selected = await picker.getImage(
-    //   source: source,
-    // );
-// imageQuality: 50, maxWidth: 150
     setState(() {
       loadImage = false;
       images.clear();
@@ -269,7 +255,6 @@ class NewsAddController extends ControllerMVC {
 
       setState(() {
         imageCount = images.length;
-        // images = resultList;
         imageFile = null;
         loadImage = true;
       });

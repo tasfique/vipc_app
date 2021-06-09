@@ -37,7 +37,6 @@ class _ManagerViewState extends StateMVC {
   }
   ManagerController _con;
 
-  // double responsiveFontSize = 18; // Default Font Size
   int chartIndex;
   bool check = true;
   bool checkHome = true;
@@ -95,14 +94,6 @@ class _ManagerViewState extends StateMVC {
                 _con.rangePoint[
                     '${DateFormat('MM/yyyy').format(DateTime(_con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0))}'],
                 Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 04, 4), 30, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 06, 01), 100, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 05, 9), 80, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 06, 10), 50, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
         ],
       )
     ];
@@ -213,26 +204,22 @@ class _ManagerViewState extends StateMVC {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                // color: _con.selectedIndex == 0 ? Colors.amber : Colors.white,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.star,
-                  // color: _con.selectedIndex == 1 ? Colors.amber : Colors.white,
                 ),
                 label: 'Prospect'),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.supervisor_account,
-                  // color: _con.selectedIndex == 2 ? Colors.amber : Colors.white,
                 ),
                 label: 'Monitor'),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.my_library_books,
-                  // color: _con.selectedIndex == 3 ? Colors.amber : Colors.white,
                 ),
                 label: 'News'),
           ],
@@ -249,7 +236,6 @@ class _ManagerViewState extends StateMVC {
   }
 
   Widget home(MediaQueryData screenSize) {
-    // _con.getMeetingCount(context);
     return FutureBuilder(
       future: _con.getManagerDetail(),
       builder: (context, snapshot) => snapshot.connectionState ==
@@ -314,7 +300,6 @@ class _ManagerViewState extends StateMVC {
                               child: Container(
                                 width: screenSize.size.width,
                                 height: screenSize.size.height * 0.6,
-                                // height: 500,
                                 padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                                 child: Stack(
                                   children: [
@@ -344,7 +329,6 @@ class _ManagerViewState extends StateMVC {
                                     chartIndex == 0
                                         ? FutureBuilder(
                                             future: declarePieChart(),
-                                            // _con.getWeeklyPoint(context),
                                             builder: (context, snapshot) =>
                                                 snapshot.connectionState ==
                                                         ConnectionState.waiting
@@ -364,10 +348,6 @@ class _ManagerViewState extends StateMVC {
                                                                               .size
                                                                               .width *
                                                                           0.9,
-                                                                      // padding:
-                                                                      //     EdgeInsets.only(
-                                                                      //         left: 10,
-                                                                      //         right: 10),
                                                                       //Pie chart here.
                                                                       child: charts
                                                                           .PieChart(
@@ -433,7 +413,6 @@ class _ManagerViewState extends StateMVC {
                                                                           0.9,
                                                                       child:
                                                                           Text(
-                                                                        // 'No Point Earned So Far',
                                                                         "No Data Available To Display",
                                                                         style: TextStyle(
                                                                             fontSize:
@@ -507,20 +486,13 @@ class _ManagerViewState extends StateMVC {
                                                                               animate: true,
                                                                               vertical: false,
                                                                               animationDuration: Duration(milliseconds: 700),
-                                                                              // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
                                                                               barRendererDecorator: new charts.BarLabelDecorator<String>(
                                                                                 labelPosition: charts.BarLabelPosition.inside,
-                                                                                // labelPadding: 0,
                                                                                 labelAnchor: charts.BarLabelAnchor.end,
-
                                                                                 insideLabelStyleSpec: charts.TextStyleSpec(
                                                                                   fontSize: 18,
                                                                                   color: charts.Color.black,
                                                                                 ),
-                                                                                // outsideLabelStyleSpec: new charts.TextStyleSpec(
-                                                                                //   fontSize: 12,
-                                                                                //   color: charts.Color.white,
-                                                                                // ),
                                                                               ),
                                                                               selectionModels: [
                                                                                 new charts.SelectionModelConfig(changedListener: (charts.SelectionModel model) {
@@ -558,7 +530,6 @@ class _ManagerViewState extends StateMVC {
                                                                             0.5,
                                                                         child:
                                                                             Text(
-                                                                          // 'No Point Earned So Far',
                                                                           "No Data Available To Display",
                                                                           style: TextStyle(
                                                                               fontSize: 20,
@@ -615,7 +586,6 @@ class _ManagerViewState extends StateMVC {
                                                                   .format(_con
                                                                       .fromDate)
                                                                   .toString()),
-                                                          // icon: Icon(Icons.add),
                                                           onPressed: () {
                                                             showMonthPicker(
                                                               context: context,
@@ -664,7 +634,6 @@ class _ManagerViewState extends StateMVC {
                                                                   .format(_con
                                                                       .toDate)
                                                                   .toString()),
-                                                          // icon: Icon(Icons.add),
                                                           onPressed: () {
                                                             showMonthPicker(
                                                               context: context,
@@ -912,10 +881,6 @@ class _ManagerViewState extends StateMVC {
                                                                   ? _con.currentMonthPoint /
                                                                       200.0
                                                                   : 1.0,
-                                                      // _con.currentMonthPoint >=
-                                                      //         200
-                                                      //     ? 1.0
-                                                      //     : 1.0,
                                                       center: Text(
                                                           _con.currentMonthPoint <
                                                                   100
@@ -1315,7 +1280,6 @@ class _ManagerViewState extends StateMVC {
 
   Widget prospectItemCard(Prospect oneProspect) {
     int intValue = oneProspect.steps['length'] - 1;
-    // String neededValue = oneProspect.steps['$intValue'];
     return GestureDetector(
       onTap: () async {
         final pushPage3 = await Navigator.push(context,
@@ -1604,9 +1568,6 @@ class _ManagerViewState extends StateMVC {
                           ? Container(
                               alignment: Alignment.topRight,
                               child: Text(
-                                  // weekP < 50
-                                  //     ? 'Failed'
-                                  //     :
                                   50 <= weekP && weekP < 100
                                       ? 'Passed'
                                       : 'Standard',
@@ -1646,9 +1607,6 @@ class _ManagerViewState extends StateMVC {
                           ? Container(
                               alignment: Alignment.topRight,
                               child: Text(
-                                  // monthP < 100
-                                  //     ? 'Failed'
-                                  //     :
                                   100 <= monthP && monthP < 200
                                       ? 'Passed'
                                       : 'Standard',
@@ -1667,7 +1625,6 @@ class _ManagerViewState extends StateMVC {
           ),
         ],
       ),
-      // ),
     );
   }
 

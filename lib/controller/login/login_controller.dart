@@ -15,7 +15,6 @@ class LoginController extends ControllerMVC {
   static LoginController get con => _this;
 
   GlobalKey<FormState> formKey;
-  //  = GlobalKey<FormState>(debugLabel: 'login');
   final employeeIdController = TextEditingController();
   final userPwdController = TextEditingController();
   final auth = FirebaseAuth.instance;
@@ -50,12 +49,6 @@ class LoginController extends ControllerMVC {
         });
       }
     }
-
-    // if (employeeIdController.text == "taz" && userPwdController.text == "123")
-    //   loginSuccess = true;
-    // else
-    //   loginSuccess = false;
-
     employeeIdController.clear();
     userPwdController.clear();
   }

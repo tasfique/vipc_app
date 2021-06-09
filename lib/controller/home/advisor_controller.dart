@@ -91,7 +91,6 @@ class AdvisorController extends ControllerMVC {
     await getTodayMeeting(context);
     List<Prospect> newsProspectListTemp = [];
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       if (dropdownValue == 'Sort by Time')
         prospects = await FirebaseFirestore.instance
@@ -138,7 +137,6 @@ class AdvisorController extends ControllerMVC {
     DateTime time;
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -182,7 +180,6 @@ class AdvisorController extends ControllerMVC {
     currentMonthPoint = 0;
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -227,21 +224,6 @@ class AdvisorController extends ControllerMVC {
     }
   }
 
-  // Future<void> getCurrentWeekPoint(BuildContext context) async {
-  //   DateTime present = DateTime.now();
-  //   currentWeekPoint = 0;
-
-  //   if (present.day >= 1 && present.day <= 7)
-  //     currentWeekPoint = weeklyPoint[0].toInt();
-  //   else if (present.day >= 8 && present.day <= 14)
-  //     currentWeekPoint = weeklyPoint[1].toInt();
-  //   else if (present.day >= 15 && present.day <= 21)
-  //     currentWeekPoint = weeklyPoint[2].toInt();
-  //   else
-  //     currentWeekPoint = weeklyPoint[3].toInt();
-  //   currentWeekPoint = 30;
-  // }
-
   Future<void> getWeeklyPoint(BuildContext context) async {
     DateTime present = DateTime.now();
     int currentYear = present.year;
@@ -250,7 +232,6 @@ class AdvisorController extends ControllerMVC {
     minimumDate = DateTime.now();
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -329,11 +310,8 @@ class AdvisorController extends ControllerMVC {
     DateTime present = DateTime.now();
     int currentYear = present.year;
     int currentMonth = present.month;
-    // for (int i = 0; i < 12; i++) monthlyPoint.add(0);
-// monthlyPoint = 0
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -349,20 +327,6 @@ class AdvisorController extends ControllerMVC {
       var now;
       var time;
       prospects.docs.forEach((oneProspect) {
-        // time = DateTime.parse(oneProspect.data()['lastUpdate']);
-        // if (time.difference(present).inSeconds > 0)
-        //   newsProspectListTemp.add(Prospect(
-        //     prospectId: oneProspect.id,
-        //     prospectName: oneProspect.data()['prospectName'],
-        //     phoneNo: oneProspect.data()['phone'],
-        //     email: oneProspect.data()['email'],
-        //     type: oneProspect.data()['type'],
-        //     steps: oneProspect.data()['steps'],
-        //     lastUpdate: oneProspect.data()['lastUpdate'],
-        //     lastStep: oneProspect.data()['lastStep'],
-        //     done: oneProspect.data()['done'],
-        //   ));
-
         DateTime createdTime =
             DateTime.parse(oneProspect.data()['steps']['0Time']);
         if (createdTime.difference(present).inSeconds <= 0 &&
@@ -411,11 +375,9 @@ class AdvisorController extends ControllerMVC {
           .toString();
       rangeTime.add(DateTime(fromDate.year, fromDate.month + i));
       rangePoint['$date'] = 0;
-      // rangePoint.add(0);
     }
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -446,9 +408,6 @@ class AdvisorController extends ControllerMVC {
         }
 
         for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
-          // now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
-          // time = DateTime(now.year, now.month, 1, 0, 0, 0);
-
           if (oneProspect.data()['steps']['${i}meetingTime'] != '')
             t = TimeOfDay(
                 hour: int.parse(oneProspect
@@ -488,19 +447,10 @@ class AdvisorController extends ControllerMVC {
     }
   }
 
-  // Future<void> getMeetingCount(context) async {
-  //   await getTodayMeeting(context);
-  //   // setState(() {
-  //   // meetingCount = prospectListMeetingToday.length;
-  //   // });
-  //   // setState(() {});
-  // }
-
   Future<void> getTodayMeeting(BuildContext context) async {
     List<Prospect> prospectListRequestTemp = [];
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       TimeOfDay t;
       DateTime now, time;
@@ -549,8 +499,5 @@ class AdvisorController extends ControllerMVC {
             backgroundColor: Theme.of(context).errorColor),
       );
     }
-    // setState(() {
-    //   meetingCount = prospectListMeetingToday.length;
-    // });
   }
 }

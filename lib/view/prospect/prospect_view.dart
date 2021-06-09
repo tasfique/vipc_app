@@ -152,7 +152,6 @@ class _ProspectViewState extends State<ProspectView> {
                         "Prospect Detail",
                         style: TextStyle(
                           fontSize: 22,
-                          //decoration: TextDecoration.underline,
                           decorationThickness: 1.5,
                           fontWeight: FontWeight.w400,
                           shadows: [
@@ -177,7 +176,6 @@ class _ProspectViewState extends State<ProspectView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //Name
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
@@ -192,10 +190,6 @@ class _ProspectViewState extends State<ProspectView> {
                               ),
                             ),
                           ),
-                          // SizedBox(
-                          //   height: 14,
-                          // ),
-                          //Phone
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
@@ -204,19 +198,9 @@ class _ProspectViewState extends State<ProspectView> {
                                     : 'Phone: ${prospectDetail.phoneNo}',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
-                                style:
-                                    TextStyle(fontSize: 22, color: Colors.black)
-                                // DateFormat('dd/MM/yyyy HH:mm')
-                                // .format(DateTime.parse(widget.oneNew.newsId)),
-                                // style: TextStyle(
-                                //   fontSize: 18,
-                                //   color: Colors.white70,
-                                // ),
-                                ),
+                                style: TextStyle(
+                                    fontSize: 22, color: Colors.black)),
                           ),
-                          // SizedBox(
-                          //   height: 14,
-                          // ),
                           widget.prospect.email != '' && prospectDetail == null
                               ? Padding(
                                   padding: const EdgeInsets.all(10),
@@ -263,17 +247,7 @@ class _ProspectViewState extends State<ProspectView> {
                       endIndent: 1,
                       color: Colors.amber,
                     ),
-                    // child: Column(
-                    //   children: [],
-                    // ),
                   ),
-                  // Text(
-                  //   'Point Description:',
-                  //   style: TextStyle(
-                  //     color: Colors.white70,
-                  //     fontSize: 24,
-                  //   ),
-                  // ),
                   SizedBox(
                     height: 10,
                   ),
@@ -285,9 +259,6 @@ class _ProspectViewState extends State<ProspectView> {
                         fontSize: 35,
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(5),
@@ -301,7 +272,6 @@ class _ProspectViewState extends State<ProspectView> {
                       ),
                     ),
                   ),
-
                   const Divider(
                     height: 20,
                     thickness: 2,
@@ -388,7 +358,6 @@ class _ProspectViewState extends State<ProspectView> {
                                   return SizedBox();
                               })
                           : SizedBox(),
-
                   ((widget.prospect.done == 0 &&
                               widget.prospect.lastStep == 6 &&
                               checkStepState() &&

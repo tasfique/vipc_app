@@ -242,11 +242,9 @@ class MonitorController extends ControllerMVC {
           .toString();
       rangeTime.add(DateTime(fromDate.year, fromDate.month + i));
       rangePoint['$date'] = 0;
-      // rangePoint.add(0);
     }
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       var prospects;
       prospects = await FirebaseFirestore.instance
           .collection("prospect")
@@ -277,9 +275,6 @@ class MonitorController extends ControllerMVC {
         }
 
         for (int i = 1; i < oneProspect.data()['steps']['length']; i++) {
-          // now = DateTime.parse(oneProspect.data()['steps']['${i}meetingDate']);
-          // time = DateTime(now.year, now.month, 1, 0, 0, 0);
-
           if (oneProspect.data()['steps']['${i}meetingTime'] != '')
             t = TimeOfDay(
                 hour: int.parse(oneProspect

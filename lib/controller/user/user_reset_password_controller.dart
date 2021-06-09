@@ -40,7 +40,6 @@ class UserResetPasswordController extends ControllerMVC {
     isLoading = false;
     userPwdController.clear();
     userPwdController2.clear();
-    // await app.delete();
   }
 
   Future<void> start() async {
@@ -87,7 +86,6 @@ class UserResetPasswordController extends ControllerMVC {
           ..html = "<h2>Greetings,</h2><P>A request has been received to change the password for your VIPC Group account." +
               "</P><p>Your new Password: ${userPwdController.text}</p><p>If you did not initiate this request, please contact" +
               " us immediately at admin@vipcmanagement.com</p><br/><p>Thank you,</p><p>Admin</p>";
-        // "<h1>Greetings,</h1>\n<p>Your new VIPC password: ${userPwdController.text}</p>\n<p>Best Regards,</p>";
 
         await send(message, smtpServer);
 

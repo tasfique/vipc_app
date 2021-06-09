@@ -676,76 +676,6 @@ class _EditProspectState extends StateMVC<EditProspect> {
             },
           ),
         ),
-        // GestureDetector(
-        //   onTap: () async {
-        //     final DateTime picked = await showDatePicker(
-        //       context: context,
-        //       initialDate: selectedDate,
-        //       firstDate:
-        //           DateTime(DateTime.now().year, DateTime.now().month - 1),
-        //       lastDate: DateTime(DateTime.now().year, DateTime.now().month + 4),
-        //       builder: (BuildContext context, Widget child) {
-        //         return Theme(
-        //           data: ThemeData.dark().copyWith(
-        //             dialogBackgroundColor: Colors.grey[800],
-        //             colorScheme: ColorScheme.dark(
-        //               surface: Colors.grey[800],
-        //               primary: Colors.amber[500],
-        //             ),
-        //           ),
-        //           child: child,
-        //         );
-        //       },
-        //     );
-        //     if (picked != null) {
-        //       setState(() {
-        //         _con.dateController.text = picked.toString().substring(0, 10);
-        //       });
-        //     }
-        //   },
-        //   child: Container(
-        //     alignment: Alignment.centerLeft,
-        //     decoration: BoxDecoration(
-        //       color: Colors.white24,
-        //       borderRadius: BorderRadius.circular(10.0),
-        //       boxShadow: [
-        //         BoxShadow(
-        //           color: Colors.black12,
-        //           blurRadius: 6.0,
-        //           offset: Offset(0, 2),
-        //         ),
-        //       ],
-        //     ),
-        //     height: 60.0,
-        //     child: Row(
-        //       children: [
-        //         Container(
-        //           padding: EdgeInsets.only(left: 15, right: 15),
-        //           child: Icon(
-        //             Icons.calendar_today,
-        //             color: Colors.white,
-        //           ),
-        //         ),
-        //         Container(
-        //           child: Text(
-        //             (widget.prospect.steps['${_con.length}meetingDate'] ==
-        //                             null ||
-        //                         widget
-        //                             .prospect
-        //                             .steps['${_con.length}meetingDate']
-        //                             .isEmpty) &&
-        //                     (_con.dateController.text == "" ||
-        //                         _con.dateController.text == null)
-        //                 ? "Select Meeting Date"
-        //                 : _con.dateController.text.isEmpty
-        //                     ? widget.prospect.steps['${_con.length}meetingDate']
-        //                     : _con.dateController.text,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
         SizedBox(height: 15),
       ],
     );
@@ -972,9 +902,6 @@ class _EditProspectState extends StateMVC<EditProspect> {
                 TextButton(
                   child: Text('Yes'),
                   onPressed: () async {
-                    // await _con.deleteProspect(context);
-                    // Navigator.of(context).pop();
-                    // Navigator.of(context).pop(true);
                     await _con.deleteProspect(context);
                     Navigator.of(context).pop();
                     if (widget.checkDetail == 'prospectDetail')

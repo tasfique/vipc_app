@@ -241,15 +241,6 @@ class _VipCState extends State<VipC> {
 
   @override
   Widget build(BuildContext context) {
-    // return MultiProvider(
-    //   providers: [
-    //     // ChangeNotifierProvider.value(value: AdminController()),
-
-    //     // ChangeNotifierProvider(
-    //     //   create: (context) => AdminController(),
-    //     // ),
-    //   ],
-    //   child:
     return StreamBuilder<User>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, userSnapshot) {

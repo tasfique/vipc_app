@@ -27,7 +27,6 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
   @override
   void dispose() {
     super.dispose();
-    // await _con.getRequestPasswordCount();
   }
 
   Future<void> searchData() async {
@@ -54,18 +53,15 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
     return WillPopScope(
       onWillPop: () {
         _searchQueryController.clear();
-        // dispose();
         Navigator.of(context).pop();
         return;
       },
       child: Scaffold(
-        // drawer: null,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               _searchQueryController.clear();
-              // dispose();
               Navigator.of(context).pop();
             },
           ),
@@ -86,7 +82,6 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
                 if (_searchQueryController == null ||
                     _searchQueryController.text.isEmpty) {
                   _searchQueryController.clear();
-                  // dispose();
                   Navigator.pop(context);
                   return;
                 }
@@ -287,7 +282,6 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 7),
-        //  symmetric(horizontal: 16.0, vertical: 2.0),
         child: Card(
           color: Colors.amber[50],
           child: Padding(
@@ -328,35 +322,7 @@ class _ManagerSearchViewState extends StateMVC<ManagerSearchView> {
                       maxLines: 1,
                     ),
                   ),
-                  // trailing: IconButton(
-                  //   icon: Icon(Icons.read_more_sharp),
-                  //   onPressed: () {
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) => null));
-                  //   },
-                  // )
-                  // TextButton(
-                  //   child: const Text('See Detail'),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //         context, MaterialPageRoute(builder: (context) => null));
-                  //   },
-                  // ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: <Widget>[
-                //     const SizedBox(width: 8),
-                //     TextButton(
-                //       child: const Text('See Detail'),
-                //       onPressed: () {
-                //         Navigator.push(
-                //             context, MaterialPageRoute(builder: (context) => null));
-                //       },
-                //     ),
-                //     const SizedBox(width: 8),
-                //   ],
-                // ),
               ],
             ),
           ),

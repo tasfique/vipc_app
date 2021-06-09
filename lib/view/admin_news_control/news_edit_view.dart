@@ -51,8 +51,6 @@ class _EditNewsState extends StateMVC<EditNews> {
             onPressed: () => Navigator.of(context).pop(true),
           ),
         ),
-        // appBar: CustomAppBar(),
-        // drawer: CustomDrawer(),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
@@ -369,14 +367,8 @@ class _EditNewsState extends StateMVC<EditNews> {
                   TextButton(
                     child: Text('Close'),
                     onPressed: () async {
-                      // await _con.setToDefault();
                       Navigator.of(context).pop();
                       Navigator.of(context).pop(true);
-                      // Navigator.of(context).pop();
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return AdminPage();
-                      // }));
                     },
                   )
                 ],
@@ -440,10 +432,6 @@ class _EditNewsState extends StateMVC<EditNews> {
                       Navigator.of(context).pop(null);
                     else
                       Navigator.of(context).pop(true);
-
-                    // // await _con.setToDefault();
-                    // Navigator.of(context).pop();
-                    // Navigator.of(context).pop(true);
                   },
                 ),
               ],
@@ -477,14 +465,7 @@ class _EditNewsState extends StateMVC<EditNews> {
           primary: Colors.amber[300],
         ),
         onPressed: () async {
-          // await _con.setToDefault();
           Navigator.of(context).pop(true);
-          // // _con.selectedIndex = 0;
-          // Navigator.pushReplacement(
-          //     context, MaterialPageRoute(builder: (context) => AdminPage()));
-          // // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          // //   return AdminPage();
-          // // }));
         },
         child: Text(
           'Cancel',

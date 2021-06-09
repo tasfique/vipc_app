@@ -39,7 +39,6 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        // dispose();
         Navigator.pop(context, false);
         return;
       },
@@ -266,7 +265,6 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
                   TextButton(
                     child: Text('Close'),
                     onPressed: () {
-                      // await _con.setToDefault();
                       Navigator.of(context).pop();
                       Navigator.of(context).pop(true);
                     },
@@ -311,7 +309,6 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
           primary: Colors.amber[300],
         ),
         onPressed: () {
-          // await _con.setToDefault();
           Navigator.of(context).pop(false);
         },
         child: Text(

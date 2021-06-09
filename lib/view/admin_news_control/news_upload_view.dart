@@ -39,8 +39,6 @@ class _AddNewsState extends StateMVC {
             onPressed: () => Navigator.of(context).pop(true),
           ),
         ),
-        // appBar: CustomAppBar(),
-        // drawer: CustomDrawer(),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Center(
@@ -226,13 +224,6 @@ class _AddNewsState extends StateMVC {
                     color: Colors.grey[350],
                   ),
                 ),
-                // child: FittedBox(
-                //   child: Image.network(
-                //     _imageURLController.text,
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
-                //
                 child: _con.imageCount != 0 && _con.imageCount != null
                     ? Center(
                         child: Text(
@@ -265,7 +256,6 @@ class _AddNewsState extends StateMVC {
                     icon: Icon(Icons.image),
                     label: Text('Add Image'),
                     onPressed: () => _con.loadAssets(context),
-                    // onPressed: () => _con.pickImage(ImageSource.gallery),
                   ),
                   TextButton.icon(
                     icon: Icon(Icons.refresh),
@@ -279,8 +269,6 @@ class _AddNewsState extends StateMVC {
         ),
         SizedBox(height: 20),
         if (_con.loadImage)
-          // SizedBox(
-          // height: 400,
           GridView.count(
             primary: false,
             padding: const EdgeInsets.all(8),
@@ -292,8 +280,6 @@ class _AddNewsState extends StateMVC {
               Asset asset = _con.images[index];
               return AssetThumb(
                 asset: asset,
-                // width: (screenSize.size.width * 0.2).toInt(),
-                // height: (screenSize.size.width * 0.2).toInt(),
                 width: 500,
                 height: 500,
               );
@@ -335,10 +321,6 @@ class _AddNewsState extends StateMVC {
                     onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop(true);
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return AdminPage();
-                      // }));
                     },
                   )
                 ],
@@ -386,9 +368,6 @@ class _AddNewsState extends StateMVC {
         ),
         onPressed: () {
           Navigator.of(context).pop(true);
-          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //   return AdminPage();
-          // }));
         },
         child: Text(
           'Cancel',

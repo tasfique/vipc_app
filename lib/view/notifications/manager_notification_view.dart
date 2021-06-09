@@ -30,7 +30,6 @@ class _ManagerNotificationViewState extends StateMVC<ManagerNotificationView> {
   @override
   void dispose() {
     super.dispose();
-    // await _con.getRequestPasswordCount();
   }
 
   @override
@@ -169,7 +168,6 @@ class _ManagerNotificationViewState extends StateMVC<ManagerNotificationView> {
 
   Widget prospectItemCard(Prospect oneProspect) {
     int intValue = oneProspect.steps['length'] - 1;
-    // String neededValue = oneProspect.steps['$intValue'];
     return GestureDetector(
       onTap: () async {
         final pushPage3 = await Navigator.push(context,

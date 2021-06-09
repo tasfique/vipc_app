@@ -31,8 +31,6 @@ class _AdminPageState extends StateMVC {
   AdminController _con;
   bool check = true;
   bool check2 = true;
-  // int selectedIndex = 0;
-  //
 
   Future<void> saveTokenToDatabase(String token) async {
     String userId = FirebaseAuth.instance.currentUser.uid;
@@ -60,22 +58,15 @@ class _AdminPageState extends StateMVC {
     String token = await FirebaseMessaging.instance.getToken();
     await saveTokenToDatabase(token);
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-    // String fcmToken = await _fcm.getToken();
   }
 
   @override
   void initState() {
     _con.userList = [];
     _con.newsList = [];
-    // _con.requestPasswordCount = 0;
-    // _con.managers = [];
     _con.getRequestPasswordCount();
     _saveDeviceToken();
-    // _con.getAdminDetail();
     super.initState();
-    // _con.getNews(context);
-    // _con.getUser(context);
-    // _con.isLoadingUser = false;
   }
 
   void dispose() {
@@ -311,7 +302,6 @@ class _AdminPageState extends StateMVC {
                 TextButton(
                   child: const Text('Read More...'),
                   onPressed: () async {
-                    // await _con.getRequestPasswordCount();
                     final pushDetailResult = await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -319,10 +309,6 @@ class _AdminPageState extends StateMVC {
                     if (pushDetailResult) {
                       await _con.getRequestPasswordCount();
                     }
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return NewsDetailsAdminView(oneNew);
-                    // }));
                   },
                 ),
                 const SizedBox(width: 8),

@@ -156,14 +156,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                 _con.rangePoint[
                     '${DateFormat('MM/yyyy').format(DateTime(_con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0))}'],
                 Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 04, 4), 30, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 06, 01), 100, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 05, 9), 80, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 06, 10), 50, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
         ],
       )
     ];
@@ -299,9 +291,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                 padding: EdgeInsets.only(bottom: 10),
                                 alignment: Alignment.topRight,
                                 child: Text(
-                                    // widget.monthPoint < 100
-                                    //     ? 'Failed'
-                                    //     :
                                     100 <= widget.monthPoint &&
                                             widget.monthPoint < 200
                                         ? 'Passed'
@@ -338,9 +327,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                             ? Container(
                                 alignment: Alignment.topRight,
                                 child: Text(
-                                    // widget.weekPoint < 50
-                                    //     ? 'Failed'
-                                    //     :
                                     50 <= widget.weekPoint &&
                                             widget.weekPoint < 100
                                         ? 'Passed'
@@ -528,7 +514,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                               : chartIndex == 1
                                   ? FutureBuilder(
                                       future: declarePieChart(),
-                                      // _con.getWeeklyPoint(context),
                                       builder: (context, snapshot) => snapshot
                                                   .connectionState ==
                                               ConnectionState.waiting
@@ -632,7 +617,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                 .size.width *
                                                             0.9,
                                                         child: Text(
-                                                          // 'No Point Earned So Far',
                                                           "No Data Available To Display",
                                                           style: TextStyle(
                                                               fontSize: 20,
@@ -704,18 +688,15 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                         Duration(
                                                                             milliseconds:
                                                                                 700),
-                                                                    // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
                                                                     barRendererDecorator:
                                                                         new charts
                                                                             .BarLabelDecorator<String>(
                                                                       labelPosition: charts
                                                                           .BarLabelPosition
                                                                           .inside,
-                                                                      // labelPadding: 0,
                                                                       labelAnchor: charts
                                                                           .BarLabelAnchor
                                                                           .end,
-
                                                                       insideLabelStyleSpec:
                                                                           charts
                                                                               .TextStyleSpec(
@@ -725,10 +706,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                             .Color
                                                                             .black,
                                                                       ),
-                                                                      // outsideLabelStyleSpec: new charts.TextStyleSpec(
-                                                                      //   fontSize: 12,
-                                                                      //   color: charts.Color.white,
-                                                                      // ),
                                                                     ),
                                                                     selectionModels: [
                                                                       new charts
@@ -792,7 +769,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                       .height *
                                                                   0.5,
                                                               child: Text(
-                                                                // 'No Point Earned So Far',
                                                                 "No Data Available To Display",
                                                                 style: TextStyle(
                                                                     fontSize:
@@ -841,7 +817,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                             .format(
                                                                 _con.fromDate)
                                                             .toString()),
-                                                    // icon: Icon(Icons.add),
                                                     onPressed: () {
                                                       showMonthPicker(
                                                         context: context,
@@ -880,7 +855,6 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                                                 'yMMMM')
                                                             .format(_con.toDate)
                                                             .toString()),
-                                                    // icon: Icon(Icons.add),
                                                     onPressed: () {
                                                       showMonthPicker(
                                                         context: context,

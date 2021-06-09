@@ -17,7 +17,6 @@ class UserEditController extends ControllerMVC {
   GlobalKey<FormState> formKey;
   final emailController = TextEditingController();
   final fullNameController = TextEditingController();
-  // final userPwdController = TextEditingController();
   String uid;
   String password;
   String email;
@@ -27,7 +26,6 @@ class UserEditController extends ControllerMVC {
   String selectedManager;
   String assignManager;
   bool isAdvisor;
-  // bool passwordVisible;
   bool isValid;
   bool editSuccess;
   FirebaseApp app;
@@ -44,21 +42,16 @@ class UserEditController extends ControllerMVC {
     assignManager = null;
     type = null;
     isAdvisor = false;
-    // passwordVisible = false;
     isValid = false;
     editSuccess = false;
     isLoading = false;
     emailController.clear();
     fullNameController.clear();
-    // userPwdController.clear();
-    // await app.delete();
   }
 
   Future<void> start(BuildContext context) async {
     emailController.clear();
     fullNameController.clear();
-    // userPwdController.clear();
-    // passwordVisible = false;
     isLoading = false;
     isValid = false;
     editSuccess = false;
@@ -92,8 +85,6 @@ class UserEditController extends ControllerMVC {
       return true;
     if (!(fullNameController.text.isEmpty ||
         fullNameController.text == fullName)) return true;
-    // if (!(userPwdController.text.isEmpty || userPwdController.text == password))
-    //   return true;
     if (!(selectedType == null || selectedType == type)) return true;
     if (!(selectedManager == null || selectedManager == assignManager))
       return true;
@@ -171,9 +162,7 @@ class UserEditController extends ControllerMVC {
                         .delete();
                   });
                 });
-              }
-              // prospect, advisor
-              else if (selectedType != null &&
+              } else if (selectedType != null &&
                   selectedType != type &&
                   selectedType == 'Advisor') {
                 await FirebaseFirestore.instance
@@ -343,28 +332,8 @@ class UserEditController extends ControllerMVC {
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(uid)
-                    .update({
-                  'fullName': fullNameController.text
-                  //  (fullNameController.text.isNotEmpty &&
-                  //         fullNameController.text != fullName)
-                  //     ? fullNameController.text
-                  //     : fullName,
-                  // 'type': (selectedType != null && selectedType != type)
-                  //     ? selectedType
-                  //     : type,
-                  // 'assignUnder':
-                  //     ((selectedType != null && selectedType == "Manager") ||
-                  //             (selectedType == null && type == "Manager"))
-                  //         ? ""
-                  //         : (selectedManager != null &&
-                  //                 selectedManager != assignManager)
-                  //             ? selectedManager
-                  //             : assignManager,
-                  // 'password': (userPwdController.text.isNotEmpty &&
-                  //         userPwdController.text != password)
-                  //     ? userPwdController.text
-                  //     : password
-                }).then((_) async {
+                    .update({'fullName': fullNameController.text}).then(
+                        (_) async {
                   await FirebaseFirestore.instance
                       .collection('search')
                       .doc('adminSearch')
@@ -381,58 +350,13 @@ class UserEditController extends ControllerMVC {
                   .doc(uid)
                   .update({
                 'email': emailController.text,
-                // 'fullName': (fullNameController.text.isNotEmpty &&
-                //         fullNameController.text != fullName)
-                //     ? fullNameController.text
-                //     : fullName,
-                // 'type': (selectedType != null && selectedType != type)
-                //     ? selectedType
-                //     : type,
-                // 'assignUnder':
-                //     ((selectedType != null && selectedType == "Manager") ||
-                //             (selectedType == null && type == "Manager"))
-                //         ? ""
-                //         : (selectedManager != null &&
-                //                 selectedManager != assignManager)
-                //             ? selectedManager
-                //             : assignManager,
-                // 'password': (userPwdController.text.isNotEmpty &&
-                //         userPwdController.text != password)
-                //     ? userPwdController.text
-                //     : password
               });
-              // .then((_) async {
-              //   await FirebaseFirestore.instance
-              //       .collection('search')
-              //       .doc('adminSearch')
-              //       .collection('search')
-              //       .doc(uid)
-              //       .update({
-              //     'fullName': fullNameController.text.trim(),
-              //     'searchCase': caseSearchListSaveToFireBase.toList()
-              //   });
-              // });
-
-              // app2 = await Firebase.initializeApp(
-              //     name: 'Third', options: Firebase.app().options);
 
               await FirebaseAuth.instanceFor(app: app)
                   .signInWithEmailAndPassword(email: email, password: password)
                   .then((value) {
                 value.user.updateEmail(emailController.text);
               });
-
-              // if ((userPwdController.text.isNotEmpty &&
-              //     userPwdController.text != password)) {
-              //   await FirebaseAuth.instanceFor(app: app2)
-              //       .signInWithEmailAndPassword(
-              //           email: emailController.text, password: password)
-              //       .then((value) {
-              //     value.user.updatePassword(userPwdController.text);
-              //   });
-              // }
-
-              // await app2.delete();
 
               setState(() {
                 isLoading = false;
@@ -451,7 +375,6 @@ class UserEditController extends ControllerMVC {
               );
             }
           } else {
-            // no mail
             if (selectedType != null &&
                 selectedType != type &&
                 selectedType == 'Manager') {
@@ -474,9 +397,7 @@ class UserEditController extends ControllerMVC {
                       .delete();
                 });
               });
-            }
-            // prospect, advisor
-            else if (selectedType != null &&
+            } else if (selectedType != null &&
                 selectedType != type &&
                 selectedType == 'Advisor') {
               await FirebaseFirestore.instance
@@ -646,29 +567,8 @@ class UserEditController extends ControllerMVC {
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(uid)
-                  .update({
-                // 'email': email,
-                'fullName': fullNameController.text
-                //  (fullNameController.text.isNotEmpty &&
-                //         fullNameController.text != fullName)
-                //     ? fullNameController.text
-                //     : fullName,
-                // 'type': (selectedType != null && selectedType != type)
-                //     ? selectedType
-                //     : type,
-                // 'assignUnder':
-                //     ((selectedType != null && selectedType == "Manager") ||
-                //             (selectedType == null && type == "Manager"))
-                //         ? ""
-                //         : (selectedManager != null &&
-                //                 selectedManager != assignManager)
-                //             ? selectedManager
-                //             : assignManager,
-                // 'password': (userPwdController.text.isNotEmpty &&
-                //         userPwdController.text != password)
-                //     ? userPwdController.text
-                //     : password
-              }).then((_) async {
+                  .update({'fullName': fullNameController.text}).then(
+                      (_) async {
                 await FirebaseFirestore.instance
                     .collection('search')
                     .doc('adminSearch')
@@ -679,17 +579,6 @@ class UserEditController extends ControllerMVC {
                   'searchCase': caseSearchListSaveToFireBase.toList(),
                 });
               });
-
-            // if (!(userPwdController.text.isEmpty ||
-            //     userPwdController.text == password)) {
-
-            //   await FirebaseAuth.instanceFor(app: app2)
-            //       .signInWithEmailAndPassword(email: email, password: password)
-            //       .then((value) {
-            //     value.user.updatePassword(userPwdController.text);
-            //   });
-
-            // }
 
             setState(() {
               isLoading = false;

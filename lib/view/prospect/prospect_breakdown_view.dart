@@ -139,8 +139,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
           }
         }
       });
-      // for (int i = 0; i < 7; i++) {
-      // }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -163,7 +161,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
     };
 
     try {
-      // String userId = FirebaseAuth.instance.currentUser.uid;
       String userId;
       if (widget.usrId == null || widget.usrId.isEmpty)
         userId = FirebaseAuth.instance.currentUser.uid;
@@ -232,21 +229,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
             ));
           }
         }
-
-        // newsProspectListTemp.add(Prospect(
-        //   prospectId: oneProspect.id,
-        //   prospectName: oneProspect.data()['prospectName'],
-        //   phoneNo: oneProspect.data()['phone'],
-        //   email: oneProspect.data()['email'],
-        //   type: oneProspect.data()['type'],
-        //   steps: oneProspect.data()['steps'],
-        //   lastUpdate: oneProspect.data()['lastUpdate'],
-        //   lastStep: oneProspect.data()['lastStep'],
-        //   done: oneProspect.data()['done'],
-        // ));
       });
-      // for (int i = 0; i < 7; i++) {
-      // }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -453,20 +436,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
             }
           }
         }
-        // newsProspectListTemp.add(Prospect(
-        //   prospectId: oneProspect.id,
-        //   prospectName: oneProspect.data()['prospectName'],
-        //   phoneNo: oneProspect.data()['phone'],
-        //   email: oneProspect.data()['email'],
-        //   type: oneProspect.data()['type'],
-        //   steps: oneProspect.data()['steps'],
-        //   lastUpdate: oneProspect.data()['lastUpdate'],
-        //   lastStep: oneProspect.data()['lastStep'],
-        //   done: oneProspect.data()['done'],
-        // ));
       });
-      // for (int i = 0; i < 7; i++) {
-      // }
       for (int i = 0; i < 7; i++) totalPoint += eachStepPoint[i];
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -603,7 +573,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                 ),
                           ListView.builder(
                               shrinkWrap: true,
-                              // scrollDirection: Axis.vertical,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: 7,
                               itemBuilder: (context, index) {
@@ -635,9 +604,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                       SizedBox(
                                         height: 14,
                                       ),
-                                      // Text('${stepsString[index]}'),
-                                      // Text(prospectList['${stepsString[index]}'][0]
-                                      //     .prospectName),
                                       ListView(
                                         shrinkWrap: true,
                                         physics:

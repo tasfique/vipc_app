@@ -217,15 +217,7 @@ class ProspectEditController extends ControllerMVC {
                   .collection(userId)
                   .doc(prospect.prospectId)
                   .update({
-                // 'prospectName': nameController.text.isNotEmpty &&
-                //         nameController.text != prospect.prospectName
-                //     ? nameController.text.trim()
-                //     : prospect.prospectName,
                 'phone': phoneController.text.trim(),
-                // (phoneController.text.isNotEmpty &&
-                //         phoneController.text != prospect.phoneNo)
-                //     ? phoneController.text.trim()
-                //     : prospect.phoneNo,
               });
           });
         } else if (choice == Choices.update) {

@@ -111,8 +111,6 @@ class SignupController extends ControllerMVC {
                       email: emailController.text.trim(),
                       password: userPwdController.text.trim());
 
-          // await app.delete();
-
           List<String> caseSearchListSaveToFireBase =
               setSearchParam(fullNameController.text.trim());
 

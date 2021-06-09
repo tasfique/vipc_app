@@ -10,7 +10,7 @@ class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
         super(key: key);
 
   @override
-  final Size preferredSize; // default is 56.0
+  final Size preferredSize;
 
   @override
   _AdminAppBarState createState() => _AdminAppBarState();
@@ -22,11 +22,6 @@ class _AdminAppBarState extends StateMVC {
   }
 
   AdminController _con;
-
-  // refreshState() {
-  //   _con.getRequestPasswordCount();
-  //   setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {

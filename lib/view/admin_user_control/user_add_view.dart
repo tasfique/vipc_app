@@ -34,7 +34,6 @@ class _AddUserState extends StateMVC {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        // dispose();
         Navigator.pop(context, false);
         return;
       },
@@ -46,8 +45,6 @@ class _AddUserState extends StateMVC {
             onPressed: () => Navigator.of(context).pop(false),
           ),
         ),
-        // appBar: CustomAppBar(),
-        // drawer: CustomDrawer(),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Center(

@@ -35,7 +35,6 @@ class _AdvisorViewState extends StateMVC {
   }
   AdvisorController _con;
 
-  // double responsiveFontSize = 18; // Default Font Size
   int chartIndex;
   bool check = true;
   bool checkHome = true;
@@ -92,14 +91,6 @@ class _AdvisorViewState extends StateMVC {
                 _con.rangePoint[
                     '${DateFormat('MM/yyyy').format(DateTime(_con.rangeTime[i].year, _con.rangeTime[i].month, 1, 0, 0, 0))}'],
                 Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 04, 4), 30, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 06, 01), 100, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 05, 9), 80, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 06, 10), 50, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
-          // YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
         ],
       )
     ];
@@ -137,10 +128,6 @@ class _AdvisorViewState extends StateMVC {
                     DateFormat('MMMM').format(DateTime.now()),
                 _con.weeklyPoint[3],
                 Colors.orangeAccent),
-            // YearlyPointLineGraph(new DateTime(2012, 07, 4), 30, Colors.yellow),
-            // YearlyPointLineGraph(new DateTime(2012, 10, 01), 100, Colors.yellow),
-            // YearlyPointLineGraph(new DateTime(2012, 11, 9), 80, Colors.yellow),
-            // YearlyPointLineGraph(new DateTime(2013, 05, 10), 50, Colors.yellow),
           ],
           labelAccessorFn: (WeeklyPointPieChart row, _) =>
               row.point != 0 ? '${row.point}' : ''),
@@ -173,7 +160,6 @@ class _AdvisorViewState extends StateMVC {
     String token = await FirebaseMessaging.instance.getToken();
     await saveTokenToDatabase(token);
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-    // String fcmToken = await _fcm.getToken();
   }
 
   @override
@@ -182,10 +168,6 @@ class _AdvisorViewState extends StateMVC {
     chartIndex = 0;
     _con.newsList = [];
     _saveDeviceToken();
-
-    // _con.getProspect(context);
-    // _con.getTodayMeeting(context);
-    // _con.getMeetingCount(context);
     for (int i = 0; i < 4; i++) _con.weeklyPoint.add(0);
     for (int i = 0; i < 12; i++) _con.monthlyPoint.add(0);
     super.initState();
@@ -200,8 +182,6 @@ class _AdvisorViewState extends StateMVC {
     final screenSize = MediaQuery.of(context);
     return Scaffold(
       appBar: appBarWidget(),
-      // appBar: CustomAppBar(),
-      // drawer: CustomDrawer(),
       drawer: FutureBuilder(
           future: _con.getAdvisorDetail(),
           builder: (context, snapshot) =>
@@ -253,7 +233,6 @@ class _AdvisorViewState extends StateMVC {
   }
 
   Widget home(MediaQueryData screenSize) {
-    // _con.getMeetingCount(context);
     return FutureBuilder(
       future: _con.getAdvisorDetail(),
       builder: (context, snapshot) => snapshot.connectionState ==
@@ -264,7 +243,6 @@ class _AdvisorViewState extends StateMVC {
                 setState(() {
                   checkHome = false;
                 });
-                // _con.getNews(context);
                 await _con.getAdvisorDetail();
                 setState(() {
                   checkHome = true;
@@ -319,7 +297,6 @@ class _AdvisorViewState extends StateMVC {
                               child: Container(
                                 width: screenSize.size.width,
                                 height: screenSize.size.height * 0.6,
-                                // height: 500,
                                 padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                                 child: Stack(
                                   children: [
@@ -349,7 +326,6 @@ class _AdvisorViewState extends StateMVC {
                                     chartIndex == 0
                                         ? FutureBuilder(
                                             future: declarePieChart(),
-                                            // _con.getWeeklyPoint(context),
                                             builder: (context, snapshot) =>
                                                 snapshot.connectionState ==
                                                         ConnectionState.waiting
@@ -369,10 +345,6 @@ class _AdvisorViewState extends StateMVC {
                                                                               .size
                                                                               .width *
                                                                           0.9,
-                                                                      // padding:
-                                                                      //     EdgeInsets.only(
-                                                                      //         left: 10,
-                                                                      //         right: 10),
                                                                       //Pie chart here.
                                                                       child: charts
                                                                           .PieChart(
@@ -438,7 +410,6 @@ class _AdvisorViewState extends StateMVC {
                                                                           0.9,
                                                                       child:
                                                                           Text(
-                                                                        // 'No Point Earned So Far',
                                                                         "No Data Available To Display",
                                                                         style: TextStyle(
                                                                             fontSize:
@@ -512,20 +483,13 @@ class _AdvisorViewState extends StateMVC {
                                                                               animate: true,
                                                                               vertical: false,
                                                                               animationDuration: Duration(milliseconds: 700),
-                                                                              // defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 20.0),
                                                                               barRendererDecorator: new charts.BarLabelDecorator<String>(
                                                                                 labelPosition: charts.BarLabelPosition.inside,
-                                                                                // labelPadding: 0,
                                                                                 labelAnchor: charts.BarLabelAnchor.end,
-
                                                                                 insideLabelStyleSpec: charts.TextStyleSpec(
                                                                                   fontSize: 18,
                                                                                   color: charts.Color.black,
                                                                                 ),
-                                                                                // outsideLabelStyleSpec: new charts.TextStyleSpec(
-                                                                                //   fontSize: 12,
-                                                                                //   color: charts.Color.white,
-                                                                                // ),
                                                                               ),
                                                                               selectionModels: [
                                                                                 new charts.SelectionModelConfig(changedListener: (charts.SelectionModel model) {
@@ -563,7 +527,6 @@ class _AdvisorViewState extends StateMVC {
                                                                             0.5,
                                                                         child:
                                                                             Text(
-                                                                          // 'No Point Earned So Far',
                                                                           "No Data Available To Display",
                                                                           style: TextStyle(
                                                                               fontSize: 20,
@@ -620,7 +583,6 @@ class _AdvisorViewState extends StateMVC {
                                                                   .format(_con
                                                                       .fromDate)
                                                                   .toString()),
-                                                          // icon: Icon(Icons.add),
                                                           onPressed: () {
                                                             showMonthPicker(
                                                               context: context,
@@ -669,7 +631,6 @@ class _AdvisorViewState extends StateMVC {
                                                                   .format(_con
                                                                       .toDate)
                                                                   .toString()),
-                                                          // icon: Icon(Icons.add),
                                                           onPressed: () {
                                                             showMonthPicker(
                                                               context: context,
@@ -917,10 +878,6 @@ class _AdvisorViewState extends StateMVC {
                                                                   ? _con.currentMonthPoint /
                                                                       200.0
                                                                   : 1.0,
-                                                      // _con.currentMonthPoint >=
-                                                      //         200
-                                                      //     ? 1.0
-                                                      //     : 1.0,
                                                       center: Text(
                                                           _con.currentMonthPoint <
                                                                   100
@@ -1320,7 +1277,6 @@ class _AdvisorViewState extends StateMVC {
 
   Widget prospectItemCard(Prospect oneProspect) {
     int intValue = oneProspect.steps['length'] - 1;
-    // String neededValue = oneProspect.steps['$intValue'];
     return GestureDetector(
       onTap: () async {
         final pushPage3 = await Navigator.push(context,

@@ -30,7 +30,6 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
   @override
   void dispose() {
     super.dispose();
-    // await _con.getRequestPasswordCount();
   }
 
   @override
@@ -152,18 +151,6 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                                       )),
                                             ),
                                           ),
-                                          // Padding(
-                                          //   padding: EdgeInsets.only(top: 30),
-                                          //   child: Container(
-                                          //     alignment: Alignment.topLeft,
-                                          //     child: Text(
-                                          //       'No User Request For Password Reset',
-                                          //       style: TextStyle(
-                                          //         fontSize: 15,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
                                         ],
                                       )
                               ],
@@ -181,7 +168,6 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
 
   Widget prospectItemCard(Prospect oneProspect) {
     int intValue = oneProspect.steps['length'] - 1;
-    // String neededValue = oneProspect.steps['$intValue'];
     return GestureDetector(
       onTap: () async {
         final pushPage3 = await Navigator.push(context,

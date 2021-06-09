@@ -50,12 +50,10 @@ class _EditUserState extends StateMVC<EditUser> {
     final screenSize = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async {
-        // dispose();
         Navigator.pop(context, false);
         return;
       },
       child: Scaffold(
-        // appBar: CustomAppBar(),
         appBar: AppBar(
           title: Text('VIPC GROUP'),
           leading: IconButton(
@@ -63,7 +61,6 @@ class _EditUserState extends StateMVC<EditUser> {
             onPressed: () => Navigator.of(context).pop(false),
           ),
         ),
-        // drawer: CustomDrawer(),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Center(
@@ -99,9 +96,6 @@ class _EditUserState extends StateMVC<EditUser> {
                       (_con.isAdvisor)
                           ? _buildAssignUserDropdownList()
                           : SizedBox(),
-                      // _buildUserChangePasswordField(),
-                      // SizedBox(height: 15),
-                      // _buildUserConfirmPasswordField(),
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -458,150 +452,6 @@ class _EditUserState extends StateMVC<EditUser> {
     );
   }
 
-  // Widget _buildUserChangePasswordField() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text(
-  //         'Enter Password',
-  //         style: TextStyle(
-  //           color: Colors.white,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //       SizedBox(height: 10.0),
-  //       Container(
-  //         alignment: Alignment.centerLeft,
-  //         decoration: BoxDecoration(
-  //           color: Colors.white24,
-  //           borderRadius: BorderRadius.circular(10.0),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.black12,
-  //               blurRadius: 6.0,
-  //               offset: Offset(0, 2),
-  //             ),
-  //           ],
-  //         ),
-  //         height: 60.0,
-  //         padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
-  //         child: TextFormField(
-  //           textInputAction: TextInputAction.next,
-  //           style: TextStyle(color: Colors.white),
-  //           // validator: (value) {
-  //           //   if (value.isEmpty || value.length < 6) {
-  //           //     return 'Please enter password with at least 6 characters long.';
-  //           //   }
-  //           //   return null;
-  //           // },
-  //           decoration: InputDecoration(
-  //             errorBorder: InputBorder.none,
-  //             errorStyle: TextStyle(
-  //               color: Colors.orange[400],
-  //               height: 0.1,
-  //               fontSize: 14,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //             border: InputBorder.none,
-  //             hintText: 'Enter Password',
-  //             hintStyle: TextStyle(
-  //               color: Colors.white70,
-  //             ),
-  //             suffixIcon: IconButton(
-  //               padding: const EdgeInsets.all(5),
-  //               icon: Icon(
-  //                 _con.passwordVisible
-  //                     ? Icons.visibility
-  //                     : Icons.visibility_off,
-  //                 color: Colors.white70,
-  //               ),
-  //               onPressed: () {
-  //                 setState(() {
-  //                   _con.passwordVisible = !_con.passwordVisible;
-  //                 });
-  //               },
-  //             ),
-  //           ),
-  //           obscureText: !_con.passwordVisible,
-  //           controller: _con.userPwdController,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildUserConfirmPasswordField() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text(
-  //         'Confirm Password',
-  //         style: TextStyle(
-  //           color: Colors.white,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //       SizedBox(height: 10.0),
-  //       Container(
-  //         alignment: Alignment.centerLeft,
-  //         decoration: BoxDecoration(
-  //           color: Colors.white24,
-  //           borderRadius: BorderRadius.circular(10.0),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.black12,
-  //               blurRadius: 6.0,
-  //               offset: Offset(0, 2),
-  //             ),
-  //           ],
-  //         ),
-  //         height: 60.0,
-  //         padding: EdgeInsets.fromLTRB(15.0, 8, 0, 7),
-  //         child: TextFormField(
-  //           textInputAction: TextInputAction.done,
-  //           style: TextStyle(color: Colors.white),
-  //           validator: (value) {
-  //             if (value.isEmpty || value != _con.userPwdController.text) {
-  //               return 'Please enter password identical with password above.';
-  //             }
-  //             return null;
-  //           },
-  //           decoration: InputDecoration(
-  //             errorBorder: InputBorder.none,
-  //             errorStyle: TextStyle(
-  //               color: Colors.orange[400],
-  //               height: 0.1,
-  //               fontSize: 14,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //             border: InputBorder.none,
-  //             hintText: 'Enter Confirm Password',
-  //             hintStyle: TextStyle(
-  //               color: Colors.white70,
-  //             ),
-  //             suffixIcon: IconButton(
-  //               padding: const EdgeInsets.all(5),
-  //               icon: Icon(
-  //                 _con.passwordVisible2
-  //                     ? Icons.visibility
-  //                     : Icons.visibility_off,
-  //                 color: Colors.white70,
-  //               ),
-  //               onPressed: () {
-  //                 setState(() {
-  //                   _con.passwordVisible2 = !_con.passwordVisible2;
-  //                 });
-  //               },
-  //             ),
-  //           ),
-  //           obscureText: !_con.passwordVisible2,
-  //           controller: _con.userPwdController2,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget _buildSaveBtn(MediaQueryData screenSize) {
     return Container(
       width: screenSize.size.width * 0.25,
@@ -725,7 +575,6 @@ class _EditUserState extends StateMVC<EditUser> {
           primary: Colors.amber[300],
         ),
         onPressed: () {
-          // await _con.setToDefault();
           Navigator.of(context).pop(false);
         },
         child: Text(

@@ -187,13 +187,6 @@ class _LoginViewState extends StateMVC {
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                 ),
-                // errorBorder: InputBorder.none,
-                // errorStyle: TextStyle(
-                //   height: 4.3,
-                //   color: Colors.orange[400],
-                //   fontSize: 14,
-                //   fontWeight: FontWeight.bold,
-                // ),
                 hintText: 'Enter your password.',
                 border: InputBorder.none,
                 hintStyle: TextStyle(
@@ -237,62 +230,11 @@ class _LoginViewState extends StateMVC {
         ),
         onPressed: () {
           _con.loginUser(context);
-          // if (_con.usernameController.text == 'taz' &&
-          //     _con.userPwdController.text == '123') {
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //     WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
-          //           context: context,
-          //           builder: (_) => AlertDialog(
-          //             title: new Text("News"),
-          //             content: new Text("Announcement on CMCO October 2020"),
-          //             actions: <Widget>[
-          //               TextButton(
-          //                 child: Text('Close'),
-          //                 onPressed: () {
-          //                   Navigator.of(context).pop();
-          //                 },
-          //               ),
-          //               TextButton(
-          //                 child: Text('Read more...'),
-          //                 onPressed: () {
-          //                   Navigator.push(context,
-          //                       MaterialPageRoute(builder: (context) {
-          //                     return NewsView();
-          //                   }));
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //         ));
-          //     return HomeView();
-          //   }));
-          // } else if (_con.usernameController.text == "admin" &&
-          //     _con.userPwdController.text == '123') {
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //     return AdminNewsView();
-          //   }));
-          // } else {
-          //   showDialog(
-          //     context: context,
-          //     builder: (_) => new AlertDialog(
-          //       title: new Text("VIPC Message"),
-          //       content: new Text("Username or password is incorrect."),
-          //       actions: <Widget>[
-          //         TextButton(
-          //           child: Text('Close'),
-          //           onPressed: () {
-          //             Navigator.of(context).pop();
-          //           },
-          //         )
-          //       ],
-          //     ),
-          //   );
-          // }
         },
         child: _con.isLoading
             ? Container(
-                height: 40, width: 30,
-                // padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                height: 40,
+                width: 30,
                 child: Center(child: CircularProgressIndicator()),
               )
             : Text(

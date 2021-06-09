@@ -127,12 +127,6 @@ class NewsEditController extends ControllerMVC {
             file.add(File(join(documentDirectory.path, 'image.jpg')));
             file[i].writeAsBytesSync(response.bodyBytes);
           }
-          // final response = await http.get(
-          // 'https://firebasestorage.googleapis.com/v0/b/vipctest-374b3.appspot.com/o/news_images%2F2021-04-27T17%3A04%3A10.815853%2F2.jpg?alt=media&token=63f40015-154e-424a-beb2-8556c93b0073');
-
-          // final file = File(join(documentDirectory.path, 'image.jpg'));
-
-          // file.writeAsBytesSync(response.bodyBytes);
 
           await FirebaseFirestore.instance
               .collection('news')
@@ -170,8 +164,6 @@ class NewsEditController extends ControllerMVC {
               minHeight: 1500,
             );
             await ref.putFile(compressedFile);
-
-            // await ref.putFile(file[i]);
 
             final url = await ref.getDownloadURL();
 
@@ -238,8 +230,6 @@ class NewsEditController extends ControllerMVC {
               minHeight: 1500,
             );
             await ref.putFile(compressedFile);
-
-            // await ref.putFile(File(filePath));
 
             final url = await ref.getDownloadURL();
 
@@ -318,10 +308,6 @@ class NewsEditController extends ControllerMVC {
     );
     final pickedImageFile = File(pickedImage.path);
 
-    // File selected = await picker.getImage(
-    //   source: source,
-    // );
-// imageQuality: 50, maxWidth: 150
     setState(() {
       changed = true;
       loadImage = false;
@@ -362,7 +348,6 @@ class NewsEditController extends ControllerMVC {
       setState(() {
         changed = true;
         imageCount = images.length;
-        // images = resultList;
         imageFile = null;
         loadImage = true;
         clearDone = true;

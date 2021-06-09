@@ -31,23 +31,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
 
   Future<void> searchData() async {
     FocusScope.of(context).unfocus();
-// final users = await FirebaseFirestore.instance
-//           .collection("users")
-//           .where("requestChangingPassword", isEqualTo: '1')
-//           .get();
-
-    // users.docs.forEach((user) {
-    //   userListRequestTemp.add(Usr(
-    //       userId: user.id,
-    //       empID: user.data()['empID'],
-    //       email: user.data()['email'],
-    //       fullName: user.data()['fullName'],
-    //       type: user.data()['type'],
-    //       assignUnder: user.data()['assignUnder'],
-    //       password: user.data()['password']));
-    // });
-    // userListRequestPassword = userListRequestTemp;
-
     documentList = (await FirebaseFirestore.instance
             .collection('search')
             .doc('adminSearch')
@@ -75,7 +58,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
         return;
       },
       child: Scaffold(
-        // drawer: null,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -131,16 +113,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                               itemBuilder: (context, index) {
                                 var result = documentList[index];
                                 return _itemCard(result);
-                                // return ListTile(
-                                //   title: result['type'] == 'News'
-                                //       ? Text(result['title'])
-                                //       : Text(result['fullName']),
-                                //   subtitle: Text(result['type']),
-                                //   trailing: IconButton(
-                                //     onPressed: null,
-                                //     icon: Icon(Icons.read_more),
-                                //   ),
-                                // );
                               },
                             ),
                           ],
@@ -199,15 +171,12 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
         newsId: news.id,
         title: news.data()['title'],
         content: news.data()['content'],
-        // dateCreated: oneNew.id,
-        // imageUrl: oneNew.data()['images'],
       ));
     } else {
       newsTemp = (News(
         newsId: news.id,
         title: news.data()['title'],
         content: news.data()['content'],
-        // dateCreated: oneNew.id,
         imageUrl: news.data()['images'],
       ));
     }
@@ -238,7 +207,6 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 7),
-        //  symmetric(horizontal: 16.0, vertical: 2.0),
         child: Card(
           color: Colors.amber[50],
           child: Padding(
@@ -274,35 +242,7 @@ class _AdminSearchViewState extends StateMVC<AdminSearchView> {
                       textAlign: TextAlign.end,
                     ),
                   ),
-                  // trailing: IconButton(
-                  //   icon: Icon(Icons.read_more_sharp),
-                  //   onPressed: () {
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) => null));
-                  //   },
-                  // )
-                  // TextButton(
-                  //   child: const Text('See Detail'),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //         context, MaterialPageRoute(builder: (context) => null));
-                  //   },
-                  // ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: <Widget>[
-                //     const SizedBox(width: 8),
-                //     TextButton(
-                //       child: const Text('See Detail'),
-                //       onPressed: () {
-                //         Navigator.push(
-                //             context, MaterialPageRoute(builder: (context) => null));
-                //       },
-                //     ),
-                //     const SizedBox(width: 8),
-                //   ],
-                // ),
               ],
             ),
           ),

@@ -150,18 +150,6 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                                                       )),
                                             ),
                                           ),
-                                          // Padding(
-                                          //   padding: EdgeInsets.only(top: 30),
-                                          //   child: Container(
-                                          //     alignment: Alignment.topLeft,
-                                          //     child: Text(
-                                          //       'No User Request For Password Reset',
-                                          //       style: TextStyle(
-                                          //         fontSize: 15,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
                                         ],
                                       )
                               ],
@@ -237,7 +225,6 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                // const SizedBox(width: 8),
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: TextButton(
@@ -262,7 +249,6 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                     },
                   ),
                 ),
-                // const SizedBox(width: 8),
               ],
             ),
           ],
