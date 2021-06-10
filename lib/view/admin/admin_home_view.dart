@@ -7,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:vipc_app/controller/admin/admin_controller.dart';
 import 'package:vipc_app/model/news.dart';
 import 'package:vipc_app/model/user.dart';
+import 'package:vipc_app/view/admin/admin_configure_view.dart';
 import 'package:vipc_app/view/admin_news_control/news_edit_view.dart';
 import 'package:vipc_app/view/admin_user_control/user_detail_view.dart';
 import 'package:vipc_app/view/appbar/appbar_admin_view.dart';
@@ -553,6 +554,7 @@ class _AdminPageState extends StateMVC {
               ),
             ),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdminSearchView()));
             },
@@ -583,6 +585,21 @@ class _AdminPageState extends StateMVC {
               setState(() {
                 _con.selectedIndex = 1;
               });
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Configure',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AdminConfigureView()));
             },
           ),
           ListTile(

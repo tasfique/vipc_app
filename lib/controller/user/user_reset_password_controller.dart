@@ -74,8 +74,16 @@ class UserResetPasswordController extends ControllerMVC {
           value.user.updatePassword(userPwdController.text);
         });
 
-        String userN = 'j18026306@student.newinti.edu.my';
-        String passW = 'A99QratAcXg';
+        final mail =
+            await FirebaseFirestore.instance.collection('email').limit(1).get();
+        final managementMail = await FirebaseFirestore.instance
+            .collection('managementEmail')
+            .limit(1)
+            .get();
+
+        String managementEmail = managementMail.docs.first.data()['email'];
+        String userN = mail.docs.first.data()['userMail'];
+        String passW = mail.docs.first.data()['passwordMail'];
 
         final smtpServer = gmail(userN, passW);
 
@@ -85,7 +93,7 @@ class UserResetPasswordController extends ControllerMVC {
           ..subject = 'New Password for VIPC App'
           ..html = "<h2>Greetings,</h2><P>A request has been received to change the password for your VIPC Group account." +
               "</P><p>Your new Password: ${userPwdController.text}</p><p>If you did not initiate this request, please contact" +
-              " us immediately at admin@vipcmanagement.com</p><br/><p>Thank you,</p><p>Admin</p>";
+              " us immediately at $managementEmail .</p><br/><p>Thank you,</p><p>Admin</p>";
 
         await send(message, smtpServer);
 
