@@ -217,10 +217,39 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
                               children: [
                                 ListTile(
                                   title: const Text(
-                                    'Admin Account',
+                                    'Admin Info',
                                     style: TextStyle(
+                                      fontWeight: FontWeight.w900,
                                       color: Colors.white,
-                                      fontSize: 13,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  subtitle: TextButton(
+                                    onPressed: () => showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Admin Info'),
+                                        content: const Text(
+                                            'You can update the current Admin information and also assign admin priveldge to an exisiting user.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    style: ButtonStyle(
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap),
+                                    child: const Text(
+                                      'more details...',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontStyle: FontStyle.italic),
                                     ),
                                   ),
                                   leading: Radio<Choices>(
@@ -235,10 +264,39 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
                                 ),
                                 ListTile(
                                   title: const Text(
-                                    'System Mail\n(Email Address To Send New Password To User)',
+                                    'System Mail',
                                     style: TextStyle(
+                                      fontWeight: FontWeight.w900,
                                       color: Colors.white,
-                                      fontSize: 13,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  subtitle: TextButton(
+                                    onPressed: () => showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('System Mail'),
+                                        content: const Text(
+                                            'You can change the Sender email that the User receives for Password Reset Request. \n\nOnly supports Gmail Accounts.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    style: ButtonStyle(
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap),
+                                    child: const Text(
+                                      'more details...',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontStyle: FontStyle.italic),
                                     ),
                                   ),
                                   leading: Radio<Choices>(
@@ -253,10 +311,40 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
                                 ),
                                 ListTile(
                                   title: const Text(
-                                    'Management Mail\n(Email Address User Contact to Report Issue)',
+                                    'Support Mail',
                                     style: TextStyle(
+                                      fontWeight: FontWeight.w900,
                                       color: Colors.white,
-                                      fontSize: 13,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  subtitle: TextButton(
+                                    onPressed: () => showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Support Mail'),
+                                        content: const Text(
+                                            'You can change the Support email that the Users contacts for Help and Queries.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                        elevation: 24.0,
+                                      ),
+                                    ),
+                                    style: ButtonStyle(
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap),
+                                    child: const Text(
+                                      'more details...',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontStyle: FontStyle.italic),
                                     ),
                                   ),
                                   leading: Radio<Choices>(
