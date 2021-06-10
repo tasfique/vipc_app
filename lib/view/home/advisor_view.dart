@@ -1592,6 +1592,7 @@ class _AdvisorViewState extends StateMVC {
               ),
             ),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdvisorSearchView()));
             },
