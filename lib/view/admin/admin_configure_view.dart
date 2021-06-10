@@ -231,7 +231,7 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
                                           AlertDialog(
                                         title: const Text('Admin Info'),
                                         content: const Text(
-                                            'You can update the current Admin information and also assign admin priveldge to an exisiting user.'),
+                                            'You can update the current Admin\'s information. Such as Name, ID, and Password.'),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () =>
@@ -401,7 +401,7 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'User ID',
+          'Admin\'s User ID*',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -461,7 +461,7 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Full Name',
+          'Admin\'s Full Name*',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -587,7 +587,7 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Enter Password',
+          'Enter New Password*',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -657,7 +657,7 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Confirm Password',
+          'Confirm New Password*',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
