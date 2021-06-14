@@ -4,7 +4,7 @@ class News {
   String newsId;
   String title;
   String content;
-  Map<String, dynamic> imageUrl = null;
+  Map<String, dynamic> imageUrl;
   News(
       {@required this.newsId,
       @required this.title,
