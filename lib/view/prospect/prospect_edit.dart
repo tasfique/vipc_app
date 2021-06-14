@@ -712,7 +712,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
             if (pickedTime != null) {
               setState(() {
                 _con.timeController.text =
-                    "${pickedTime.hour < 10 ? "0${pickedTime.hour}" : pickedTime.hour}:${pickedTime.minute == 0 ? "00" : pickedTime.minute}";
+                    "${pickedTime.hour < 10 ? "0${pickedTime.hour}" : pickedTime.hour}:${pickedTime.minute == 0 ? "00" : pickedTime.minute < 10 ? "0${pickedTime.minute}" : pickedTime.minute}";
               });
             }
           },
