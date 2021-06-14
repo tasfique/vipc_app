@@ -382,20 +382,3 @@ class _AddNewsState extends StateMVC {
     );
   }
 }
-
-class MessageHandler extends StatefulWidget {
-  @override
-  _MessageHandlerState createState() => _MessageHandlerState();
-}
-
-class _MessageHandlerState extends State<MessageHandler> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}

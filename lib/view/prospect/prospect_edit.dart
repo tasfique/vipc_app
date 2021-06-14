@@ -651,8 +651,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
               final DateTime picked = await showDatePicker(
                 context: context,
                 initialDate: selectedDate,
-                firstDate:
-                    DateTime(DateTime.now().year, DateTime.now().month - 1),
+                firstDate: DateTime.now(),
                 lastDate:
                     DateTime(DateTime.now().year, DateTime.now().month + 4),
                 builder: (BuildContext context, Widget child) {
