@@ -392,7 +392,7 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                 child: Container(
                                   child: Icon(
                                     Icons.arrow_back_ios,
-                                    size: 30,
+                                    size: 32,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -999,7 +999,7 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                 child: Container(
                                   child: Icon(
                                     Icons.arrow_forward_ios,
-                                    size: 30,
+                                    size: 32,
                                     color: Colors.white,
                                   ),
                                 ),
