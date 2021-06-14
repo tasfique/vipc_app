@@ -24,22 +24,18 @@ dependencies:
   flutter:
     sdk: flutter
   mvc_pattern:
-  passwordfield:
   json_annotation:
   http:
   charts_flutter: ^0.10.0
   pie_chart:
   percent_indicator:
-  settings_ui:
   firebase_core: "^0.7.0"
   cloud_firestore: "^0.16.0+1"
   firebase_auth:
-  provider: ^5.0.0
   image_picker: ^0.6.7+22
   multi_image_picker: ^4.8.0
   firebase_storage: "^7.0.0"
   flutter_absolute_path: ^1.0.6
-  # intl: ^0.16.1
   path_provider: ^1.6.7
   flutter_image_compress: ^1.0.0
   firebase_messaging: "^8.0.0-dev.15"
