@@ -586,11 +586,15 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            stepsString[index],
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white70),
+                                          Flexible(
+                                            child: Text(
+                                              stepsString[index],
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white70),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                           Text(
                                             'Point: ${eachStepPoint[index].toString()}',
