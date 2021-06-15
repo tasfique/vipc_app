@@ -551,6 +551,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
           height: 60.0,
           child: TextFormField(
             controller: _con.placeController,
+            textCapitalization: TextCapitalization.words,
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.white,
