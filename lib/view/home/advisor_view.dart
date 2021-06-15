@@ -865,33 +865,33 @@ class _AdvisorViewState extends StateMVC {
                                                       animationDuration: 700,
                                                       percent: _con
                                                                   .currentMonthPoint <
-                                                              100
+                                                              200
                                                           ? _con.currentMonthPoint /
-                                                              100.0
+                                                              200.0
                                                           : _con.currentMonthPoint ==
-                                                                  100
+                                                                  200
                                                               ? 1.0
                                                               : _con.currentMonthPoint >
-                                                                          100 &&
+                                                                          200 &&
                                                                       _con.currentMonthPoint <
-                                                                          200
+                                                                          400
                                                                   ? _con.currentMonthPoint /
-                                                                      200.0
+                                                                      400.0
                                                                   : 1.0,
                                                       center: Text(
                                                           _con.currentMonthPoint <
-                                                                  100
-                                                              ? (100 - _con.currentMonthPoint)
+                                                                  200
+                                                              ? (200 - _con.currentMonthPoint)
                                                                       .toString() +
                                                                   ' More Points To Pass'
                                                               : _con.currentMonthPoint ==
-                                                                      100
+                                                                      200
                                                                   ? 'Congratulation! You Passed.'
                                                                   : _con.currentMonthPoint >
-                                                                              100 &&
+                                                                              200 &&
                                                                           _con.currentMonthPoint <
-                                                                              200
-                                                                      ? (200 - _con.currentMonthPoint)
+                                                                              400
+                                                                      ? (400 - _con.currentMonthPoint)
                                                                               .toString() +
                                                                           ' More Points To Reach Standard'
                                                                       : 'Standard',

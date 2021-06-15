@@ -564,39 +564,42 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                                                 100
                                                         ? 'Passed (Total Point > 50)'
                                                         : 'Standard (Total Point > 100)')
-                                                : (widget.totalPoint < 100
-                                                    ? 'Failed (Total Point < 100)'
-                                                    : 100 <= widget.totalPoint &&
+                                                : (widget.totalPoint < 200
+                                                    ? 'Failed (Total Point < 200)'
+                                                    : 200 <= widget.totalPoint &&
                                                             widget.totalPoint <
-                                                                200
-                                                        ? 'Passed (Total Point > 100)'
-                                                        : 'Standard (Total Point > 200)')),
+                                                                400
+                                                        ? 'Passed (Total Point > 200)'
+                                                        : 'Standard (Total Point > 400)')),
                                         style: TextStyle(
                                           color: Colors.amber,
                                           fontSize: 15,
                                         ),
                                       ),
                                     ),
-                              IconButton(
-                                icon: const Icon(Icons.info_outline),
-                                color: Colors.white,
-                                onPressed: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('KPI Points Guide'),
-                                    content: const Text(
-                                        'WEEKLY \n Total Points < 50 : Fail. \n Total Points > 50 : Pass. \n Total Points > 100 : Standard. \n\n MONTHLY \n Total Points < 200 : Fail. \n Total Points > 200 : Pass. \n Total Points > 400 : Standard.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
-                                        child: const Text('OK'),
+                              (widget.status == 'Completed' ||
+                                      widget.status == 'Incompleted')
+                                  ? SizedBox()
+                                  : IconButton(
+                                      icon: const Icon(Icons.info_outline),
+                                      color: Colors.white,
+                                      onPressed: () => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('KPI Points Guide'),
+                                          content: const Text(
+                                              'WEEKLY \n Total Points < 50 : Fail. \n Total Points > 50 : Pass. \n Total Points > 100 : Standard. \n\n MONTHLY \n Total Points < 200 : Fail. \n Total Points > 200 : Pass. \n Total Points > 400 : Standard.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    ),
                             ],
                           ),
 
