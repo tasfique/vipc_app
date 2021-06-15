@@ -22,7 +22,7 @@ class NewsAddController extends ControllerMVC {
   static NewsAddController get con => _this;
 
   final String severToken =
-      'AAAAQ2vv-_M:APA91bGWibt_2dMmTc7p32PD17hEt4aRzJlEKCUX62817BxxVYtPB2uSErpXiGECayd03rlLg2HqgGYMB9N6ugO5kyGnbPdVDskgHhNmmmTXIVNCzp8l9sjpnPiGE_NKCjHpcbhi--Df';
+      'AAAAwHV5Poo:APA91bFRAIyCULzEZj1Lcx0OyComIe_S56T4w0tSEgzCg_NoTfQYfYmj5n_LBW9VG3gTy45gkNt1q_pohLs7XiNuRTpjY1wMatsEEqta6KHOC-X7l29OWo5tGJiDW_Z7hBcoN1irAcYX';
   GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: 'news_add');
   final titleController = TextEditingController();
   final contentController = TextEditingController();
