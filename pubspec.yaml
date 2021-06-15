@@ -43,6 +43,18 @@ dependencies:
   flutter_local_notifications: ^4.0.1+2
   month_picker_dialog: ^0.4.0
   carousel_slider: ^3.0.0
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.3.2
+
+flutter_icons:
+  image_path: "assets/images/icon.png"
+  android: true
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/splash.png
+  android: true
+  android_gravity: fill
 
 dependency_overrides:
   intl: ^0.17.0-nullsafety.2

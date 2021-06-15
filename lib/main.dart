@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return MaterialApp(
-        title: 'Great Ideals',
+        title: 'VIPC',
         theme: ThemeData(
           primarySwatch: Colors.amber,
           //added Accent colour.

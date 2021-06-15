@@ -537,7 +537,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                             ),
                           ),
                           Text(
-                            'Total Point Earned: ' +
+                            'Total Point(s) Earned: ' +
                                 (widget.status == null || widget.status.isEmpty
                                     ? widget.totalPoint.toString()
                                     : totalPoint.toString()),
@@ -549,28 +549,62 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                           SizedBox(
                             height: 10,
                           ),
-                          widget.checkWeek == 'status'
-                              ? SizedBox()
-                              : Text(
-                                  'KPI Summary: ' +
-                                      (widget.checkWeek == 'week'
-                                          ? (widget.totalPoint < 50
-                                              ? 'Failed (Total Point < 50)'
-                                              : 50 <= widget.totalPoint &&
-                                                      widget.totalPoint < 100
-                                                  ? 'Passed (Total Point > 50)'
-                                                  : 'Standard (Total Point > 100)')
-                                          : (widget.totalPoint < 100
-                                              ? 'Failed (Total Point < 100)'
-                                              : 100 <= widget.totalPoint &&
-                                                      widget.totalPoint < 200
-                                                  ? 'Passed (Total Point > 100)'
-                                                  : 'Standard (Total Point > 200)')),
-                                  style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 15,
+                          Row(
+                            children: [
+                              widget.checkWeek == 'status'
+                                  ? SizedBox()
+                                  : Flexible(
+                                      child: Text(
+                                        'Current KPI Summary: ' +
+                                            (widget.checkWeek == 'week'
+                                                ? (widget.totalPoint < 50
+                                                    ? 'Failed (Total Point < 50)'
+                                                    : 50 <= widget.totalPoint &&
+                                                            widget.totalPoint <
+                                                                100
+                                                        ? 'Passed (Total Point > 50)'
+                                                        : 'Standard (Total Point > 100)')
+                                                : (widget.totalPoint < 100
+                                                    ? 'Failed (Total Point < 100)'
+                                                    : 100 <= widget.totalPoint &&
+                                                            widget.totalPoint <
+                                                                200
+                                                        ? 'Passed (Total Point > 100)'
+                                                        : 'Standard (Total Point > 200)')),
+                                        style: TextStyle(
+                                          color: Colors.amber,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                              IconButton(
+                                icon: const Icon(Icons.info_outline),
+                                color: Colors.white,
+                                onPressed: () => showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('KPI Points Guide'),
+                                    content: const Text(
+                                        'WEEKLY \n Total Points < 50 : Fail. \n Total Points > 50 : Pass. \n Total Points > 100 : Standard. \n\n MONTHLY \n Total Points < 200 : Fail. \n Total Points > 200 : Pass. \n Total Points > 400 : Standard.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                              ),
+                            ],
+                          ),
+
+                          //Text("ok"),
+
+                          SizedBox(
+                            height: 20,
+                          ),
                           ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -597,7 +631,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                             ),
                                           ),
                                           Text(
-                                            'Point: ${eachStepPoint[index].toString()}',
+                                            'Point(s): ${eachStepPoint[index].toString()}',
                                             style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.amber,

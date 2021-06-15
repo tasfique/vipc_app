@@ -149,18 +149,11 @@ class _ProspectViewState extends State<ProspectView> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "Prospect Detail",
+                        "Prospect's Details",
                         style: TextStyle(
                           fontSize: 22,
-                          decorationThickness: 1.5,
-                          fontWeight: FontWeight.w400,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 10.0,
-                              color: Colors.grey,
-                              offset: Offset(3.0, 4.0),
-                            ),
-                          ],
+                          // decorationThickness: 1.5,
+                          // fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
