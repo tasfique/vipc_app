@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
   mvc_pattern:
-  json_annotation:
   http:
   charts_flutter: ^0.10.0
   pie_chart:
@@ -70,8 +69,6 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:
-  json_serializable:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
