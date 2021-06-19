@@ -374,7 +374,7 @@ class _ProspectViewState extends State<ProspectView> {
                                 showDialog(
                                   context: context,
                                   builder: (_) => new AlertDialog(
-                                    title: new Text("VIPC Message"),
+                                    title: new Text("Message"),
                                     content: new Text(
                                         "Do you want to Finish Servicing with this Prospect (Client)?\nThis Prospect will disappear from the list.\nDon't worry, you can still Search this Prospect from the Search Option."),
                                     actions: <Widget>[

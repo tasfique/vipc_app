@@ -361,8 +361,8 @@ class _EditNewsState extends StateMVC<EditNews> {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: new Text("VIPC Message"),
-                content: new Text("Successfully saved!"),
+                title: new Text("Message"),
+                content: new Text("Successfully Saved!"),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),

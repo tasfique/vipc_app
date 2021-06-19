@@ -211,7 +211,7 @@ class _ManagerViewState extends StateMVC {
                 icon: Icon(
                   Icons.star,
                 ),
-                label: 'Prospect'),
+                label: 'Prospects'),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.supervisor_account,
@@ -1451,7 +1451,7 @@ class _ManagerViewState extends StateMVC {
                                     child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "Monitor Advisor",
+                                        "Monitor Advisor(s)",
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -1660,7 +1660,7 @@ class _ManagerViewState extends StateMVC {
                                   child: Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      "Company News",
+                                      "News",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -1781,9 +1781,22 @@ class _ManagerViewState extends StateMVC {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: Image.asset(
-                ('assets/images/logo.png'),
+                ('assets/images/icon.png'),
               ),
             ),
+          ),
+          ListTile(
+            title: Text(
+              'Search',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ManagerSearchView()));
+            },
           ),
           ListTile(
             title: Text(
@@ -1801,20 +1814,7 @@ class _ManagerViewState extends StateMVC {
           ),
           ListTile(
             title: Text(
-              'Search',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ManagerSearchView()));
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Prospect',
+              'Prospects',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -1860,8 +1860,8 @@ class _ManagerViewState extends StateMVC {
               showDialog(
                 context: context,
                 builder: (_) => new AlertDialog(
-                  title: new Text("VIPC Message"),
-                  content: new Text("Do you want to log out?"),
+                  title: new Text("Message"),
+                  content: new Text("Do you want to Log Out?"),
                   actions: <Widget>[
                     TextButton(
                       child: Text('No'),

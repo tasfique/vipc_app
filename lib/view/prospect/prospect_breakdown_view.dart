@@ -44,7 +44,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
     'Step 1 Make Appointment',
     'Step 2 Open Case',
     'Step 3 Follow Up',
-    'Step 4 Presentation Zoom/Meet Up',
+    'Step 4 Presentation',
     'Step 5 Closing',
     'Step 6 Referral/Servicing'
   ];
@@ -60,7 +60,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       "Step 1 Make Appointment": [],
       "Step 2 Open Case": [],
       "Step 3 Follow Up": [],
-      'Step 4 Presentation Zoom/Meet Up': [],
+      'Step 4 Presentation': [],
       'Step 5 Closing': [],
       "Step 6 Referral/Servicing": []
     };
@@ -155,7 +155,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       "Step 1 Make Appointment": [],
       "Step 2 Open Case": [],
       "Step 3 Follow Up": [],
-      'Step 4 Presentation Zoom/Meet Up': [],
+      'Step 4 Presentation': [],
       'Step 5 Closing': [],
       "Step 6 Referral/Servicing": []
     };
@@ -247,7 +247,7 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
       "Step 1 Make Appointment": [],
       "Step 2 Open Case": [],
       "Step 3 Follow Up": [],
-      'Step 4 Presentation Zoom/Meet Up': [],
+      'Step 4 Presentation': [],
       'Step 5 Closing': [],
       "Step 6 Referral/Servicing": []
     };

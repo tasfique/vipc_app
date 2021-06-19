@@ -89,9 +89,11 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                                     alignment:
                                                         Alignment.topLeft,
                                                     child: Text(
-                                                      "Today's Meeting With Prospect",
+                                                      "Today's Meeting(s) With Prospect(s)",
                                                       style: TextStyle(
                                                         fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -128,9 +130,10 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                             child: Container(
                                               alignment: Alignment.topLeft,
                                               child: Text(
-                                                "Today's Meeting With Prospect",
+                                                "Today's Meeting(s) With Prospect(s)",
                                                 style: TextStyle(
                                                   fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
@@ -144,7 +147,9 @@ class _AdvisorNotificationViewState extends StateMVC<AdvisorNotificationView> {
                                               children: List.generate(
                                                   1,
                                                   (f) => Text(
-                                                        'No Meeting Today With Prospect',
+                                                        'There are no Upcoming Meetings with Prospects.',
+                                                        textAlign:
+                                                            TextAlign.center,
                                                         style: TextStyle(
                                                           fontSize: 20,
                                                         ),

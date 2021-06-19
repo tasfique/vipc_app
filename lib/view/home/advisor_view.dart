@@ -212,7 +212,7 @@ class _AdvisorViewState extends StateMVC {
                       ? Colors.amber[320]
                       : Colors.white,
                 ),
-                label: 'Prospect'),
+                label: 'Prospects'),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.my_library_books,
@@ -1445,7 +1445,7 @@ class _AdvisorViewState extends StateMVC {
                                   child: Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      "Company News",
+                                      "News",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -1566,9 +1566,22 @@ class _AdvisorViewState extends StateMVC {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: Image.asset(
-                ('assets/images/logo.png'),
+                ('assets/images/icon.png'),
               ),
             ),
+          ),
+          ListTile(
+            title: Text(
+              'Search',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdvisorSearchView()));
+            },
           ),
           ListTile(
             title: Text(
@@ -1586,20 +1599,7 @@ class _AdvisorViewState extends StateMVC {
           ),
           ListTile(
             title: Text(
-              'Search',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AdvisorSearchView()));
-            },
-          ),
-          ListTile(
-            title: Text(
-              'Prospect',
+              'Prospects',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -1631,8 +1631,8 @@ class _AdvisorViewState extends StateMVC {
               showDialog(
                 context: context,
                 builder: (_) => new AlertDialog(
-                  title: new Text("VIPC Message"),
-                  content: new Text("Do you want to log out?"),
+                  title: new Text("Message"),
+                  content: new Text("Do you want to Log Out?"),
                   actions: <Widget>[
                     TextButton(
                       child: Text('No'),

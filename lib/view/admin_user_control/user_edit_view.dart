@@ -471,8 +471,8 @@ class _EditUserState extends StateMVC<EditUser> {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: Text("VIPC Message"),
-                content: Text("Successfully saved!"),
+                title: Text("Message"),
+                content: Text("Successfully Saved!"),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
@@ -524,7 +524,7 @@ class _EditUserState extends StateMVC<EditUser> {
           showDialog(
             context: context,
             builder: (_) => new AlertDialog(
-              title: new Text("VIPC Message"),
+              title: new Text("Message"),
               content:
                   new Text("Are you sure you want to DELETE this Account?"),
               actions: <Widget>[

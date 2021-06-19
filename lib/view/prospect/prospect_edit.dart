@@ -24,7 +24,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
     "Step 1 Make Appointment",
     "Step 2 Open Case",
     "Step 3 Follow Up",
-    "Step 4 Presentation Zoom/Meet Up",
+    "Step 4 Presentation",
     'Step 5 Closing',
     "Step 6 Referral/Servicing"
   ];
@@ -837,8 +837,8 @@ class _EditProspectState extends StateMVC<EditProspect> {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: Text("VIPC Message"),
-                content: Text("Successfully saved!"),
+                title: Text("Message"),
+                content: Text("Successfully Saved!"),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
@@ -890,7 +890,7 @@ class _EditProspectState extends StateMVC<EditProspect> {
           showDialog(
             context: context,
             builder: (_) => new AlertDialog(
-              title: new Text("VIPC Message"),
+              title: new Text("Message"),
               content: new Text(
                   "Are you sure you want to DELETE this Prospect (Client)?"),
               actions: <Widget>[

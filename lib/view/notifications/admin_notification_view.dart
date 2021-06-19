@@ -81,14 +81,16 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                                               children: [
                                                 Padding(
                                                   padding:
-                                                      EdgeInsets.only(left: 25),
+                                                      EdgeInsets.only(left: 5),
                                                   child: Container(
                                                     alignment:
                                                         Alignment.topLeft,
                                                     child: Text(
-                                                      "User Request For Password Reset",
+                                                      "Password Reset Request(s)",
                                                       style: TextStyle(
                                                         fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -123,13 +125,14 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                                     : Column(
                                         children: [
                                           Padding(
-                                            padding: EdgeInsets.only(left: 25),
+                                            padding: EdgeInsets.only(left: 5),
                                             child: Container(
                                               alignment: Alignment.topLeft,
                                               child: Text(
-                                                "User Request For Password Reset",
+                                                "Password Reset Request(s)",
                                                 style: TextStyle(
                                                   fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
@@ -143,7 +146,9 @@ class _AdminNotificationViewState extends StateMVC<AdminNotificationView> {
                                               children: List.generate(
                                                   1,
                                                   (f) => Text(
-                                                        'No User Request For Password Reset',
+                                                        'No Password Reset Request(s)',
+                                                        textAlign:
+                                                            TextAlign.center,
                                                         style: TextStyle(
                                                           fontSize: 20,
                                                         ),

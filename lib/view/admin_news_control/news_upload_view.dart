@@ -313,8 +313,8 @@ class _AddNewsState extends StateMVC {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: new Text("VIPC Message"),
-                content: new Text("Successfully added new article!"),
+                title: new Text("Message"),
+                content: new Text("Successfully Added New Article!"),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),

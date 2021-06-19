@@ -110,7 +110,7 @@ class _AdminPageState extends StateMVC {
                 color:
                     _con.selectedIndex == 1 ? Colors.amber[320] : Colors.white,
               ),
-              label: 'User',
+              label: 'Users',
             ),
           ],
         ),
@@ -180,11 +180,11 @@ class _AdminPageState extends StateMVC {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 25),
+                                  padding: EdgeInsets.only(left: 5),
                                   child: Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      "VIPC News",
+                                      "News",
                                       style: TextStyle(
                                         fontSize: 20,
                                       ),
@@ -349,7 +349,7 @@ class _AdminPageState extends StateMVC {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 25),
+                                  padding: EdgeInsets.only(left: 5),
                                   child: Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -542,7 +542,7 @@ class _AdminPageState extends StateMVC {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: Image.asset(
-                ('assets/images/logo.png'),
+                ('assets/images/icon.png'),
               ),
             ),
           ),
@@ -575,7 +575,7 @@ class _AdminPageState extends StateMVC {
           ),
           ListTile(
             title: Text(
-              'User',
+              'Users',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -608,8 +608,8 @@ class _AdminPageState extends StateMVC {
               showDialog(
                 context: context,
                 builder: (_) => new AlertDialog(
-                  title: new Text("VIPC Message"),
-                  content: new Text("Do you want to log out?"),
+                  title: new Text("Message"),
+                  content: new Text("Do you want to Log Out?"),
                   actions: <Widget>[
                     TextButton(
                       child: Text('No'),

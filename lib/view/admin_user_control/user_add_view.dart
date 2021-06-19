@@ -622,8 +622,8 @@ class _AddUserState extends StateMVC {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: new Text("VIPC Message"),
-                content: new Text("Successfully added user!"),
+                title: new Text("Message"),
+                content: new Text("Successfully Added User!"),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),

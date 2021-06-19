@@ -259,8 +259,8 @@ class _ResetPasswordState extends StateMVC<ResetPassword> {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                title: Text("VIPC Message"),
-                content: Text("Successfully Reset Password!"),
+                title: Text("Message"),
+                content: Text("Password has been Successfully Reset!"),
                 actions: <Widget>[
                   TextButton(
                     child: Text('Close'),
