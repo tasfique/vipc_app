@@ -525,7 +525,8 @@ class _EditUserState extends StateMVC<EditUser> {
             context: context,
             builder: (_) => new AlertDialog(
               title: new Text("VIPC Message"),
-              content: new Text("Confirm deleting this account!"),
+              content:
+                  new Text("Are you sure you want to DELETE this Account?"),
               actions: <Widget>[
                 TextButton(
                   child: Text('No'),

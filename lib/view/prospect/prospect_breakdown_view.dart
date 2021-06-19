@@ -602,9 +602,6 @@ class _ProspectBreakDownViewState extends State<ProspectBreakDownView> {
                                     ),
                             ],
                           ),
-
-                          //Text("ok"),
-
                           SizedBox(
                             height: 20,
                           ),

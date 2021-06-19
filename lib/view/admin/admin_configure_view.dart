@@ -744,7 +744,7 @@ class _AdminConfigureViewState extends State<AdminConfigureView> {
                 builder: (_) => new AlertDialog(
                   title: Text("VIPC Message"),
                   content: Text(
-                      "Successfully saved new Admin Detail!\nYou will be signed out. Please log in again."),
+                      "Successfully Saved new Admin Details.\nYou will be Signed Out...\nPlease Log In Again."),
                   actions: <Widget>[
                     TextButton(
                       child: Text('Close'),

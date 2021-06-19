@@ -152,8 +152,6 @@ class _ProspectViewState extends State<ProspectView> {
                         "Prospect's Details",
                         style: TextStyle(
                           fontSize: 22,
-                          // decorationThickness: 1.5,
-                          // fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -378,7 +376,7 @@ class _ProspectViewState extends State<ProspectView> {
                                   builder: (_) => new AlertDialog(
                                     title: new Text("VIPC Message"),
                                     content: new Text(
-                                        "Finish service with this prospect!\nProspect will be disappeared from the prospect list.\nYou still can see the prospect detail through search."),
+                                        "Do you want to Finish Servicing with this Prospect (Client)?\nThis Prospect will disappear from the list.\nDon't worry, you can still Search this Prospect from the Search Option."),
                                     actions: <Widget>[
                                       TextButton(
                                         child: Text('No'),

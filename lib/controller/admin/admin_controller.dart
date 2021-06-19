@@ -122,7 +122,7 @@ class AdminController extends ControllerMVC {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('User ID does not exist.'),
+                content: Text('User ID does not Exist.'),
                 backgroundColor: Theme.of(context).errorColor),
           );
           setState(() {

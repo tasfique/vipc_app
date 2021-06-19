@@ -234,7 +234,7 @@ class _EditNewsState extends StateMVC<EditNews> {
               child: _con.imageCount != 0 && _con.imageCount != null
                   ? Center(
                       child: Text(
-                        'You chose ${_con.imageCount} images',
+                        'You chose ${_con.imageCount} image(s)',
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
@@ -415,7 +415,7 @@ class _EditNewsState extends StateMVC<EditNews> {
             context: context,
             builder: (_) => new AlertDialog(
               title: new Text("Message"),
-              content: new Text("Confirm deleting this news!"),
+              content: new Text("Are you sure you want to DELETE this News?"),
               actions: <Widget>[
                 TextButton(
                   child: Text('No'),

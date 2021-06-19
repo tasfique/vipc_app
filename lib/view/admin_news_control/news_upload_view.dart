@@ -227,7 +227,7 @@ class _AddNewsState extends StateMVC {
                 child: _con.imageCount != 0 && _con.imageCount != null
                     ? Center(
                         child: Text(
-                          'You chose ${_con.imageCount} images',
+                          'You chose ${_con.imageCount} image(s)',
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,

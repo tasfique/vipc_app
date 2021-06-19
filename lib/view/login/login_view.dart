@@ -261,7 +261,7 @@ class _LoginViewState extends StateMVC {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Forgot password?',
+              text: 'Forgot Password?',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,

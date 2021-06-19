@@ -58,7 +58,7 @@ class SignupController extends ControllerMVC {
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Error, couldn\'s load data.'),
+            content: Text('Error, couldn\'t load data.'),
             backgroundColor: Theme.of(context).errorColor),
       );
     }
@@ -191,7 +191,7 @@ class SignupController extends ControllerMVC {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('User ID already exists.'),
+                content: Text('User ID already Exists.'),
                 backgroundColor: Theme.of(context).errorColor),
           );
           setState(() {

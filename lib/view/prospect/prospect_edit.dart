@@ -891,7 +891,8 @@ class _EditProspectState extends StateMVC<EditProspect> {
             context: context,
             builder: (_) => new AlertDialog(
               title: new Text("VIPC Message"),
-              content: new Text("Confirm deleting this prospect!"),
+              content: new Text(
+                  "Are you sure you want to DELETE this Prospect (Client)?"),
               actions: <Widget>[
                 TextButton(
                   child: Text('No'),

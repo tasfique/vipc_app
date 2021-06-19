@@ -72,7 +72,7 @@ class UserEditController extends ControllerMVC {
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Error, couldn\'s load data.'),
+            content: Text('Error, couldn\'t load data.'),
             backgroundColor: Theme.of(context).errorColor),
       );
     }
@@ -370,7 +370,7 @@ class UserEditController extends ControllerMVC {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: Text(
-                        'Email address already exists. Please enter another email address.'),
+                        'Email Address already Exists.\nPlease try another Email.'),
                     backgroundColor: Theme.of(context).errorColor),
               );
             }
