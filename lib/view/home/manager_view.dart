@@ -1603,11 +1603,11 @@ class _ManagerViewState extends StateMVC {
                           ),
                         ),
                       ),
-                      100 <= monthP
+                      200 <= monthP
                           ? Container(
                               alignment: Alignment.topRight,
                               child: Text(
-                                  100 <= monthP && monthP < 200
+                                  200 <= monthP && monthP < 400
                                       ? 'Passed'
                                       : 'Standard',
                                   style: TextStyle(
