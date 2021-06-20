@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "289573698547",
-    "project_id": "vipctest-374b3",
-    "storage_bucket": "vipctest-374b3.appspot.com"
+    "project_number": "826604600970",
+    "project_id": "vipc-c444e",
+    "storage_bucket": "vipc-c444e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:289573698547:android:bda331bdd2ab713d227086",
+        "mobilesdk_app_id": "1:826604600970:android:f605bb4831e17811d0f773",
         "android_client_info": {
           "package_name": "com.example.vipc_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "289573698547-gtkm8na0856a9qtsre12ofuulh671e8s.apps.googleusercontent.com",
+          "client_id": "826604600970-plio52a3qir0gd7irtl1vqq6k9c92icq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsFqyoIjO7UGdSoh6NVQkf8asF9Nbjqtw"
+          "current_key": "AIzaSyAYHz2xWuZ9q_Fqk4a1RB1gShfW-gkmQJM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "289573698547-gtkm8na0856a9qtsre12ofuulh671e8s.apps.googleusercontent.com",
+              "client_id": "826604600970-plio52a3qir0gd7irtl1vqq6k9c92icq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
