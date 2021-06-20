@@ -291,8 +291,8 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                                 padding: EdgeInsets.only(bottom: 10),
                                 alignment: Alignment.topRight,
                                 child: Text(
-                                    100 <= widget.monthPoint &&
-                                            widget.monthPoint < 200
+                                    200 <= widget.monthPoint &&
+                                            widget.monthPoint < 400
                                         ? 'Passed'
                                         : 'Standard',
                                     style: TextStyle(
