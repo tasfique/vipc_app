@@ -286,7 +286,7 @@ class _MonitorDetailsViewState extends StateMVC<MonitorDetailsView> {
                             ),
                           ),
                         ),
-                        100 <= widget.monthPoint
+                        200 <= widget.monthPoint
                             ? Container(
                                 padding: EdgeInsets.only(bottom: 10),
                                 alignment: Alignment.topRight,
