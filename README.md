@@ -4,6 +4,11 @@ This app was created for VIPC Group Sdn Bhd Malaysia.
 The purpose of the app is monitor the employee's KPI points in an interactice graphical interface, which shows the employee's performace and to help them meet their KPI goal.
 Furthermore this app also has the ability to manage and maintain their client list, to set meeting date, time, location and other information about the client.
 
+Developed by
+1. Adilet Kulakhmet @kulakhmet25
+2. Tasfique Enam @tasfique
+3. Vo Van Son @vnsonvo
+
 App Pitch Video: https://youtu.be/CHylwkQqHGY
 
 ![photo_2021-05-31_20-19-28](https://user-images.githubusercontent.com/9998740/120192267-8a178680-c24d-11eb-9712-923e05422dfb.jpg)
