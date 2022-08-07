@@ -5,9 +5,9 @@ The purpose of the app is monitor the employee's KPI points in an interactice gr
 Furthermore this app also has the ability to manage and maintain their client list, to set meeting date, time, location and other information about the client.
 
 Developed by
-1. Adilet Kulakhmet github.com/kulakhmet25
-2. Tasfique Enam github.com/tasfique
-3. Vo Van Son github.com/vnsonvo
+1. Adilet Kulakhmet www.github.com/kulakhmet25
+2. Tasfique Enam www.github.com/tasfique
+3. Vo Van Son www.github.com/vnsonvo
 
 App Pitch Video: https://youtu.be/CHylwkQqHGY
 
